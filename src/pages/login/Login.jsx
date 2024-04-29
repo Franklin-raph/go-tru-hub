@@ -15,12 +15,14 @@ const Login = () => {
             <input placeholder='Your Password' type="password" className='outline-none w-full rounded-[4px]'/>
           </div>
         </div>
-        <p className='text-left mt-5'>Forgot Your Password? <span>Reet</span> </p>
+        <p className='text-left mt-5'>Forgot Your Password? <span className='text-secondary-color cursor-pointer'>Reset</span> </p>
         <button className='text-white bg-primary-color w-full rounded-[4px] mt-[2.5rem] px-[35px] py-[16px] text-center mx-auto'>Login</button>
-        <p className='mt-10'>New to Gotru? <span className='text-secondary-color'>Sign up</span> </p>
+        <p className='mt-10'>New to Gotru? <span className='text-secondary-color  cursor-pointer'>Sign up</span> </p>
       </div>
-      <p className='mt-[10rem]'>&copy; 2022 Gotruhub and Gotruhub logo are trademarks of the company.</p>
-      <p>Please visit our <span className='text-secondary-color'>Terms of service</span> for more details.</p>
+      <div className='text-[#6F7975] mt-[10rem]'>
+        <p>&copy; 2022 Gotruhub and Gotruhub logo are trademarks of the company.</p>
+        <p>Please visit our <span className='text-secondary-color cursor-pointer'>Terms of service</span> for more details.</p>
+      </div>
     </div>
   )
 }
