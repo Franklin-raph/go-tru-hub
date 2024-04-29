@@ -8,6 +8,9 @@ import Contact from './pages/contact/Contact'
 import About from './pages/about/About'
 import Footer from './components/footer/Footer'
 import Register from './pages/register/Register'
+import RegisterOrgs from './pages/register-orgs/RegisterOrgs'
+import RegisterPersonalBiz from './pages/register-personal-biz/RegisterPersonalBiz'
+import RegisterGovernmentBiz from './pages/register-goverment-biz/RegisterGovernmentBiz'
 
 function App() {
 
@@ -22,6 +25,9 @@ function App() {
                 <Route path='/contact-us' element={<Contact />}/>
                 <Route path='/login' element={<Login />} />
                 <Route path='/register' element={<Register />} />
+                <Route path='/register-organization' element={<RegisterOrgs />}  />
+                <Route path='/register-personal-biz' element={<RegisterPersonalBiz/>}/>
+                <Route path='/regiser-government-biz' element={<RegisterGovernmentBiz />} />
                 <Route path='*' element={<div>404</div>} />
             </Routes>
           {/* </div> */}
