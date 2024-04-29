@@ -11,23 +11,33 @@ import Register from './pages/register/Register'
 import RegisterOrgs from './pages/register-orgs/RegisterOrgs'
 import RegisterPersonalBiz from './pages/register-personal-biz/RegisterPersonalBiz'
 import RegisterGovernmentBiz from './pages/register-goverment-biz/RegisterGovernmentBiz'
+import VerifyToken from './pages/verifyToken/VerifyToken'
+import CreatePassword from './pages/create-password/CreatePassword'
+import Dashboard from './pages/dashboard/Dashboard'
 
 function App() {
 
-    
+  const baseUrl = 'https://gotruhub.yamltech.com'
+  const user = localStorage.getItem('user')
+
     return (
       <HashRouter>
-        <Navbar />
+        {
+          !user && <Navbar />
+        }
           {/* <div className='w-[85%] mx-auto'> */}
             <Routes >
                 <Route path='/' element={<Home />} />
                 <Route path='/about' element={<About />}/>
                 <Route path='/contact-us' element={<Contact />}/>
-                <Route path='/login' element={<Login />} />
+                <Route path='/login' element={<Login baseUrl={baseUrl}/>} />
                 <Route path='/register' element={<Register />} />
-                <Route path='/register-organization' element={<RegisterOrgs />}  />
-                <Route path='/register-personal-biz' element={<RegisterPersonalBiz/>}/>
-                <Route path='/regiser-government-biz' element={<RegisterGovernmentBiz />} />
+                <Route path='/register-organization' element={<RegisterOrgs baseUrl={baseUrl}/>}  />
+                <Route path='/register-personal-biz' element={<RegisterPersonalBiz baseUrl={baseUrl}/>}/>
+                <Route path='/regiser-government-biz' element={<RegisterGovernmentBiz baseUrl={baseUrl}/>} />
+                <Route path='/verify-token' element={<VerifyToken baseUrl={baseUrl}/>} />
+                <Route path='/create-password' element={<CreatePassword baseUrl={baseUrl}/>} />
+                <Route path='/dashboard' element={<Dashboard />} />
                 <Route path='*' element={<div>404</div>} />
             </Routes>
           {/* </div> */}

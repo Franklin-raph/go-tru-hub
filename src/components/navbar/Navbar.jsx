@@ -5,7 +5,7 @@ const Navbar = () => {
   return (
     <nav className='flex items-center justify-between bg-primary-color py-5 px-[100px]'>
         <Link to='/'>
-            <img src="./logo-white.svg" alt="" />
+            <img src="./images/logo-white.svg" alt="" />
         </Link>
         <ul className='flex items-center gap-[50px] text-white'>
             <li>

@@ -16,7 +16,7 @@ const Home = () => {
         <div className='text-center'>
             <button className='text-white bg-primary-color rounded-[8px] mt-[4rem] px-[35px] py-[16px] text-center mx-auto'>Get Started with Gotruhub</button>
         </div>
-        <img src="/land-1.svg" className='mx-auto mt-[5rem] mb-[10rem] w-[75%]' alt="" />
+        <img src="/land-1.svg" className='mx-auto mt-[5rem] mb-[10rem] max-w-[75%]' alt="" />
         <div className='text-center'>
             <h1 className='text-primary-color font-[500] text-[48px] w-[50%] mx-auto'>
                 We’re all about helping you manage your organization
@@ -33,11 +33,14 @@ const Home = () => {
                     ))
                 }
             </div>
-            <div className='flex items-start gap-[2rem] text-left w-[90%] mx-auto mt-[5rem]'>
-                <img src="./trade_img.svg" className='w-[60%]' alt="" />
+            <div className='flex justify-between items-start gap-[2rem] text-left w-[90%] mx-auto mt-[5rem]'>
+                <img src="./trade_img.svg" className='max-w-[100%]' alt="" />
                 <div className='w-[50%]'>
                     <p className='text-[32px] font-[500] mb-3'>Gotru Trade</p>
                     <p className='text-[#6F7975]'>With our ready to use inventory and ledger management systems, sales and payment management is seamless and can be done without cash. It is most suitable for cooperative trading.</p>
+                    <div className=''>
+                        <button className='text-white bg-primary-color rounded-[8px] mt-[2.5rem] px-[35px] py-[16px] text-center'>Get Started</button>
+                    </div>
                 </div>
             </div>
         </div>

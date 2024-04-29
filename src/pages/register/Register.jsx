@@ -13,7 +13,7 @@ const Register = () => {
           <p className='text-[#19201D] font-[600] text-[26px]'>Registered Organizations</p>
           <p className='text-[#6F7975] mt-4'>Companies with Registered CAC</p>
         </div>
-        <div className='border rounded-[4px] px-4 py-3 w-[80%] mx-auto my-10 cursor-pointer' onClick={() => navigate('/rregister-personal-biz')}>
+        <div className='border rounded-[4px] px-4 py-3 w-[80%] mx-auto my-10 cursor-pointer' onClick={() => navigate('/register-personal-biz')}>
           <p className='text-[#19201D] font-[600] text-[26px]'>Personal Businesses</p>
           <p className='text-[#6F7975] mt-4'>Businesses not registered</p>
         </div>

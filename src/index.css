@@ -6,3 +6,7 @@
     --primary-color: #191f1c;
     --secondary-color: #40916C;
   }
+
+  label {
+    @apply text-[12px] text-[#828282]
+  }
