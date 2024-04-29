@@ -1,6 +1,10 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
+
+  const navigate = useNavigate()
+  
   return (
     <div className='w-[100%] mx-auto text-center my-[4rem]'>
       <div className='w-[40%] mx-auto'>
@@ -17,7 +21,7 @@ const Login = () => {
         </div>
         <p className='text-left mt-5'>Forgot Your Password? <span className='text-secondary-color cursor-pointer'>Reset</span> </p>
         <button className='text-white bg-primary-color w-full rounded-[4px] mt-[2.5rem] px-[35px] py-[16px] text-center mx-auto'>Login</button>
-        <p className='mt-10'>New to Gotru? <span className='text-secondary-color  cursor-pointer'>Sign up</span> </p>
+        <p className='mt-10'>New to Gotru? <span className='text-secondary-color  cursor-pointer' onClick={() => navigate('/register')}>Sign up</span> </p>
       </div>
       <div className='text-[#6F7975] mt-[10rem]'>
         <p>&copy; 2022 Gotruhub and Gotruhub logo are trademarks of the company.</p>
