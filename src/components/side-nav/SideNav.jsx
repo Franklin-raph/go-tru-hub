@@ -21,7 +21,7 @@ const SideNav = () => {
           </Link>
           <Link to='/monitor' className="flex items-center justify-between py-[10px]">
             <div className="flex items-center">
-                <img src="./images/wallet-active.svg" alt="" />
+                <img src="./images/wallet-active.svg" className="mr-[15.67px]" alt="" />
                 <p className="fg-dark7">Trade</p>
             </div>
             <IoChevronDownOutline color="d7d7d7"/>
