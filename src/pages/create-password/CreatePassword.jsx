@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Alert from '../../components/alert/Alert';
+import BtnLoader from '../../components/btn-loader/BtnLoader'
 
 const CreatePassword = ({baseUrl}) => {
 
@@ -10,6 +11,7 @@ const CreatePassword = ({baseUrl}) => {
   const [encrypted, setEncrypted] = useState(true);
   const [msg, setMsg] = useState('')
   const [alertType, setAlertType] = useState()
+  const [isLoading, setIsLoading] = useState(false)
 
   async function createPassword(){
     if(!password || !confirmPassword){
@@ -22,6 +24,7 @@ const CreatePassword = ({baseUrl}) => {
         return
     }else{
         console.log(`${baseUrl}/set-Password`);
+        setIsLoading(true)
         const body = {
             email: JSON.parse(localStorage.getItem('reg-email')),
             password
@@ -34,14 +37,16 @@ const CreatePassword = ({baseUrl}) => {
             body: JSON.stringify(body)
         })
         const data = await res.json()
+        if(res) setIsLoading(false)
         console.log(res, data);
         if(!res.ok){
-            notify(data.message)
+            setMsg(data.message);
+            setAlertType('error')
             return
         }
         if(res.ok){
             setMsg("Password Created Successfully!")
-            navigate('/sign-in')
+            navigate('/login')
         }
     }
   }
@@ -59,7 +64,7 @@ const CreatePassword = ({baseUrl}) => {
                   <input
                     className='w-full text-[#19201d] outline-none '
                     type={encrypted ? "password" : "text"}
-                    placeholder="Confirm password"
+                    placeholder="New password"
                     value={password}
                     onChange={(e) => {
                       setPassword(e.target.value);
@@ -96,7 +101,13 @@ const CreatePassword = ({baseUrl}) => {
                   </div>
                 </div>
               </div>
-              <button onClick={createPassword} className='text-white bg-primary-color w-full rounded-[4px] mt-[2.5rem] px-[35px] py-[16px] text-center mx-auto'>Proceed</button>
+              {
+                isLoading ? 
+                <BtnLoader bgColor="#191f1c"/>
+                :
+                <button onClick={createPassword} className='text-white bg-primary-color w-full rounded-[4px] mt-[2.5rem] px-[35px] py-[16px] text-center mx-auto'>Proceed</button>
+              }
+              {/* <button onClick={verifyAccount} className='text-white bg-primary-color w-full rounded-[4px] mt-[2.5rem] px-[35px] py-[16px] text-center mx-auto'>Proceed</button> */}
             </div>
         </div>
         {

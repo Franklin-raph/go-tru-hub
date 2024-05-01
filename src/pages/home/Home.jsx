@@ -1,10 +1,18 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import Footer from '../../components/footer/Footer'
 
 const Home = () => {
 
     const tabArray = ['Gotru Trade', 'Gotru Pass', 'Gotru Monitor']
+    const navigate = useNavigate()
+    const user = localStorage.getItem('user')
+    
+    useEffect(() => {
+        if(user){
+            navigate('/dashboard')
+        }
+    },[])
 
   return (
     <div>
@@ -14,7 +22,7 @@ const Home = () => {
             <Link to='/about' className='text-secondary-color font-[500]'> Learn More</Link>
         </p>
         <div className='text-center'>
-            <button className='text-white bg-primary-color rounded-[8px] mt-[4rem] px-[35px] py-[16px] text-center mx-auto'>Get Started with Gotruhub</button>
+            <button onClick={() => navigate('/register')} className='text-white bg-primary-color rounded-[8px] mt-[4rem] px-[35px] py-[16px] text-center mx-auto'>Get Started with Gotruhub</button>
         </div>
         <img src="/land-1.svg" className='mx-auto mt-[5rem] mb-[10rem] max-w-[75%]' alt="" />
         <div className='text-center'>
@@ -39,7 +47,7 @@ const Home = () => {
                     <p className='text-[32px] font-[500] mb-3'>Gotru Trade</p>
                     <p className='text-[#6F7975]'>With our ready to use inventory and ledger management systems, sales and payment management is seamless and can be done without cash. It is most suitable for cooperative trading.</p>
                     <div className=''>
-                        <button className='text-white bg-primary-color rounded-[8px] mt-[2.5rem] px-[35px] py-[16px] text-center'>Get Started</button>
+                        <button onClick={() => navigate('/register')} className='text-white bg-primary-color rounded-[8px] mt-[2.5rem] px-[35px] py-[16px] text-center'>Get Started</button>
                     </div>
                 </div>
             </div>
@@ -77,7 +85,7 @@ const Home = () => {
                 Create account instantly to start managing your team and resources.
             </p>
             <div className='text-center'>
-                <button className='text-white bg-primary-color rounded-[8px] mt-[2.5rem] px-[35px] py-[16px] text-center mx-auto'>Get Started with Gotruhub</button>
+                <button onClick={() => navigate('/register')} className='text-white bg-primary-color rounded-[8px] mt-[2.5rem] px-[35px] py-[16px] text-center mx-auto'>Get Started with Gotruhub</button>
             </div>
         </div>
         <Footer />

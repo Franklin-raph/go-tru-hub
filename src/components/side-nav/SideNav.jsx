@@ -1,42 +1,114 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { IoChevronDownOutline } from 'react-icons/io5'
 import { LuScanLine } from "react-icons/lu";
 import { Link } from 'react-router-dom'
 import { PiFileArrowUpThin } from "react-icons/pi";
+import { GoClock } from "react-icons/go";
+import { CiShop } from "react-icons/ci";
+import { BiTargetLock } from "react-icons/bi";
+
 
 
 const SideNav = () => {
+
+  const [tradeDropDown, setTradeDropDown] = useState(false)
+
+
   return (
-    <div className='bg-[#19201D] w-[18%] h-[100vh] fixed overflow-y-auto py-5 overflow-x-hidden'>
-        <div className='pl-5'>
+    <div className='bg-[#19201D] scrollbar w-[22%] h-[100vh] top-0 fixed overflow-y-auto py-5 overflow-x-hidden'>
+        <div className='pl-5 pb-5'>
             <img src="./images/logo-white.svg" alt="" />
         </div>
-        <div className="px-[32px] my-10">
-          <p className="f12 fg-grey5 mb-2">FEATURES</p>
+        <div className="px-[32px] my-10 text-white">
+          <p className="text-[12px] text-[#6F7975] mb-2">MAIN MENU</p>
+          <Link to='/dashboard' className="flex items-center justify-between py-[10px]">
+            <div className="flex items-center">
+              <img src="./images/dashboard-active.svg" className="mr-[15.67px]"/>
+              <p className="">Dashboard</p>
+            </div>
+          </Link>
+          <Link to='/monitor' className="flex items-center justify-between py-[10px]">
+            <div className="flex items-center">
+                <img src="./images/manage-users-active.svg" className="mr-[15.67px]" alt="" />
+                <p className="">Manage users</p>
+            </div>
+          </Link>
+        </div>
+        <div className="px-[32px] my-10 text-white">
+          <p className="text-[12px] text-[#6F7975] mb-2">FEATURES</p>
           <Link to='/monitor' className="flex items-center justify-between py-[10px]">
             <div className="flex items-center">
               <img src="./images/manage-users-active.svg" className="mr-[15.67px]"/>
-              <p className="fg-dark7">Pass</p>
+              <p className="">Pass</p>
             </div>
           </Link>
-          <Link to='/monitor' className="flex items-center justify-between py-[10px]">
-            <div className="flex items-center">
-                <img src="./images/wallet-active.svg" className="mr-[15.67px]" alt="" />
-                <p className="fg-dark7">Trade</p>
+
+          <div className="flex flex-col justify-between py-[10px]">
+            <div className="flex items-center justify-between w-full cursor-pointer" onClick={() => setTradeDropDown(!tradeDropDown)}>
+              <div className="flex items-center">
+                  <img src="./images/wallet-active.svg" className="mr-[15.67px]" alt="" />
+                  <p className="">Trade</p>
+              </div>
+              <IoChevronDownOutline color="d7d7d7"/>
             </div>
-            <IoChevronDownOutline color="d7d7d7"/>
-          </Link>
+            {tradeDropDown &&
+              <div className='mt-3 ml-4'>
+                <div className='flex items-center gap-2 mb-4'>
+                  <CiShop />
+                  <p className="">Shop</p>
+                </div>
+                <div className='flex items-center gap-2 my-4'>
+                  <img src="./images/wallet-active.svg"/>
+                  <p className="">Wallet</p>
+                </div>
+                <div className='flex items-center gap-2 my-4'>
+                  <img src="./images/orders.svg"/>
+                  <p className="">Orders</p>
+                </div>
+                <div className='flex items-center gap-2 my-4'>
+                  <img src="./images/inventory.svg"/>
+                  <p className="">Inventory</p>
+                </div>
+                <div className='flex items-center gap-2 my-4'>
+                  <img src="./images/clock-1.svg"/>
+                  <p className="">Transaction History</p>
+                </div>
+              </div>
+            }
+          </div>
+
           <Link to='/monitor' className="flex items-center justify-between py-[10px]">
             <div className="flex items-center">
               <LuScanLine color="d7d7d7" className="mr-[15.67px]"/>
-              <p className="fg-dark7">Monitor</p>
+              <p className="">Monitor</p>
             </div>
             <IoChevronDownOutline color="d7d7d7"/>
           </Link>
           <Link to='/monitor' className="flex items-center justify-between py-[10px]">
             <div className="flex items-center">
               <PiFileArrowUpThin color="d7d7d7" className="mr-[15.67px]"/>
-              <p className="fg-dark7">Result</p>
+              <p className="">Result</p>
+            </div>
+          </Link>
+        </div>
+        <div className="px-[32px] my-10 text-white">
+          <p className="text-[12px] text-[#6F7975] mb-2">OTHERS</p>
+          <Link to='/monitor' className="flex items-center justify-between py-[10px]">
+            <div className="flex items-center">
+              <img src="./images/wallet-active.svg" className="mr-[15.67px]"/>
+              <p className="">Subscription</p>
+            </div>
+          </Link>
+          <Link to='/monitor' className="flex items-center justify-between py-[10px]">
+            <div className="flex items-center">
+                <img src="./images/notification.svg" className="mr-[15.67px]" alt="" />
+                <p className="">Notification</p>
+            </div>
+          </Link>
+          <Link to='/monitor' className="flex items-center justify-between py-[10px]">
+            <div className="flex items-center">
+              <img src="./images/setting.svg" className='mr-[15.67px]' alt="" />
+              <p className="">Account</p>
             </div>
           </Link>
         </div>
@@ -55,7 +127,7 @@ const SideNav = () => {
             >
               <img src="/images/avatar.svg"className="w-[50px]" style={{ marginRight: 12, }} />
               <div>
-                <p className="fg-dark7 font-std font-[600] text-white" style={{ whiteSpace: "nowrap" }}>
+                <p className=" font-std font-[600] text-white" style={{ whiteSpace: "nowrap" }}>
                   Frank Agent
                 </p>
                 <p className="text-[#6F7975]">Admin</p>

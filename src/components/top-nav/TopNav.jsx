@@ -1,11 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { IoNotificationsOutline } from "react-icons/io5";
 import { LuSettings2 } from "react-icons/lu";
 import { CiSearch } from "react-icons/ci";
 import { IoIosLogOut } from "react-icons/io";
+import LogoutModal from '../logout-modal/LogoutModal';
 
 
 const TopNav = () => {
+
+  const [logoutModal, setLogoutModal] = useState(false)
+
   return (
     <div className='bg-[#1D2522] flex items-center justify-between w-[100%] py-[1.2rem] top-0 right-0 z-[99] px-5'>
       <div className='flex items-center gap-5'>
@@ -22,11 +26,16 @@ const TopNav = () => {
           <input type="text" placeholder='Search the dashboard' className='text-[#242E2A] w-full placeholder:text-[#242E2A] bg-transparent text-[14px] outline-none px-4 py-[5px]' style={{ borderRight:'1px solid #242E2A4D' }}/>
           <CiSearch className='text-[#242E2A] cursor-pointer'/>
         </div>
-        <div className='text-[#19201D] flex items-center gap-3 bg-[#C3FAE2] py-[9px] px-[16px] rounded-[4px] cursor-pointer'>
+        <div onClick={() => {
+          setLogoutModal(true)
+        }} className='text-[#19201D] flex items-center gap-3 bg-[#C3FAE2] py-[9px] px-[16px] rounded-[4px] cursor-pointer'>
           <IoIosLogOut fontSize={"20px"}/>
           <p>Logout</p>
         </div>
       </div>
+      {
+        logoutModal && <LogoutModal setLogoutModal={setLogoutModal} />
+      }
     </div>
   )
 }

@@ -3,7 +3,7 @@ import { GoChevronLeft } from "react-icons/go";
 import { useNavigate } from 'react-router-dom';
 import { MdOutlineFileUpload } from "react-icons/md";
 import Alert from '../../components/alert/Alert';
-
+import BtnLoader from '../../components/btn-loader/BtnLoader'
 
 
 const RegisterOrgs = ({baseUrl}) => {
@@ -41,6 +41,7 @@ const RegisterOrgs = ({baseUrl}) => {
 
     async function handleFileUpload(file, type){
         setfileUploadLoader(true)
+        console.log(`${baseUrl}/upload-media`);
         const formData = new FormData()
         formData.append('file', file)
         const res = await fetch(`${baseUrl}/upload-media`,{
@@ -75,15 +76,22 @@ const RegisterOrgs = ({baseUrl}) => {
         nameOfEstablishment,
         nameOfProprietor,
         businessAddress,
+        cacImage:cacImageId,
+        opLicenceImage:opLicenceImageId,
+        // businessAddress,
+        // cacImage,
+        // opLicenceImage,
         // personalAddress,
       };
 
       const handleSignUp = async () => {
         console.log(JSON.stringify(raw));
-        if(!email || !yearOfEstablishment || !nameOfEstablishment || !phone || !businessAddress || !nameOfProprietor || !cacImage || !opLicenceImage){
-          toast.error("Please fill in all fields")
+        if(!email || !yearOfEstablishment || !nameOfEstablishment || !phone || !businessAddress || !nameOfProprietor || !cacImageId || !opLicenceImageId){
+          setMsg("Please fill in all fields");
+          setAlertType('error')
         }else{
           console.log('Loading...');
+          setIsLoading(true)
           const res = await fetch(`${baseUrl}/signup/organization`,{
             method:"POST",
             headers:{
@@ -94,11 +102,11 @@ const RegisterOrgs = ({baseUrl}) => {
           const data = await res.json()
           if(res) setIsLoading(false)
           if(!res.ok){
-            toast.error(data.message)
+            setMsg(data.message);
+            setAlertType('error')
           }
           if(res.ok){
             localStorage.setItem('reg-email', JSON.stringify(data.data.organization.email))
-            toast.success(data.message)
             navigate('/verify-token')
           }
           console.log(res, data);
@@ -122,7 +130,7 @@ const RegisterOrgs = ({baseUrl}) => {
                 <div className='flex items-center gap-5 w-full'>
                     <div className='w-full'>
                         <label className='block text-left mb-2'>Name of Establishment</label>
-                        <input type="text" onChange={e => setNameOfEstablishment(e.target.vaue)} className='px-4 py-3 outline-none border w-full rounded-[4px]'/>
+                        <input type="text" onChange={e => setNameOfEstablishment(e.target.value)} className='px-4 py-3 outline-none border w-full rounded-[4px]'/>
                     </div>
                     <div className='w-full'>
                         <label className='block text-left mb-2'>Business Type</label>
@@ -155,11 +163,11 @@ const RegisterOrgs = ({baseUrl}) => {
                 <div className='flex items-center gap-5 w-full my-[3rem]'>
                     <div className='w-full'>
                         <label className='block text-left mb-2'>Year of Establishment</label>
-                        <input type="text" className='px-4 py-3 outline-none border w-full rounded-[4px]'/>
+                        <input type="text" onChange={e => setYearOfEstablishment(e.target.value)} className='px-4 py-3 outline-none border w-full rounded-[4px]'/>
                     </div>
                     <div className='w-full'>
                         <label className='block text-left mb-2'>Name of proprietor</label>
-                        <input type="text" className='px-4 py-3 outline-none border w-full rounded-[4px]'/>
+                        <input onChange={e => setNameOfProprietor(e.target.value)} type="text" className='px-4 py-3 outline-none border w-full rounded-[4px]'/>
                     </div>
                 </div>
                 <div className='flex items-center gap-5 w-full my-[3rem]'>
@@ -209,7 +217,13 @@ const RegisterOrgs = ({baseUrl}) => {
                         )}
                     </div>
                 </div>
-                <button onClick={handleSignUp} className='text-white bg-primary-color w-full rounded-[4px] mt-[2.5rem] px-[35px] py-[16px] text-center mx-auto'>Proceed</button>
+                {
+                    isLoading ? 
+                    <BtnLoader bgColor="#191f1c"/>
+                    :
+                    <button onClick={handleSignUp} className='text-white bg-primary-color w-full rounded-[4px] mt-[2.5rem] px-[35px] py-[16px] text-center mx-auto'>Proceed</button>
+                  }
+                  {/* <button onClick={verifyAccount} className='text-white bg-primary-color w-full rounded-[4px] mt-[2.5rem] px-[35px] py-[16px] text-center mx-auto'>Proceed</button> */}
             </div>
         </div>
         {

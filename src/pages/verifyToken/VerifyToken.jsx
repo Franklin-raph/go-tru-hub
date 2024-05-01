@@ -2,18 +2,23 @@ import React, { useState } from 'react'
 import { GoChevronLeft } from 'react-icons/go'
 import OTPInput from 'react-otp-input'
 import { useNavigate } from 'react-router-dom'
+import Alert from '../../components/alert/Alert'
+import BtnLoader from '../../components/btn-loader/BtnLoader'
 
 const VerifyToken = ({baseUrl}) => {
 
     const [otp, setOtp] = useState('')
     const navigate = useNavigate()
-    const [showBtn, setShowBtn] = useState(true)
     const [isLoading, setIsLoading] = useState(false)
     const [msg, setMsg] = useState('')
     const [alertType, setAlertType] = useState()
 
     async function verifyAccount(){
-        // if(otp.length)
+        if(!otp){
+            setMsg("OTP is required!");
+            setAlertType('error')
+            return;
+        }
         setIsLoading(true)
         console.log(JSON.stringify({email:JSON.parse(localStorage.getItem('reg-email')), token:otp}));
         const res = await fetch(`${baseUrl}/verify-account`,{
@@ -26,11 +31,11 @@ const VerifyToken = ({baseUrl}) => {
         const data = await res.json()
         if(res) setIsLoading(false)
         if(!res.ok){
-            setMsg("File upload wasn't successfull");
+            setMsg(data.message);
             setAlertType('error')
         }
         if(res.ok){
-            navigate('/new-password')
+            navigate('/create-password')
         }
         console.log(res, data);
     }
@@ -62,19 +67,12 @@ const VerifyToken = ({baseUrl}) => {
                 renderInput={(props) => <input {...props} placeholder='1' style={{ width:"71px" }} className='text-center outline-none font-[500] h-[58px] rounded-[4px] w-[71px] border placeholder:text-[#BDBDBD59] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'/>}
             />
             </div>
-            <button onClick={verifyAccount} className='text-white bg-primary-color w-full rounded-[4px] mt-[2.5rem] px-[35px] py-[16px] text-center mx-auto'>Proceed</button>
-            {/* <Button
-                title={isLoading == true ? <Loader size={15} /> : "Proceed"}
-                style={{
-                    width: "100%",
-                    padding: 14,
-                    color: "#fff",
-                    backgroundColor: "#19201D",
-                    marginTop: 48
-                }}
-                // onClick={handleSignUp}
-                // disabled={isLoading}
-                /> */}
+            {
+                isLoading ? 
+                <BtnLoader bgColor="#191f1c"/>
+                :
+                <button onClick={verifyAccount} className='text-white bg-primary-color w-full rounded-[4px] mt-[2.5rem] px-[35px] py-[16px] text-center mx-auto'>Proceed</button>
+            }
             </div>
         </div>
     </div>

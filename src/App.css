@@ -6,3 +6,24 @@ html, body{
     scroll-behavior: smooth;
     overflow-x: hidden;
 }
+
+
+/* For Firefox Browser */
+.scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #e4e4e4 #fff;
+}
+
+
+/* For Chrome, EDGE, Opera, Others */
+.scrollbar::-webkit-scrollbar {
+    width: 10px;
+}
+
+.scrollbar::-webkit-scrollbar-track { 
+    background: #fff;
+}
+
+.scrollbar::-webkit-scrollbar-thumb { 
+    background:#e4e4e4;
+  }
