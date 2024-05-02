@@ -15,6 +15,7 @@ import VerifyToken from './pages/verifyToken/VerifyToken'
 import CreatePassword from './pages/create-password/CreatePassword'
 import Dashboard from './pages/dashboard/Dashboard'
 import CreateUser from './pages/create-user/CreateUser'
+import ResetPassword from './pages/reset-password/ResetPassword'
 
 function App() {
 
@@ -37,6 +38,7 @@ function App() {
             <Route path='/register-personal-biz' element={<RegisterPersonalBiz baseUrl={baseUrl}/>}/>
             <Route path='/regiser-government-biz' element={<RegisterGovernmentBiz baseUrl={baseUrl}/>} />
             <Route path='/verify-token' element={<VerifyToken baseUrl={baseUrl}/>} />
+            <Route path='/reset-password' element={<ResetPassword baseUrl={baseUrl}/>} />
             <Route path='/create-password' element={<CreatePassword baseUrl={baseUrl}/>} />
             <Route path='/dashboard' element={<Dashboard baseUrl={baseUrl}/>} />
             <Route path='/create-user' element={<CreateUser />} />

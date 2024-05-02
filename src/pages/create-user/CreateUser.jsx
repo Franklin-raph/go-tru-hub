@@ -3,11 +3,16 @@ import TopNav from '../../components/top-nav/TopNav'
 import SideNav from '../../components/side-nav/SideNav'
 import { IoChevronDownOutline } from 'react-icons/io5'
 import { useNavigate } from 'react-router-dom'
+import AlertModal from '../../components/alert-modals/AlertModal'
 
 const CreateUser = () => {
 
     const [userTypeDropDown, setUserTypeDropDown] = useState(false)
     const [userType, setUserType] = useState('')
+    const [msg, setMsg] = useState('')
+    const [alertType, setAlertType] = useState('success')
+    const [alertTitle, setAlertTitle] = useState('Check your email')
+    const [isLoading, setIsLoading] = useState(false)
     const adminAccessArray = ['Gotru Pass', 'Gotru Trade', 'Gotru Monitor']
     const userTypeArray = [
         {
@@ -163,6 +168,9 @@ const CreateUser = () => {
                 </div>
             </div>
         </div>
+        {msg &&
+            <AlertModal msg={msg} alertType={alertType} setMsg={setMsg} alertTitle={alertTitle}/>
+        }
     </div>
   )
 }

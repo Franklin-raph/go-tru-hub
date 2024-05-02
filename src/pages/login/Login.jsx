@@ -69,7 +69,7 @@ const Login = ({baseUrl}) => {
             <input placeholder='Your Password' type="password" onChange={e => setPassword(e.target.value)} className='outline-none w-full rounded-[4px]'/>
           </div>
         </div>
-        <p className='text-left mt-5'>Forgot Your Password? <span className='text-secondary-color cursor-pointer'>Reset</span> </p>
+        <p className='text-left mt-5'>Forgot Your Password? <span className='text-secondary-color cursor-pointer' onClick={() => navigate('/reset-password')}>Reset</span> </p>
         {
             loading ? 
             <BtnLoader bgColor="#191f1c"/>

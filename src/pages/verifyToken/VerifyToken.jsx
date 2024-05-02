@@ -53,7 +53,7 @@ const VerifyToken = ({baseUrl}) => {
                     <GoChevronLeft />
                     <p>Back</p>
                 </div>
-                <p className='text-[#19201D] text-[22px] font-[500]'>Verify Email Address</p>
+                <p className='text-[#19201D] text-[22px] font-[500]'>Enter Verification code</p>
                 <p></p>
             </div>
             <p className='text-[14px] text-[#828282] mb-[35px] mt-[4.5rem]'>A verification code has been sent to your email address ce*****ft@gmail.com Enter the code below to complete your registration.</p>
