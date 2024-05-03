@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import TopNav from '../../components/top-nav/TopNav'
 import SideNav from '../../components/side-nav/SideNav'
 import { IoChevronDownOutline } from 'react-icons/io5'
@@ -18,6 +18,7 @@ const CreateUser = ({baseUrl}) => {
     //   }
     //   student, guardian,staff and admin
 
+
     const [userTypeDropDown, setUserTypeDropDown] = useState(false)
     const [fileUploadLoader, setfileUploadLoader] = useState(false)
     const [userType, setUserType] = useState('')
@@ -30,6 +31,64 @@ const CreateUser = ({baseUrl}) => {
     const [fullName, setFullName] = useState('')
     const [email, setEmail] = useState('')
     const [usersImagePreview, setUserImagePreview] = useState('')
+    const [guardianSignatureImagePreview, setGuardianSignatureImagePreview] = useState('')
+    const [relationImagePreview, setRelationImagePreview] = useState('')
+    const [unitDropDown, setUnitDropDown] = useState(false)
+    const [subUnitDropDown, setSubUnitDropDown] = useState(false)
+    const [regNum, setRegNum] = useState('')
+    // const [unitsArray, setUnitsArray] = useState([])
+
+    const [piviotUnit, setPiviotUnit] = useState('')
+    const [piviotUnitText, setPiviotUnitText] = useState('')
+    const [subUnit, setSubUnit] = useState('')
+    const [subUnitText, setSubUnitText] = useState('')
+
+    const unitsArray = [
+        {
+            id:'1',
+            name:'Unit 1'
+        },
+        {
+            id:'2',
+            name:'Unit 2'
+        },
+        {
+            id:'3',
+            name:'Unit 3'
+        },
+        {
+            id:'4',
+            name:'Unit 4'
+        },
+        {
+            id:'5',
+            name:'Unit 5'
+        }
+    ]
+
+    const subUnitsArray = [
+        {
+            id:'1',
+            name:'Sub Unit 1'
+        },
+        {
+            id:'2',
+            name:'Sub Unit 2'
+        },
+        {
+            id:'3',
+            name:'Sub Unit 3'
+        },
+        {
+            id:'4',
+            name:'Sub Unit 4'
+        },
+        {
+            id:'5',
+            name:'Sub Unit 5'
+        }
+    ]
+
     const userTypeArray = [
         {
             label:'student',
@@ -54,6 +113,23 @@ const CreateUser = ({baseUrl}) => {
     ]
     const navigate = useNavigate()
     const user = JSON.parse(localStorage.getItem('user'))
+
+    useEffect(() => {
+        getAllUnits()
+    },[])
+
+    async function getAllUnits(){
+        const response = await fetch(`${baseUrl}/units`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization:`Bearer ${user.data.access_token}`
+            }
+        })
+        const data = await response.json()
+        console.log(data);
+        // setUnitsArray(data)
+    }
 
     async function handleFileUpload(file){
         console.log(file);
@@ -82,7 +158,7 @@ const CreateUser = ({baseUrl}) => {
     }
 
     async function createUser(){
-        console.log(user.data.access_token);
+        console.log(JSON.stringify({ fullName, profileImage, role:userType, piviotUnit, subUnit, email, regNum }));
         if(!fullName || !email || !profileImage || !userType){
             setMsg("All fields are required");
             setAlertType('error')
@@ -96,10 +172,20 @@ const CreateUser = ({baseUrl}) => {
                     'Content-Type':'application/json',
                     Authorization:`Bearer ${user.data.access_token}`
                 },
-                body:JSON.stringify({ fullName, profileImage, role:userType, email })
+                body:JSON.stringify({ fullName, profileImage, role:userType, piviotUnit, subUnit, email, regNum })
             })
             const data = await res.json()
             if(res) setIsLoading(false)
+            if(res.ok) {
+                setMsg("User Created Successfully");
+                setAlertType('success')
+                setAlertTitle('Success')
+              }
+              if(!res.ok){
+                setMsg(data.message);
+                setAlertType('error')
+                setAlertTitle('Failed')
+              }
             console.log(res, data);
         }
     }
@@ -153,14 +239,65 @@ const CreateUser = ({baseUrl}) => {
                             }
                         </div>
                         <div className='w-full'>
-                            <label className='block text-text-color text-left mb-2'>Email <span className='text-red-500'>*</span></label>
+                            <label className='block text-text-color text-left mb-2'>Registeration Number <span className='text-red-500'>*</span></label>
                             <div className='px-4 py-3 border w-full rounded-[4px]'>
-                                <input onChange={e => setEmail(e.target.value)} placeholder='Enter email address' type="text" className='outline-none w-full rounded-[4px] bg-transparent text-[14px]'/>
+                                <input onChange={e => setRegNum(e.target.value)} placeholder='Enter Registeration Number' type="text" className='outline-none w-full rounded-[4px] bg-transparent text-[14px]'/>
                             </div>
                         </div>
                     </div>
                     {
-                        userType === 'Admin' &&
+                        userType === 'student' &&
+                        <div className='mt-7 flex items-center gap-5 w-full'>
+                            <div className='relative w-full'>
+                                <label className='block text-text-color text-left mb-2'>Pivot Unit <span className='text-red-500'>*</span></label>
+                                <div className='flex items-center justify-between px-4 py-3 border w-full rounded-[4px]'>
+                                    <input type="text" value={piviotUnit} placeholder='Select user type' className='absolute opacity-0 outline-none rounded-[4px] bg-transparent text-[14px]'/>
+                                    <p className='text-[14px]'>{piviotUnitText}</p>
+                                    <IoChevronDownOutline color="d7d7d7" cursor='pointer' onClick={() => setUnitDropDown(!unitDropDown)}/>
+                                </div>
+                                {unitDropDown &&
+                                    <div className='py-5 bg-white absolute overflow-y-scroll h-[220px] px-3 rounded-[12px] mt-2 z-[10] w-full'>
+                                        {
+                                            unitsArray.map(unit => (
+                                                <div className='px-3 border-b pb-3 cursor-pointer mb-3' onClick={() => {
+                                                    setUnitDropDown(false) 
+                                                    setPiviotUnitText(unit.name)
+                                                    setPiviotUnit(unit.id)
+                                                }}>
+                                                    <p className='text-[#1D1D1D] capitalize text-[12px]'>{unit.name}</p>
+                                                </div>
+                                            ))
+                                        }
+                                    </div>
+                                }
+                            </div>
+                            <div className='relative w-full'>
+                                <label className='block text-text-color text-left mb-2'>Sub-unit <span className='text-red-500'>*</span></label>
+                                <div className='flex items-center justify-between px-4 py-3 border w-full rounded-[4px]'>
+                                    <input type="text" value={subUnit} placeholder='Select user type' className='absolute opacity-0 outline-none rounded-[4px] bg-transparent'/>
+                                    <p className='text-[14px]'>{subUnitText}</p>
+                                    <IoChevronDownOutline color="d7d7d7" cursor='pointer' onClick={() => setSubUnitDropDown(!subUnitDropDown)}/>
+                                </div>
+                                {subUnitDropDown &&
+                                    <div className='py-5 bg-white absolute overflow-y-scroll h-[220px] px-3 rounded-[12px] mt-2 z-[10] w-full'>
+                                        {
+                                            subUnitsArray.map(unit => (
+                                                <div className='px-3 border-b pb-3 cursor-pointer mb-3' onClick={() => {
+                                                    setSubUnitDropDown(false) 
+                                                    setSubUnit(unit.id)
+                                                    setSubUnitText(unit.name)
+                                                }}>
+                                                    <p className='text-[#1D1D1D] capitalize text-[12px]'>{unit.name}</p>
+                                                </div>
+                                            ))
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                    {
+                        userType === 'admin' &&
                             <div className="mt-7">
                                 <label className='block text-text-color text-left mb-2'>Allow this admin access to <span className='text-red-500'>*</span></label>
                                 <div className='flex items-center'>
@@ -246,7 +383,7 @@ const CreateUser = ({baseUrl}) => {
                         :
                         <div className="flex items-center justify-end mt-10 gap-3">
                             <button  className="py-3 px-4 border border-[#1D1D1D] rounded-[8px] text-[14px]">Cancel</button>
-                            <button className="bg-primary-color text-white px-4 py-3 rounded-[8px] text-[14px]" onClick={createUser} >Create account..</button>
+                            <button className="bg-primary-color text-white px-6 py-3 rounded-[8px] text-[14px]" onClick={createUser} >Create Account</button>
                         </div>
                     }
                 </div>
