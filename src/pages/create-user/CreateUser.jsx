@@ -4,8 +4,9 @@ import SideNav from '../../components/side-nav/SideNav'
 import { IoChevronDownOutline } from 'react-icons/io5'
 import { useNavigate } from 'react-router-dom'
 import AlertModal from '../../components/alert-modals/AlertModal'
+import BtnLoader from '../../components/btn-loader/BtnLoader'
 
-const CreateUser = () => {
+const CreateUser = ({baseUrl}) => {
 
     // {
     //     "fullName": "John Doe",
@@ -18,12 +19,17 @@ const CreateUser = () => {
     //   student, guardian,staff and admin
 
     const [userTypeDropDown, setUserTypeDropDown] = useState(false)
+    const [fileUploadLoader, setfileUploadLoader] = useState(false)
     const [userType, setUserType] = useState('')
     const [msg, setMsg] = useState('')
-    const [alertType, setAlertType] = useState('success')
-    const [alertTitle, setAlertTitle] = useState('Check your email')
+    const [alertType, setAlertType] = useState('')
+    const [alertTitle, setAlertTitle] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const adminAccessArray = ['Gotru Pass', 'Gotru Trade', 'Gotru Monitor']
+    const [profileImage, setProfileImage] = useState('')
+    const [fullName, setFullName] = useState('')
+    const [email, setEmail] = useState('')
+    const [usersImagePreview, setUserImagePreview] = useState('')
     const userTypeArray = [
         {
             label:'student',
@@ -47,6 +53,56 @@ const CreateUser = () => {
         }
     ]
     const navigate = useNavigate()
+    const user = JSON.parse(localStorage.getItem('user'))
+
+    async function handleFileUpload(file){
+        console.log(file);
+        setfileUploadLoader(true)
+        console.log(`${baseUrl}/upload-media`);
+        const formData = new FormData()
+        formData.append('file', file)
+        const res = await fetch(`${baseUrl}/upload-media`,{
+          method:"POST",
+          body: formData
+        })
+        const data = await res.json()
+        if(res) setfileUploadLoader(false)
+        if(res.ok) {
+          setMsg("File uploaded successfully");
+          setAlertType('success')
+          setAlertTitle('Success')
+          setUserImagePreview(data.data.file)
+          setProfileImage(data.data._id)
+        }
+        if(!res.ok){
+          setMsg("File upload wasn't successfull");
+          setAlertType('error')
+          setAlertTitle('Failed')
+        }
+    }
+
+    async function createUser(){
+        console.log(user.data.access_token);
+        if(!fullName || !email || !profileImage || !userType){
+            setMsg("All fields are required");
+            setAlertType('error')
+            setAlertTitle('Failed')
+            return;
+        }else{
+            setIsLoading(true)
+            const res = await fetch(`${baseUrl}/users/add-user`,{
+                method:"POST",
+                headers:{
+                    'Content-Type':'application/json',
+                    Authorization:`Bearer ${user.data.access_token}`
+                },
+                body:JSON.stringify({ fullName, profileImage, role:userType, email })
+            })
+            const data = await res.json()
+            if(res) setIsLoading(false)
+            console.log(res, data);
+        }
+    }
 
   return (
     <div>
@@ -62,38 +118,46 @@ const CreateUser = () => {
                         <div className='w-full'>
                             <label className='block text-left mb-2 text-text-color'>Full Name <span className='text-red-500'>*</span></label>
                             <div className='px-4 py-3 outline-none border w-full rounded-[4px]'>
-                                <input placeholder='First and last name' type="text" className='outline-none w-full rounded-[4px] bg-transparent text-[14px]'/>
+                                <input onChange={(e => setFullName(e.target.value))} placeholder='First and last name' type="text" className='outline-none w-full rounded-[4px] bg-transparent text-[14px]'/>
                             </div>
                         </div>
                         <div className='w-full'>
                             <label className='block text-text-color text-left mb-2'>Email <span className='text-red-500'>*</span></label>
                             <div className='px-4 py-3 border w-full rounded-[4px]'>
-                                <input placeholder='Enter email address' type="text" className='outline-none w-full rounded-[4px] bg-transparent text-[14px]'/>
+                                <input onChange={e => setEmail(e.target.value)} placeholder='Enter email address' type="text" className='outline-none w-full rounded-[4px] bg-transparent text-[14px]'/>
                             </div>
                         </div>
                     </div>
-                    <div className="mt-7 relative">
-                        <label className='block text-text-color text-left mb-2'>User Type <span className='text-red-500'>*</span></label>
-                        <div className='flex items-center justify-between px-4 py-3 border w-full rounded-[4px]'>
-                            <input type="text" value={userType} placeholder='Select user type' className='outline-none w-full rounded-[4px] bg-transparent text-[14px]'/>
-                            <IoChevronDownOutline color="d7d7d7" cursor='pointer' onClick={() => setUserTypeDropDown(!userTypeDropDown)}/>
-                        </div>
-                        {userTypeDropDown &&
-                            <div className='py-5 bg-white  px-3 rounded-[12px] mt-5 w-full'>
-                                {
-                                    userTypeArray.map(type => (
-                                        <div className='px-3 border-b pb-3 cursor-pointer mb-3' onClick={() => {
-                                            setUserTypeDropDown(false) 
-                                            setUserType(type.label)
-                                        }}>
-                                            <p className='text-[#1D1D1D] capitalize'>{type.label}</p>
-                                            <p className='text-[#828282] mt-2 mb-3'>{type.info1}</p>
-                                            <p className='text-[#865C1D]'>{type.info2}</p>
-                                        </div>
-                                    ))
-                                }
+                    <div className='mt-7 flex items-center gap-5 w-full'>
+                        <div className='relative w-full'>
+                            <label className='block text-text-color text-left mb-2'>User Type <span className='text-red-500'>*</span></label>
+                            <div className='flex items-center justify-between px-4 py-3 border w-full rounded-[4px]'>
+                                <input type="text" value={userType} placeholder='Select user type' className='outline-none w-full rounded-[4px] bg-transparent text-[14px]'/>
+                                <IoChevronDownOutline color="d7d7d7" cursor='pointer' onClick={() => setUserTypeDropDown(!userTypeDropDown)}/>
                             </div>
-                        }
+                            {userTypeDropDown &&
+                                <div className='py-5 bg-white absolute overflow-y-scroll h-[220px] px-3 rounded-[12px] mt-2 z-[10] w-full'>
+                                    {
+                                        userTypeArray.map(type => (
+                                            <div className='px-3 border-b pb-3 cursor-pointer mb-3' onClick={() => {
+                                                setUserTypeDropDown(false) 
+                                                setUserType(type.label)
+                                            }}>
+                                                <p className='text-[#1D1D1D] capitalize text-[12px]'>{type.label}</p>
+                                                <p className='text-[#828282] mt-2 mb-3 text-[12px]'>{type.info1}</p>
+                                                <p className='text-[#865C1D] text-[12px]'>{type.info2}</p>
+                                            </div>
+                                        ))
+                                    }
+                                </div>
+                            }
+                        </div>
+                        <div className='w-full'>
+                            <label className='block text-text-color text-left mb-2'>Email <span className='text-red-500'>*</span></label>
+                            <div className='px-4 py-3 border w-full rounded-[4px]'>
+                                <input onChange={e => setEmail(e.target.value)} placeholder='Enter email address' type="text" className='outline-none w-full rounded-[4px] bg-transparent text-[14px]'/>
+                            </div>
+                        </div>
                     </div>
                     {
                         userType === 'Admin' &&
@@ -116,18 +180,23 @@ const CreateUser = () => {
                         <label className='block text-text-color text-left mb-2'>
                             {userType === "guardian" ? `Guardian's Image`:`User's image`} <span className='text-red-500'>*</span>
                         </label>
-                        <div className='relative flex items-center justify-center flex-col rounded-[16px] h-[300px] w-full' style={{ border:'1.5px dashed #D0D5DD' }}>
-                            <img src="./images/file-upload.svg" alt="" />
-                            <p className='text-text-color font-[600] mt-5'>Click to upload <span className='font-[400] text-[#475367]'>or drag and drop</span> </p>
-                            <p className='text-[#98A2B3]'>PNG, JPG (max. 5mb)</p>
-                            <div className='flex items-center gap-[15px] w-full mt-5'>
-                                <div className='w-[35%] ml-auto h-[2px] bg-[#F0F2F5]'></div>
-                                <p>OR</p>
-                                <div className='w-[35%] mr-auto h-[2px] bg-[#F0F2F5]'></div>
+                        {
+                            usersImagePreview ?
+                            <img src={usersImagePreview} alt="" className='rounded-[4px] w-[100px] h-[100px]'/>
+                            :
+                            <div className='relative flex items-center justify-center flex-col rounded-[16px] h-[300px] w-full' style={{ border:'1.5px dashed #D0D5DD' }}>
+                                <img src="./images/file-upload.svg" alt="" />
+                                <p className='text-text-color font-[600] mt-5'>Click to upload <span className='font-[400] text-[#475367]'>or drag and drop</span> </p>
+                                <p className='text-[#98A2B3]'>PNG, JPG (max. 5mb)</p>
+                                <div className='flex items-center gap-[15px] w-full mt-5'>
+                                    <div className='w-[35%] ml-auto h-[2px] bg-[#F0F2F5]'></div>
+                                    <p>OR</p>
+                                    <div className='w-[35%] mr-auto h-[2px] bg-[#F0F2F5]'></div>
+                                </div>
+                                <input onChange={(e) => handleFileUpload(e.target.files[0])} type="file" className='cursor-pointer absolute opacity-0 h-full outline-none w-full rounded-[4px] bg-transparent text-[14px]'/>
+                                <button className='text-white bg-primary-color rounded-[4px] mt-[2.5rem] px-[28px] py-[10px] text-center mx-auto'>Browse Files</button>
                             </div>
-                            <input type="file" className='cursor-pointer absolute opacity-0 h-full outline-none w-full rounded-[4px] bg-transparent text-[14px]'/>
-                            <button className='text-white bg-primary-color rounded-[4px] mt-[2.5rem] px-[28px] py-[10px] text-center mx-auto'>Browse Files</button>
-                        </div>
+                        }
                         {userType === "Guardian/supervisor" && 
                             <p className='text-[#4F4F4F] text-[14px] mt-4'>For the purpose of gotrupass, a member can have multiple authorities allowed to sign them in/out, upload the images of those authorities below. <span className='cursor-pointer text-secondary-color underline'>Learn more about gotrupass</span> </p>
                         }
@@ -171,13 +240,30 @@ const CreateUser = () => {
                             </div>
                         </>
                     }
-                    <div className="flex items-center justify-end mt-10 gap-3">
-                        <button  className="py-3 px-4 border border-[#1D1D1D] rounded-[8px] text-[14px]">Cancel</button>
-                        <button className="bg-primary-color text-white px-4 py-3 rounded-[8px] text-[14px]" onClick={() => navigate('/create-user')} >Create account</button>
-                    </div>
+                    {
+                        isLoading ?
+                        <BtnLoader bgColor="#191f1c"/>
+                        :
+                        <div className="flex items-center justify-end mt-10 gap-3">
+                            <button  className="py-3 px-4 border border-[#1D1D1D] rounded-[8px] text-[14px]">Cancel</button>
+                            <button className="bg-primary-color text-white px-4 py-3 rounded-[8px] text-[14px]" onClick={createUser} >Create account..</button>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
+        {
+            fileUploadLoader &&
+            <div style={{position:'fixed', width:'100%', left:'0', top:'0', zIndex:'99', display:'flex', alignItems:'center', justifyContent:'center', height:'100vh', background:"rgba(18, 18, 18, 0.8)" }}>
+                <div className="bg-white" style={{ borderRadius:'10px' }}>
+                    {/* <i className=' ri-close-fill block text-[1.2rem] text-end mt-[1rem] mr-[1rem] cursor-pointer'></i> */}
+                    <div className="flex items-center justify-between mt-[1rem] px-[2rem] mb-[2rem] flex-col" style={{ padding:'2rem', textAlign:'center' }} >
+                        <img src='./images/loader.gif' style={{ height:'40px', width:'40px', margin:'12px auto 30px' }} />
+                        <p className='text-gray-500 text-[15px] mb-2 text-center'>File Upload in progress, please do not refresh the page</p>
+                    </div>
+                </div>
+            </div>
+        }
         {msg &&
             <AlertModal msg={msg} alertType={alertType} setMsg={setMsg} alertTitle={alertTitle}/>
         }

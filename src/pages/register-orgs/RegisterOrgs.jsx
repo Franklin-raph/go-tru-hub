@@ -63,8 +63,6 @@ const RegisterOrgs = ({baseUrl}) => {
           setMsg("File upload wasn't successfull");
           setAlertType('error')
         }
-    
-        console.log(res, data);
       }
 
       const raw = {
@@ -180,7 +178,7 @@ const RegisterOrgs = ({baseUrl}) => {
                                     className='cursor-pointer opacity-0 w-full h-full absolute left-0'
                                     type="file"
                                     accept=".jpg,.png,.jpeg,.pdf"
-                                    onChange={(e) => handleFileChange(e.target.files, "cac")} 
+                                    onChange={(e) => handleFileChange(e.target.files, "cac")}
                                 />
                                 <div className='bg-[#EDFFF7] text-[#40916C] p-4 rounded-full'>
                                     <MdOutlineFileUpload />

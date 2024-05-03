@@ -45,7 +45,7 @@ function App() {
             <Route path='/change-password' element={<ChangePassword baseUrl={baseUrl}/>} />
             <Route path='/create-password' element={<CreatePassword baseUrl={baseUrl}/>} />
             <Route path='/dashboard' element={<Dashboard baseUrl={baseUrl}/>} />
-            <Route path='/create-user' element={<CreateUser />} />
+            <Route path='/create-user' element={<CreateUser baseUrl={baseUrl}/>} />
             <Route path='*' element={<div>404</div>} />
         </Routes>
         {/* <Footer /> */}
