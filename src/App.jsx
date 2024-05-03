@@ -11,11 +11,13 @@ import Register from './pages/register/Register'
 import RegisterOrgs from './pages/register-orgs/RegisterOrgs'
 import RegisterPersonalBiz from './pages/register-personal-biz/RegisterPersonalBiz'
 import RegisterGovernmentBiz from './pages/register-goverment-biz/RegisterGovernmentBiz'
-import VerifyToken from './pages/verifyToken/VerifyToken'
+import VerifyAccount from './pages/verifyAccount/VerifyAccount'
 import CreatePassword from './pages/create-password/CreatePassword'
 import Dashboard from './pages/dashboard/Dashboard'
 import CreateUser from './pages/create-user/CreateUser'
 import ResetPassword from './pages/reset-password/ResetPassword'
+import ValidateToken from './pages/validate-token/ValidateToken'
+import ChangePassword from './pages/change-password/ChangePassword'
 
 function App() {
 
@@ -37,8 +39,10 @@ function App() {
             <Route path='/register-organization' element={<RegisterOrgs baseUrl={baseUrl}/>}  />
             <Route path='/register-personal-biz' element={<RegisterPersonalBiz baseUrl={baseUrl}/>}/>
             <Route path='/regiser-government-biz' element={<RegisterGovernmentBiz baseUrl={baseUrl}/>} />
-            <Route path='/verify-token' element={<VerifyToken baseUrl={baseUrl}/>} />
+            <Route path='/verify-account' element={<VerifyAccount baseUrl={baseUrl}/>} />
+            <Route path='/verify-token' element={<ValidateToken baseUrl={baseUrl}/>} />
             <Route path='/reset-password' element={<ResetPassword baseUrl={baseUrl}/>} />
+            <Route path='/change-password' element={<ChangePassword baseUrl={baseUrl}/>} />
             <Route path='/create-password' element={<CreatePassword baseUrl={baseUrl}/>} />
             <Route path='/dashboard' element={<Dashboard baseUrl={baseUrl}/>} />
             <Route path='/create-user' element={<CreateUser />} />

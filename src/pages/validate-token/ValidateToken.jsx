@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import Alert from '../../components/alert/Alert'
 import BtnLoader from '../../components/btn-loader/BtnLoader'
 
-const VerifyToken = ({baseUrl}) => {
+const ValidateToken = ({baseUrl}) => {
 
     const [otp, setOtp] = useState('')
     const navigate = useNavigate()
@@ -13,20 +13,20 @@ const VerifyToken = ({baseUrl}) => {
     const [msg, setMsg] = useState('')
     const [alertType, setAlertType] = useState()
 
-    async function verifyAccount(){
+    async function verifyToken(){
         if(!otp){
             setMsg("OTP is required!");
             setAlertType('error')
             return;
         }
         setIsLoading(true)
-        console.log(JSON.stringify({email:JSON.parse(localStorage.getItem('reg-email')), token:otp}));
-        const res = await fetch(`${baseUrl}/verify-account`,{
+        console.log(JSON.stringify({email:JSON.parse(localStorage.getItem('password-reset-email')), token:otp}));
+        const res = await fetch(`${baseUrl}/reset-password/validate-token`,{
             method:"POST",
             headers:{
             'Content-Type':'application/json'
             },
-            body: JSON.stringify({email:JSON.parse(localStorage.getItem('reg-email')), token:otp})
+            body: JSON.stringify({email:JSON.parse(localStorage.getItem('password-reset-email')), token:otp})
         })
         const data = await res.json()
         if(res) setIsLoading(false)
@@ -35,10 +35,34 @@ const VerifyToken = ({baseUrl}) => {
             setAlertType('error')
         }
         if(res.ok){
-            navigate('/create-password')
+            localStorage.setItem('token', JSON.stringify(otp))
+            navigate('/change-password')
         }
         console.log(res, data);
     }
+
+    async function resendCode(){
+        setIsLoading(true)
+        const res = await fetch(`${baseUrl}/reset-password/get-reset-token`,{
+            method:"POST",
+            headers:{
+            'Content-Type':'application/json'
+            },
+            body: JSON.stringify({email:JSON.parse(localStorage.getItem('password-reset-email'))})
+        })
+        const data = await res.json()
+        if(res) setIsLoading(false)
+        if(!res.ok){
+            setMsg(data.message);
+            setAlertType('error')
+        }
+        if(res.ok){
+            setMsg(data.message);
+            setAlertType('success')
+        }
+        console.log(data);
+    }
+
 
   return (
     <div className='w-[100%] mx-auto my-[7rem]'>
@@ -56,7 +80,7 @@ const VerifyToken = ({baseUrl}) => {
                 <p className='text-[#19201D] text-[22px] font-[500]'>Enter Verification code</p>
                 <p></p>
             </div>
-            <p className='text-[14px] text-[#828282] mb-[35px] mt-[4.5rem]'>A verification code has been sent to your email address ce*****ft@gmail.com Enter the code below to complete your registration.</p>
+            <p className='text-center text-[14px] text-[#828282] mb-[35px] mt-[4.5rem]'>Enter the 6-digit verification code sent to your email address</p>
             <div style={{ display:'flex', justifyContent:'center', alignItems:'center' }}>
                 <OTPInput
                 value={otp}
@@ -71,9 +95,14 @@ const VerifyToken = ({baseUrl}) => {
                 isLoading ? 
                 <BtnLoader bgColor="#191f1c"/>
                 :
-                <button onClick={verifyAccount} className='text-white bg-primary-color w-full rounded-[4px] mt-[2.5rem] px-[35px] py-[16px] text-center mx-auto'>Proceed</button>
+                <button onClick={verifyToken} className='text-white bg-primary-color w-full rounded-[4px] mt-[2.5rem] px-[35px] py-[16px] text-center mx-auto'>Proceed</button>
             }
             </div>
+            <p className='text-center'>Did not get a code? <span className='text-secondary-color cursor-pointer' onClick={() => resendCode()}>Resend code</span> </p>
+        </div>
+        <div className='text-[#6F7975] mt-[10rem] text-center text-[14px]'>
+            <p>&copy; 2022 Gotruhub and Gotruhub logo are trademarks of the company.</p>
+            <p>Please visit our <span className='text-secondary-color cursor-pointer'>Terms of service</span> for more details.</p>
         </div>
     </div>
     {
@@ -83,4 +112,4 @@ const VerifyToken = ({baseUrl}) => {
   )
 }
 
-export default VerifyToken
+export default ValidateToken

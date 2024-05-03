@@ -67,7 +67,7 @@ const RegisterOrgs = ({baseUrl}) => {
         console.log(res, data);
       }
 
-      const raw = {    
+      const raw = {
         email,
         phone,
         bizType,
@@ -77,11 +77,7 @@ const RegisterOrgs = ({baseUrl}) => {
         nameOfProprietor,
         businessAddress,
         cacImage:cacImageId,
-        opLicenceImage:opLicenceImageId,
-        // businessAddress,
-        // cacImage,
-        // opLicenceImage,
-        // personalAddress,
+        opLicenceImage:opLicenceImageId
       };
 
       const handleSignUp = async () => {
@@ -218,12 +214,11 @@ const RegisterOrgs = ({baseUrl}) => {
                     </div>
                 </div>
                 {
-                    isLoading ? 
-                    <BtnLoader bgColor="#191f1c"/>
-                    :
-                    <button onClick={handleSignUp} className='text-white bg-primary-color w-full rounded-[4px] mt-[2.5rem] px-[35px] py-[16px] text-center mx-auto'>Proceed</button>
-                  }
-                  {/* <button onClick={verifyAccount} className='text-white bg-primary-color w-full rounded-[4px] mt-[2.5rem] px-[35px] py-[16px] text-center mx-auto'>Proceed</button> */}
+                  isLoading ? 
+                  <BtnLoader bgColor="#191f1c"/>
+                  :
+                  <button onClick={handleSignUp} className='text-white bg-primary-color w-full rounded-[4px] mt-[2.5rem] px-[35px] py-[16px] text-center mx-auto'>Proceed</button>
+                }
             </div>
         </div>
         {

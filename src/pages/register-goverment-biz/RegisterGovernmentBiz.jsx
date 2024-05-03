@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { GoChevronDown, GoChevronLeft } from 'react-icons/go'
 import { useNavigate } from 'react-router-dom'
 
@@ -8,8 +8,31 @@ const RegisterGovernmentBiz = () => {
   const [govtlevelDropDown, setGovtLevelDropDown] = useState(false)
   const [stateDropDown, setStateDropDown] = useState(false)
   const [lgaDropDown, setLgaDropDown] = useState(false)
+  const [states, setStates] = useState([])
+  const [lgas, setLgas] = useState([])
   const govtlevelArray = ['Federal', 'State', 'Local']
   const [govtLevel, setGovtLevel] = useState('')
+
+  const [state, setState] = useState('')
+  const [lga, setLga] = useState('')
+
+  async function getAlStates(){
+    const res = await fetch('https://nigeria-states-towns-lga.onrender.com/api/all')
+    const data = await res.json()
+    setStates(data)
+    console.log(data);
+  }
+  // 
+  async function getLgas(state_code){
+    const res = await fetch(`https://nigeria-states-towns-lga.onrender.com/api/${state_code}/lgas`)
+    const data = await res.json()
+    setLgas(data)
+    console.log(data);
+  }
+
+  useEffect(() => {
+    getAlStates()
+  },[])
 
 
   return (
@@ -58,21 +81,24 @@ const RegisterGovernmentBiz = () => {
                   <div className='w-full relative mt-8'>
                     <label className='block text-left mb-2'>State</label>
                     <div className='px-4 py-3 outline-none border w-full rounded-[4px] flex items-center justify-between'>
-                      <input placeholder='Select level' type="text" className='outline-none w-full rounded-[4px]'/>
+                      <input value={state} placeholder='Select level' type="text" className='outline-none w-full rounded-[4px]'/>
                       <GoChevronDown cursor={'pointer'} onClick={() => setStateDropDown(!stateDropDown)}/>
                     </div>
-                    {
-                      stateDropDown && 
-                        <div className='absolute w-full bg-white border rounded-[4px] mt-3 px-2'>
-                          {
-                            govtlevelArray.map((item, index) => {
-                              return (
-                                  <p onClick={() => setStateDropDown(false)} className='cursor-pointer py-1 hover:text-[#cecece]'>{item}</p>
-                              )
-                            })
-                          }
-                        </div>
-                    }
+                      {
+                        stateDropDown && 
+                          <div className='bg-white border rounded-[4px] mt-3 px-2 absolute w-full overflow-y-scroll h-[250px]'>
+                            {
+                              states.map((state, index) => {
+                                return (
+                                    <p onClick={() => { 
+                                      setStateDropDown(false)
+                                      setState(state.name)
+                                    }} className='cursor-pointer py-1 hover:text-[#cecece]'>{state.name}</p>
+                                )
+                              })
+                            }
+                          </div>
+                      }
                   </div>
                   }
 
@@ -81,16 +107,20 @@ const RegisterGovernmentBiz = () => {
                       <div className='w-full relative mt-8'>
                         <label className='block text-left mb-2'>State</label>
                         <div className='px-4 py-3 outline-none border w-full rounded-[4px] flex items-center justify-between'>
-                          <input placeholder='Select State' type="text" className='outline-none w-full rounded-[4px]'/>
+                          <input value={state} placeholder='Select State' type="text" className='outline-none w-full rounded-[4px]'/>
                           <GoChevronDown cursor={'pointer'} onClick={() => setStateDropDown(!stateDropDown)}/>
                         </div>
                         {
                           stateDropDown && 
-                            <div className='absolute w-full bg-white border rounded-[4px] mt-3 px-2'>
+                            <div className='bg-white border rounded-[4px] mt-3 px-2 absolute w-full overflow-y-scroll h-[250px]'>
                               {
-                                govtlevelArray.map((item, index) => {
+                                states.map((state, index) => {
                                   return (
-                                      <p onClick={() => setStateDropDown(false)} className='cursor-pointer py-1 hover:text-[#cecece]'>{item}</p>
+                                      <p onClick={() => { 
+                                        setStateDropDown(false)
+                                        setState(state.name)
+                                        getLgas(state.state_code)
+                                      }} className='cursor-pointer py-1 hover:text-[#cecece]'>{state.name}</p>
                                   )
                                 })
                               }
@@ -100,16 +130,19 @@ const RegisterGovernmentBiz = () => {
                       <div className='w-full relative mt-8'>
                         <label className='block text-left mb-2'>LGA</label>
                         <div className='px-4 py-3 outline-none border w-full rounded-[4px] flex items-center justify-between'>
-                          <input placeholder='Select LGA' type="text" className='outline-none w-full rounded-[4px]'/>
+                          <input value={lga} placeholder='Select LGA' type="text" className='outline-none w-full rounded-[4px]'/>
                           <GoChevronDown cursor={'pointer'} onClick={() => setLgaDropDown(!lgaDropDown)}/>
                         </div>
                         {
                           lgaDropDown && 
-                            <div className='absolute w-full bg-white border rounded-[4px] mt-3 px-2'>
+                            <div className='bg-white border rounded-[4px] mt-3 px-2 absolute w-full overflow-y-scroll h-[250px]'>
                               {
-                                govtlevelArray.map((item, index) => {
+                                lgas.map((lga, index) => {
                                   return (
-                                      <p onClick={() => setLgaDropDown(false)} className='cursor-pointer py-1 hover:text-[#cecece]'>{item}</p>
+                                      <p onClick={() => { 
+                                        setLgaDropDown(false)
+                                        setLga(lga.name)
+                                      }} className='cursor-pointer py-1 hover:text-[#cecece]'>{lga.name}</p>
                                   )
                                 })
                               }

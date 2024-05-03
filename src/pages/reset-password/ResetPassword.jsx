@@ -36,6 +36,7 @@ const ResetPassword = ({baseUrl}) => {
                 setMsg(data.message);
                 setAlertType('success');
                 navigate('/verify-token')
+                localStorage.setItem('password-reset-email', JSON.stringify(email))
                 return;
             }
             console.log(resp, data);

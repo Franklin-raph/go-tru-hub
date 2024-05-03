@@ -7,6 +7,16 @@ import AlertModal from '../../components/alert-modals/AlertModal'
 
 const CreateUser = () => {
 
+    // {
+    //     "fullName": "John Doe",
+    //     "profileImage": "6619ab04b1ea9641625e3e3e",
+    //     "role":"guardian",
+    //     "email":"nwaforglory680@gmail.com",
+    //     "signature":"6619ab04b1ea9641625e3e3e",
+    //     "children":["662e3418cb09e06e8de6e4f4"]
+    //   }
+    //   student, guardian,staff and admin
+
     const [userTypeDropDown, setUserTypeDropDown] = useState(false)
     const [userType, setUserType] = useState('')
     const [msg, setMsg] = useState('')
@@ -16,22 +26,22 @@ const CreateUser = () => {
     const adminAccessArray = ['Gotru Pass', 'Gotru Trade', 'Gotru Monitor']
     const userTypeArray = [
         {
-            label:'Member',
+            label:'student',
             info1:'This user is the direct recipient of the gotruhub tokens e.g a student',
             info2:'*To create this user category, you are required to create units in monitor first which this user can belong to.'
         },
         {
-            label:'Guardian/supervisor',
+            label:'guardian',
             info1:'This user is a guardian/supervisor of a member e.g a parent',
             info2:'*To create this user category, you are required to have created a member to which this user can be linked'
         },
         {
-            label:'Assignee',
+            label:'staff',
             info1:'This user carries out specific assignment that can be monitored e.g a teacher',
             info2:''
         },
         {
-            label:'Admin',
+            label:'admin',
             info1:'This user has admin level access to one or more of the features on gotruhub e.g a staff',
             info2:''
         }
@@ -76,7 +86,7 @@ const CreateUser = () => {
                                             setUserTypeDropDown(false) 
                                             setUserType(type.label)
                                         }}>
-                                            <p className='text-[#1D1D1D]'>{type.label}</p>
+                                            <p className='text-[#1D1D1D] capitalize'>{type.label}</p>
                                             <p className='text-[#828282] mt-2 mb-3'>{type.info1}</p>
                                             <p className='text-[#865C1D]'>{type.info2}</p>
                                         </div>
@@ -104,7 +114,7 @@ const CreateUser = () => {
 
                     <div className="mt-7">
                         <label className='block text-text-color text-left mb-2'>
-                            {userType === "Guardian/supervisor" ? `Guardian's Image`:`User's image`} <span className='text-red-500'>*</span>
+                            {userType === "guardian" ? `Guardian's Image`:`User's image`} <span className='text-red-500'>*</span>
                         </label>
                         <div className='relative flex items-center justify-center flex-col rounded-[16px] h-[300px] w-full' style={{ border:'1.5px dashed #D0D5DD' }}>
                             <img src="./images/file-upload.svg" alt="" />
@@ -123,7 +133,7 @@ const CreateUser = () => {
                         }
                     </div>
                     {
-                        userType === "Guardian/supervisor" &&
+                        userType === "guardian" &&
                         <>
                             <div className="mt-7">
                                 <label className='block text-text-color text-left mb-2'>
