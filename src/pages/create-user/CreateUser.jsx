@@ -35,6 +35,8 @@ const CreateUser = ({baseUrl}) => {
     const [relationImagePreview, setRelationImagePreview] = useState('')
     const [unitDropDown, setUnitDropDown] = useState(false)
     const [subUnitDropDown, setSubUnitDropDown] = useState(false)
+    const [listOfGuardianDropDown, setListOfGuardianDropDown] = useState(false)
+    const [linkToMemberDropDown, setLinkToMemberDropDown] = useState(false)
     const [regNum, setRegNum] = useState('')
     // const [unitsArray, setUnitsArray] = useState([])
 
@@ -42,6 +44,8 @@ const CreateUser = ({baseUrl}) => {
     const [piviotUnitText, setPiviotUnitText] = useState('')
     const [subUnit, setSubUnit] = useState('')
     const [subUnitText, setSubUnitText] = useState('')
+
+    const [asignGuardian, setAsignGuardian] = useState(false)
 
     const unitsArray = [
         {
@@ -111,6 +115,8 @@ const CreateUser = ({baseUrl}) => {
             info2:''
         }
     ]
+    const listOfGuardians = [ 'Celestine Ojiakor', 'Baron White', 'Kasiemobe Egu', 'Jane Doe' ]
+    const linkToMemberArray = ['Brother', 'Sister', 'Father', 'Mother', 'Uncle', 'Teacher']
     const navigate = useNavigate()
     const user = JSON.parse(localStorage.getItem('user'))
 
@@ -206,14 +212,65 @@ const CreateUser = ({baseUrl}) => {
                             <div className='px-4 py-3 outline-none border w-full rounded-[4px]'>
                                 <input onChange={(e => setFullName(e.target.value))} placeholder='First and last name' type="text" className='outline-none w-full rounded-[4px] bg-transparent text-[14px]'/>
                             </div>
+                            {
+                                userType === 'student' && 
+                                <div className='flex items-center gap-1 mt-1'>
+                                    <input type="checkbox" onChange={e => setAsignGuardian(e.target.checked)} />
+                                    <p className='text-[#6F7975] text-[14px]'>Click to assign a guardian/supervisor to this member</p>
+                                </div>
+                            }
                         </div>
                         <div className='w-full'>
                             <label className='block text-text-color text-left mb-2'>Email <span className='text-red-500'>*</span></label>
                             <div className='px-4 py-3 border w-full rounded-[4px]'>
                                 <input onChange={e => setEmail(e.target.value)} placeholder='Enter email address' type="text" className='outline-none w-full rounded-[4px] bg-transparent text-[14px]'/>
                             </div>
+                            {
+                                userType === 'student' && 
+                                <div className='flex items-center gap-1 mt-1'>
+                                    {/* <input type="checkbox" onChange={e => setAsignGuardian(e.target.checked)} /> */}
+                                    <p className='text-[#6F7975] text-[14px] opacity-0'>Click to assign a guardian/supervisor to this member</p>
+                                </div>
+                            }
                         </div>
                     </div>
+                    
+                    {userType === 'student' &&
+                        <>
+                            {
+                                asignGuardian &&
+                                <div className='mt-7 flex items-center gap-5 w-full'>
+                                    <div className='w-full relative'>
+                                        <label className='block text-left mb-2 text-text-color'>Guardian Full Name <span className='text-red-500'>*</span></label>
+                                        <div className='flex items-center justify-between px-4 py-3 border w-full rounded-[4px]'>
+                                            <input type="text" placeholder='Enter guardian full name' className='outline-none w-full rounded-[4px] bg-transparent text-[14px]'/>
+                                            <IoChevronDownOutline color="d7d7d7" cursor='pointer' onClick={() => setListOfGuardianDropDown(!listOfGuardianDropDown)}/>
+                                        </div>
+                                        {listOfGuardianDropDown &&
+                                            <div className='py-5 bg-white absolute overflow-y-scroll h-[220px] px-3 rounded-[12px] mt-2 z-[10] w-full'>
+                                                {
+                                                    listOfGuardians.map(guardian => (
+                                                        <div className='px-3 border-b pb-3 cursor-pointer mb-3' onClick={() => {
+                                                            setListOfGuardianDropDown(false)
+                                                        }}>
+                                                            <p className='text-[#828282] my-1 text-[12px]'>{guardian}</p>
+                                                        </div>
+                                                    ))
+                                                }
+                                            </div>
+                                        }
+                                    </div>
+                                    <div className='w-full'>
+                                        <label className='block text-text-color text-left mb-2'>Guardian Email Address <span className='text-red-500'>*</span></label>
+                                        <div className='px-4 py-3 border w-full rounded-[4px]'>
+                                            <input onChange={e => setEmail(e.target.value)} placeholder='Enter email address' type="text" className='outline-none w-full rounded-[4px] bg-transparent text-[14px]'/>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </>
+                    }
+
                     <div className='mt-7 flex items-center gap-5 w-full'>
                         <div className='relative w-full'>
                             <label className='block text-text-color text-left mb-2'>User Type <span className='text-red-500'>*</span></label>
@@ -245,6 +302,28 @@ const CreateUser = ({baseUrl}) => {
                             </div>
                         </div>
                     </div>
+
+                    <div className='relative w-full mt-7'>
+                        <label className='block text-text-color text-left mb-2'>Link to a member <span className='text-red-500'>*</span></label>
+                        <div className='flex items-center justify-between px-4 py-3 border w-full rounded-[4px]'>
+                            <input type="text" placeholder='Select member' className='outline-none w-full rounded-[4px] bg-transparent text-[14px]'/>
+                            <IoChevronDownOutline color="d7d7d7" cursor='pointer' onClick={() => setLinkToMemberDropDown(!linkToMemberDropDown)}/>
+                        </div>
+                        {linkToMemberDropDown &&
+                            <div className='py-5 bg-white absolute overflow-y-scroll h-[220px] px-3 rounded-[12px] mt-2 z-[10] w-full'>
+                                {
+                                    linkToMemberArray.map(member => (
+                                        <div className='px-3 border-b pb-3 cursor-pointer mb-3' onClick={() => {
+                                            setLinkToMemberDropDown(false)
+                                        }}>
+                                            <p className='text-[#828282] mt-2 text-[12px]'>{member}</p>
+                                        </div>
+                                    ))
+                                }
+                            </div>
+                        }
+                    </div>
+
                     {
                         userType === 'student' &&
                         <div className='mt-7 flex items-center gap-5 w-full'>
@@ -334,7 +413,7 @@ const CreateUser = ({baseUrl}) => {
                                 <button className='text-white bg-primary-color rounded-[4px] mt-[2.5rem] px-[28px] py-[10px] text-center mx-auto'>Browse Files</button>
                             </div>
                         }
-                        {userType === "Guardian/supervisor" && 
+                        {userType === "guardian" && 
                             <p className='text-[#4F4F4F] text-[14px] mt-4'>For the purpose of gotrupass, a member can have multiple authorities allowed to sign them in/out, upload the images of those authorities below. <span className='cursor-pointer text-secondary-color underline'>Learn more about gotrupass</span> </p>
                         }
                     </div>

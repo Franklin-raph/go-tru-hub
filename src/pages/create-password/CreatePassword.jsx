@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import Alert from '../../components/alert/Alert';
 import BtnLoader from '../../components/btn-loader/BtnLoader'
 
+
 const CreatePassword = ({baseUrl}) => {
 
   const navigate = useNavigate();
@@ -12,6 +13,52 @@ const CreatePassword = ({baseUrl}) => {
   const [msg, setMsg] = useState('')
   const [alertType, setAlertType] = useState()
   const [isLoading, setIsLoading] = useState(false)
+
+    // validated states
+    const [lowerValidated, setLowerValidated]=useState(false);
+    const [upperValidated, setUpperValidated]=useState(false);
+    const [numberValidated, setNumberValidated]=useState(false);
+    const [specialValidated, setSpecialValidated]=useState(false);
+    const [lengthValidated, setLengthValidated]=useState(false);
+
+    const handleChange=(value)=>{
+      const lower = new RegExp('(?=.*[a-z])');
+      const upper = new RegExp('(?=.*[A-Z])');
+      const number = new RegExp('(?=.*[0-9])');
+      const special = new RegExp('(?=.*[!@#\$%\^&\*])');
+      const length = new RegExp('(?=.{8,})')
+      if(lower.test(value)){
+        setLowerValidated(true);
+      }
+      else{
+        setLowerValidated(false);
+      }
+      if(upper.test(value)){
+        setUpperValidated(true);
+      }
+      else{
+        setUpperValidated(false);
+      }
+      if(number.test(value)){
+        setNumberValidated(true);
+      }
+      else{
+        setNumberValidated(false);
+      }
+      if(special.test(value)){
+        setSpecialValidated(true);
+      }
+      else{
+        setSpecialValidated(false);
+      }
+      if(length.test(value)){
+        setLengthValidated(true);
+      }
+      else{
+        setLengthValidated(false);
+      }
+      setPassword(value)
+    }
 
   async function createPassword(){
     if(!password || !confirmPassword){
@@ -23,7 +70,7 @@ const CreatePassword = ({baseUrl}) => {
         setAlertType('error')
         return
     }else{
-        console.log(`${baseUrl}/set-Password`);
+        console.log(password, confirmPassword);
         setIsLoading(true)
         const body = {
             email: JSON.parse(localStorage.getItem('reg-email')),
@@ -67,7 +114,7 @@ const CreatePassword = ({baseUrl}) => {
                     placeholder="New password"
                     value={password}
                     onChange={(e) => {
-                      setPassword(e.target.value);
+                      handleChange(e.target.value);
                     }}
                   />
                   <div>
@@ -78,9 +125,42 @@ const CreatePassword = ({baseUrl}) => {
                     )}
                   </div>
                 </div>
+                <div className="grid grid-cols-3 text-[12px] mt-2 gap-1">
+                  {
+                    lowerValidated ? 
+                    <p className='border border-[#25751E] rounded-[4px] px-2 py-1 bg-[#DEEADD] text-[#1D1D1D]'>Lowercase letter e.g. a</p>
+                    :
+                    <p className='rounded-[4px] px-2 py-1 bg-[##E0E0E0] text-[#828282] bg-[#E0E0E0]'>Lowercase letter e.g. a</p>
+                  }
+                  {
+                    specialValidated ?
+                    <p className='border border-[#25751E] rounded-[4px] px-2 py-1 bg-[#DEEADD] text-[#1D1D1D]'>Special character e.g. _</p>
+                    :
+                    <p className='rounded-[4px] px-2 py-1 bg-[##E0E0E0] text-[#828282] bg-[#E0E0E0]'>Special character e.g. _</p>
+                  }
+                  {
+                    numberValidated ?
+                    <p className='border border-[#25751E] rounded-[4px] px-2 py-1 bg-[#DEEADD] text-[#1D1D1D]'>Number e.g. 1</p>
+                    :
+                    <p className='rounded-[4px] px-2 py-1 bg-[##E0E0E0] text-[#828282] bg-[#E0E0E0]'>Number e.g. 1</p>
+                  }
+                  {
+                    lengthValidated ?
+                    <p className='border border-[#25751E] rounded-[4px] px-2 py-1 bg-[#DEEADD] text-[#1D1D1D]'>At least 8 characters long</p>
+                    :
+                    <p className='rounded-[4px] px-2 py-1 bg-[##E0E0E0] text-[#828282] bg-[#E0E0E0]'>At least 8 characters long</p>
+                  }
+                  {
+                    upperValidated ?
+                    <p className='border border-[#25751E] rounded-[4px] px-2 py-1 bg-[#DEEADD] text-[#1D1D1D]'>Uppercase letter e.g. A</p>
+                    :
+                    <p className='rounded-[4px] px-2 py-1 bg-[##E0E0E0] text-[#828282] bg-[#E0E0E0]'>Uppercase letter e.g. A</p>
+
+                  }
+                </div>
               </div>
           
-              <div className="">
+              <div>
               <p style={{marginBottom:"5px"}}>Confirm password</p>
                 <div className="border w-full rounded-[4px] flex items-center justify-between px-4 py-3">
                   <input

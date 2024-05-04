@@ -10,10 +10,10 @@ const Dashboard = () => {
 
   useEffect(() => {
     // Ensure user is logged in
-    if (!user) {
-      navigate('/login');
-      return; // Exit early if no user
-    }
+    // if (!user) {
+    //   navigate('/login');
+    //   return; // Exit early if no user
+    // }
 
     // Check if the page has been reloaded
     if (!sessionStorage.getItem("reloaded")) {
@@ -33,7 +33,7 @@ const Dashboard = () => {
             <div className="flex items-center justify-between mb-[3rem]">
               <p className="text-[28px] text-primary-color font-[600]">Dashboard</p>
               <div className="flex items-center gap-3">
-                <button  className="py-3 px-4 border border-[#1D1D1D] rounded-[8px] text-[14px]">Subscribe</button>
+                <button  className="py-3 px-4 border border-[#1D1D1D] rounded-[8px] text-[14px]" onClick={() => navigate('/subscribe')}  >Subscribe</button>
                 <button className="bg-[#2D3934] text-white px-4 py-3 rounded-[8px] text-[14px]" onClick={() => navigate('/create-user')} >Create User</button>
               </div>
             </div>
