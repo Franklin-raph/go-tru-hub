@@ -303,26 +303,29 @@ const CreateUser = ({baseUrl}) => {
                         </div>
                     </div>
 
-                    <div className='relative w-full mt-7'>
-                        <label className='block text-text-color text-left mb-2'>Link to a member <span className='text-red-500'>*</span></label>
-                        <div className='flex items-center justify-between px-4 py-3 border w-full rounded-[4px]'>
-                            <input type="text" placeholder='Select member' className='outline-none w-full rounded-[4px] bg-transparent text-[14px]'/>
-                            <IoChevronDownOutline color="d7d7d7" cursor='pointer' onClick={() => setLinkToMemberDropDown(!linkToMemberDropDown)}/>
-                        </div>
-                        {linkToMemberDropDown &&
-                            <div className='py-5 bg-white absolute overflow-y-scroll h-[220px] px-3 rounded-[12px] mt-2 z-[10] w-full'>
-                                {
-                                    linkToMemberArray.map(member => (
-                                        <div className='px-3 border-b pb-3 cursor-pointer mb-3' onClick={() => {
-                                            setLinkToMemberDropDown(false)
-                                        }}>
-                                            <p className='text-[#828282] mt-2 text-[12px]'>{member}</p>
-                                        </div>
-                                    ))
-                                }
+                    {
+                        userType === 'guardian'&&
+                        <div className='relative w-full mt-7'>
+                            <label className='block text-text-color text-left mb-2'>Link to a member <span className='text-red-500'>*</span></label>
+                            <div className='flex items-center justify-between px-4 py-3 border w-full rounded-[4px]'>
+                                <input type="text" placeholder='Select member' className='outline-none w-full rounded-[4px] bg-transparent text-[14px]'/>
+                                <IoChevronDownOutline color="d7d7d7" cursor='pointer' onClick={() => setLinkToMemberDropDown(!linkToMemberDropDown)}/>
                             </div>
-                        }
-                    </div>
+                            {linkToMemberDropDown &&
+                                <div className='py-5 bg-white absolute overflow-y-scroll h-[220px] px-3 rounded-[12px] mt-2 z-[10] w-full'>
+                                    {
+                                        linkToMemberArray.map(member => (
+                                            <div className='px-3 border-b pb-3 cursor-pointer mb-3' onClick={() => {
+                                                setLinkToMemberDropDown(false)
+                                            }}>
+                                                <p className='text-[#828282] mt-2 text-[12px]'>{member}</p>
+                                            </div>
+                                        ))
+                                    }
+                                </div>
+                            }
+                        </div>
+                    }
 
                     {
                         userType === 'student' &&
@@ -461,7 +464,7 @@ const CreateUser = ({baseUrl}) => {
                         <BtnLoader bgColor="#191f1c"/>
                         :
                         <div className="flex items-center justify-end mt-10 gap-3">
-                            <button  className="py-3 px-4 border border-[#1D1D1D] rounded-[8px] text-[14px]">Cancel</button>
+                            <button  className="py-3 px-4 border border-[#1D1D1D] rounded-[8px] text-[14px]" onClick={() => navigate('/dashboard')}>Cancel</button>
                             <button className="bg-primary-color text-white px-6 py-3 rounded-[8px] text-[14px]" onClick={createUser} >Create Account</button>
                         </div>
                     }

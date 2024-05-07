@@ -10,10 +10,10 @@ const Dashboard = () => {
 
   useEffect(() => {
     // Ensure user is logged in
-    // if (!user) {
-    //   navigate('/login');
-    //   return; // Exit early if no user
-    // }
+    if (!user) {
+      navigate('/login');
+      return; // Exit early if no user
+    }
 
     // Check if the page has been reloaded
     if (!sessionStorage.getItem("reloaded")) {

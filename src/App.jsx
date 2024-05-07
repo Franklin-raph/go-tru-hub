@@ -22,7 +22,7 @@ import Subscribe from './pages/subscribe/Subscribe'
 
 function App() {
 
-  const baseUrl = 'https://test.yamltech.com'
+  const baseUrl = 'https://api-gotruhub.onrender.com'
   // https://test.yamltech.com/
   const user = localStorage.getItem('user')
 
@@ -47,7 +47,7 @@ function App() {
             <Route path='/create-password' element={<CreatePassword baseUrl={baseUrl}/>} />
             <Route path='/dashboard' element={<Dashboard baseUrl={baseUrl}/>} />
             <Route path='/create-user' element={<CreateUser baseUrl={baseUrl}/>} />
-            <Route path='/subscribe' element={<Subscribe />} />
+            <Route path='/subscribe' element={<Subscribe baseUrl={baseUrl}/>} />
             <Route path='*' element={<div>404</div>} />
         </Routes>
         {/* <Footer /> */}
