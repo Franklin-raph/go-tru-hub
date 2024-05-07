@@ -19,6 +19,7 @@ import ResetPassword from './pages/reset-password/ResetPassword'
 import ValidateToken from './pages/validate-token/ValidateToken'
 import ChangePassword from './pages/change-password/ChangePassword'
 import Subscribe from './pages/subscribe/Subscribe'
+import SubSummary from './pages/sub-summary/SubSummary'
 
 function App() {
 
@@ -48,6 +49,7 @@ function App() {
             <Route path='/dashboard' element={<Dashboard baseUrl={baseUrl}/>} />
             <Route path='/create-user' element={<CreateUser baseUrl={baseUrl}/>} />
             <Route path='/subscribe' element={<Subscribe baseUrl={baseUrl}/>} />
+            <Route path='/sub-summary' element={<SubSummary />} />
             <Route path='*' element={<div>404</div>} />
         </Routes>
         {/* <Footer /> */}

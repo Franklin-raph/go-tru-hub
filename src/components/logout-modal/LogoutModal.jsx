@@ -9,8 +9,6 @@ const LogoutModal = ({setLogoutModal}) => {
             <div className="flex items-center justify-between border-b pb-[5px]">
                 <p className="text-[22px]">Log out</p>
                 <IoCloseOutline fontSize={"20px"} cursor={"pointer"} onClick={() => setLogoutModal(false)}/>
-              {/* <div  className="border border-gray-300 rounded-full p-1 flex items-center justify-center">
-              </div> */}
             </div>
             <div className='text-center flex items-center justify-center flex-col'>
                 <img src="./images/logout-question.svg" alt="" className='mt-9'/>
