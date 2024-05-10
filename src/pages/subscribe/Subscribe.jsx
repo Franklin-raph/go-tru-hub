@@ -112,7 +112,7 @@ const Subscribe = ({baseUrl}) => {
                                             {
                                                 ftr.feature.map(benefit => (
                                                     <div className='flex items-center gap-1 mt-1'>
-                                                        <input className='cursor-pointer' type="radio" onChange={e => {
+                                                        <input className='cursor-pointer' type="checkbox" onChange={e => {
                                                             setSelectedFeature(benefit.name)
                                                             setSelectedFeatureDuration(ftr.duration)
                                                             setSubscriptionType(ftr._id)

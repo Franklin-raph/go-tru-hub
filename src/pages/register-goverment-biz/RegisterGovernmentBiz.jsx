@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { GoChevronDown, GoChevronLeft } from 'react-icons/go'
 import { useNavigate } from 'react-router-dom'
+import Navbar from '../../components/navbar/Navbar'
 
 const RegisterGovernmentBiz = () => {
 
@@ -37,6 +38,7 @@ const RegisterGovernmentBiz = () => {
 
   return (
     <div>
+      <Navbar />
         <div className='w-[100%] mx-auto my-[4rem]'>
             <div className='w-[55%] mx-auto'>
                 <div className='flex items-center justify-between'>

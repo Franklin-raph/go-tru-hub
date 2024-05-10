@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Alert from '../../components/alert/Alert';
 import BtnLoader from '../../components/btn-loader/BtnLoader'
+import Navbar from '../../components/navbar/Navbar';
 
 
 const CreatePassword = ({baseUrl}) => {
@@ -100,6 +101,7 @@ const CreatePassword = ({baseUrl}) => {
 
   return (
     <div>
+      <Navbar />
       <div
         className="className='w-[100%] mx-auto my-[4rem]"
       >

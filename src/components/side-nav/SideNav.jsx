@@ -12,6 +12,9 @@ import { BiTargetLock } from "react-icons/bi";
 const SideNav = () => {
 
   const [tradeDropDown, setTradeDropDown] = useState(false)
+  const user = JSON.parse(localStorage.getItem('user'))
+
+  console.log(user);
 
 
   return (
@@ -93,7 +96,7 @@ const SideNav = () => {
         </div>
         <div className="px-[32px] my-10 text-white">
           <p className="text-[12px] text-[#6F7975] mb-2">OTHERS</p>
-          <Link to='/monitor' className="flex items-center justify-between py-[10px]">
+          <Link to='/subscribe' className="flex items-center justify-between py-[10px]">
             <div className="flex items-center">
               <img src="./images/wallet-active.svg" className="mr-[15.67px]"/>
               <p className="">Subscription</p>
@@ -127,8 +130,8 @@ const SideNav = () => {
             >
               <img src="/images/avatar.svg"className="w-[50px]" style={{ marginRight: 12, }} />
               <div>
-                <p className=" font-std font-[600] text-white" style={{ whiteSpace: "nowrap" }}>
-                  Frank Agent
+                <p className="text-[12px] font-[600] text-white" style={{ whiteSpace: "nowrap" }}>
+                  {user && user.data.details.email}
                 </p>
                 <p className="text-[#6F7975]">Admin</p>
               </div>

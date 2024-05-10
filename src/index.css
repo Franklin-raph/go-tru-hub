@@ -11,3 +11,7 @@
   label {
     @apply text-[12px] text-[#828282]
   }
+
+  thead tr th{
+    @apply font-[500]
+  }

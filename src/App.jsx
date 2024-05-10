@@ -29,9 +29,6 @@ function App() {
 
     return (
       <HashRouter>
-        {
-          !user && <Navbar />
-        }
         <Routes >
             <Route path='/' element={<Home />} />
             <Route path='/about' element={<About />}/>
@@ -52,7 +49,6 @@ function App() {
             <Route path='/sub-summary' element={<SubSummary />} />
             <Route path='*' element={<div>404</div>} />
         </Routes>
-        {/* <Footer /> */}
       </HashRouter>
   )
 }

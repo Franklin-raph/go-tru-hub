@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { MdOutlineFileUpload } from "react-icons/md";
 import Alert from '../../components/alert/Alert';
 import BtnLoader from '../../components/btn-loader/BtnLoader'
+import Navbar from '../../components/navbar/Navbar';
 
 
 const RegisterOrgs = ({baseUrl}) => {
@@ -110,6 +111,7 @@ const RegisterOrgs = ({baseUrl}) => {
 
   return (
     <div>
+      <Navbar />
         <div className='w-[100%] mx-auto my-[4rem]'>
             <div className='w-[55%] mx-auto'>
                 <div className='flex items-center justify-between'>

@@ -215,8 +215,8 @@ const CreateUser = ({baseUrl}) => {
                             {
                                 userType === 'student' && 
                                 <div className='flex items-center gap-1 mt-1'>
-                                    <input type="checkbox" onChange={e => setAsignGuardian(e.target.checked)} />
-                                    <p className='text-[#6F7975] text-[14px]'>Click to assign a guardian/supervisor to this member</p>
+                                    <input type="checkbox" className='cursor-pointer' onChange={e => setAsignGuardian(e.target.checked)} />
+                                    <p className='text-[#6F7975] text-[12px]'>Click to assign a guardian/supervisor to this member</p>
                                 </div>
                             }
                         </div>
@@ -229,7 +229,7 @@ const CreateUser = ({baseUrl}) => {
                                 userType === 'student' && 
                                 <div className='flex items-center gap-1 mt-1'>
                                     {/* <input type="checkbox" onChange={e => setAsignGuardian(e.target.checked)} /> */}
-                                    <p className='text-[#6F7975] text-[14px] opacity-0'>Click to assign a guardian/supervisor to this member</p>
+                                    <p className='text-[#6F7975] text-[12px] opacity-0'>Click to assign a guardian/supervisor to this member</p>
                                 </div>
                             }
                         </div>
@@ -283,7 +283,8 @@ const CreateUser = ({baseUrl}) => {
                                     {
                                         userTypeArray.map(type => (
                                             <div className='px-3 border-b pb-3 cursor-pointer mb-3' onClick={() => {
-                                                setUserTypeDropDown(false) 
+                                                setUserTypeDropDown(false)
+                                                setAsignGuardian(false)
                                                 setUserType(type.label)
                                             }}>
                                                 <p className='text-[#1D1D1D] capitalize text-[12px]'>{type.label}</p>
@@ -421,8 +422,27 @@ const CreateUser = ({baseUrl}) => {
                         }
                     </div>
                     {
-                        userType === "guardian" &&
+                        userType === "guardian" || asignGuardian &&
                         <>
+                            { asignGuardian &&
+                                <div className="mt-7">
+                                    <label className='block text-text-color text-left mb-2'>
+                                    Guardian’s Image <span className='text-red-500'>*</span>
+                                    </label>
+                                    <div className='relative flex items-center justify-center flex-col rounded-[16px] h-[300px] w-full' style={{ border:'1.5px dashed #D0D5DD' }}>
+                                        <img src="./images/file-upload.svg" alt="" />
+                                        <p className='text-text-color font-[600] mt-5'>Click to upload <span className='font-[400] text-[#475367]'>or drag and drop</span> </p>
+                                        <p className='text-[#98A2B3]'>PNG, JPG (max. 5mb)</p>
+                                        <div className='flex items-center gap-[15px] w-full mt-5'>
+                                            <div className='w-[35%] ml-auto h-[2px] bg-[#F0F2F5]'></div>
+                                            <p>OR</p>
+                                            <div className='w-[35%] mr-auto h-[2px] bg-[#F0F2F5]'></div>
+                                        </div>
+                                        <input type="file" className='cursor-pointer absolute opacity-0 h-full outline-none w-full rounded-[4px] bg-transparent text-[14px]'/>
+                                        <button className='text-white bg-primary-color rounded-[4px] mt-[2.5rem] px-[28px] py-[10px] text-center mx-auto'>Browse Files</button>
+                                    </div>
+                                </div>
+                            }
                             <div className="mt-7">
                                 <label className='block text-text-color text-left mb-2'>
                                     Image of guardian’s Signature <span className='text-red-500'>*</span>

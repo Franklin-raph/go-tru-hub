@@ -2,6 +2,7 @@ import React,{ useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Alert from '../../components/alert/Alert'
 import BtnLoader from '../../components/btn-loader/BtnLoader'
+import Navbar from '../../components/navbar/Navbar'
 
 const Login = ({baseUrl}) => {
 
@@ -56,39 +57,42 @@ const Login = ({baseUrl}) => {
 
 
   return (
-    <div className='w-[100%] mx-auto text-center my-[4rem]'>
-      <div className='w-[40%] mx-auto'>
-        <p className='text-[28px] mb-[40px]'>Login to manage your company</p>
-        <div>
-          <label className='block text-left mb-2'>Email Address</label>
-          <input placeholder='hello@company.com' type="text" onChange={e => setEmail(e.target.value)} className='px-4 py-3 outline-none border w-full rounded-[4px]'/>
-        </div>
-        <div className='mt-7'>
-          <label className='block text-left mb-2'>Password</label>
-          <div className='px-4 py-3 outline-none border w-full rounded-[4px]'>
-            <input placeholder='Your Password' type="password" onChange={e => setPassword(e.target.value)} className='outline-none w-full rounded-[4px]'/>
+    <>
+      <Navbar />
+      <div className='w-[100%] mx-auto text-center my-[4rem]'>
+        <div className='w-[40%] mx-auto'>
+          <p className='text-[28px] mb-[40px]'>Login to manage your company</p>
+          <div>
+            <label className='block text-left mb-2'>Email Address</label>
+            <input placeholder='hello@company.com' type="text" onChange={e => setEmail(e.target.value)} className='px-4 py-3 outline-none border w-full rounded-[4px]'/>
           </div>
+          <div className='mt-7'>
+            <label className='block text-left mb-2'>Password</label>
+            <div className='px-4 py-3 outline-none border w-full rounded-[4px]'>
+              <input placeholder='Your Password' type="password" onChange={e => setPassword(e.target.value)} className='outline-none w-full rounded-[4px]'/>
+            </div>
+          </div>
+          <p className='text-left mt-5'>Forgot Your Password? <span className='text-secondary-color cursor-pointer' onClick={() => navigate('/reset-password')}>Reset</span> </p>
+          {
+              loading ? 
+              <BtnLoader bgColor="#191f1c"/>
+              :
+              <button onClick={login} className='text-white bg-primary-color w-full rounded-[4px] mt-[2.5rem] px-[35px] py-[16px] text-center mx-auto'>Login</button>
+              // <button onClick={verifyAccount} className='text-white bg-primary-color w-full rounded-[4px] mt-[2.5rem] px-[35px] py-[16px] text-center mx-auto'>Proceed</button>
+          }
+          <p className='mt-10'>New to Gotru? <span className='text-secondary-color  cursor-pointer' onClick={() => navigate('/register')}>Sign up</span> </p>
         </div>
-        <p className='text-left mt-5'>Forgot Your Password? <span className='text-secondary-color cursor-pointer' onClick={() => navigate('/reset-password')}>Reset</span> </p>
+        <div className='text-[#6F7975] mt-[10rem]'>
+          <p>&copy; 2022 Gotruhub and Gotruhub logo are trademarks of the company.</p>
+          <p>Please visit our <span className='text-secondary-color cursor-pointer'>Terms of service</span> for more details.</p>
+        </div>
+
         {
-            loading ? 
-            <BtnLoader bgColor="#191f1c"/>
-            :
-            <button onClick={login} className='text-white bg-primary-color w-full rounded-[4px] mt-[2.5rem] px-[35px] py-[16px] text-center mx-auto'>Login</button>
-            // <button onClick={verifyAccount} className='text-white bg-primary-color w-full rounded-[4px] mt-[2.5rem] px-[35px] py-[16px] text-center mx-auto'>Proceed</button>
+          msg && <Alert msg={msg} setMsg={setMsg} alertType={alertType}/>
         }
-        <p className='mt-10'>New to Gotru? <span className='text-secondary-color  cursor-pointer' onClick={() => navigate('/register')}>Sign up</span> </p>
-      </div>
-      <div className='text-[#6F7975] mt-[10rem]'>
-        <p>&copy; 2022 Gotruhub and Gotruhub logo are trademarks of the company.</p>
-        <p>Please visit our <span className='text-secondary-color cursor-pointer'>Terms of service</span> for more details.</p>
-      </div>
 
-      {
-        msg && <Alert msg={msg} setMsg={setMsg} alertType={alertType}/>
-      }
-
-    </div>
+      </div>
+    </>
   )
 }
 
