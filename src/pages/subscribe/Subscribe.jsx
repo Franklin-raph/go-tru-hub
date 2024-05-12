@@ -4,6 +4,8 @@ import TopNav from '../../components/top-nav/TopNav'
 import { IoChevronDownOutline, IoCloseOutline } from 'react-icons/io5'
 import Alert from '../../components/alert/Alert'
 import { useNavigate } from 'react-router-dom'
+import SubCard from '../../components/sub-card/SubCard'
+import ConfirmSubModal from '../../components/confirm-sub-modal/ConfirmSubModal'
 
 const Subscribe = ({baseUrl}) => {
 
@@ -19,6 +21,7 @@ const Subscribe = ({baseUrl}) => {
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
     const [aboutFeatureModal, setAboutFeatureModal] = useState(false)
+    const [confirmSubModal, setConfirmSubModal] = useState(false)
 
     const user = JSON.parse(localStorage.getItem('user'))
 
@@ -81,12 +84,39 @@ const Subscribe = ({baseUrl}) => {
         console.log(quantity, subscriptionType);
     }
 
+    const subArray = [
+        {
+            price:'250',
+            duration:'Weekly'
+        },
+        {
+            price:'700',
+            duration:'Yearly'
+        },
+        {
+            price:'500',
+            duration:'Mothly'
+        },
+        {
+            price:'900',
+            duration:'Weekly'
+        },
+        {
+            price:'400',
+            duration:'14 Weeks'
+        },
+        {
+            price:'900',
+            duration:'24 Weeks'
+        }
+    ]
+
   return (
     <div>
         <SideNav />
         <div className="w-[78%] ml-auto pb-5">
         <TopNav />
-            <div className="h-[100vh]">
+            <div className="">
                 <div className="flex justify-between items-start mb-[3rem] bg-[#F2FCF7] px-[30px] py-[1rem]">
                     <div className="">
                         <p className="text-[28px] text-primary-color font-[600]">Subscription</p>
@@ -95,7 +125,50 @@ const Subscribe = ({baseUrl}) => {
                     </div>
                     <button className="bg-[#646464] text-white px-5 py-3 rounded-[8px] text-[14px]" >Send Token</button>
                 </div>
-                <div className='mt-7 flex items-center gap-5 w-full px-[30px]'>
+                <div className='px-[30px]'>
+                    <p className='font-[500] text-[20px] mb-2'>Basic Plans</p>
+                    <div className="grid grid-cols-5 gap-4">
+                        {
+                            subArray && subArray.map(plan => (
+                                <SubCard plan={plan} setConfirmSubModal={setConfirmSubModal}/>
+                            ))
+                        }
+                    </div>
+                </div>
+
+                {/* <div className='px-[30px] mt-[4rem]'>
+                    <p className='font-[500] text-[20px] mb-2'>Combo Plans</p>
+                    <div className="grid grid-cols-5 gap-4">
+                        {
+                            [1,1,1,1,1,1,1].map(plan => (
+                                <SubCard />
+                            ))
+                        }
+                    </div>
+                </div>
+
+                <div className='px-[30px] mt-[4rem]'>
+                    <p className='font-[500] text-[20px] mb-2'>Bulk Plans</p>
+                    <div className="grid grid-cols-5 gap-4">
+                        {
+                            [1,1,1].map(plan => (
+                                <SubCard />
+                            ))
+                        }
+                    </div>
+                </div>
+
+                <div className='px-[30px] mt-[4rem]'>
+                    <p className='font-[500] text-[20px] mb-2'>Result Plan</p>
+                    <div className="grid grid-cols-5 gap-4">
+                        {
+                            [1].map(plan => (
+                                <SubCard />
+                            ))
+                        }
+                    </div>
+                </div> */}
+                {/* <div className='mt-7 flex items-center gap-5 w-full px-[30px]'>
                     <div className='w-full relative'>
                         <label className='block text-left mb-2 text-text-color'>What features would you like to subscribe for?</label>
                         <div className='flex items-center justify-between px-4 py-3 border w-full rounded-[4px]'>
@@ -108,7 +181,6 @@ const Subscribe = ({baseUrl}) => {
                                     arrayOfFeatures && arrayOfFeatures.map(ftr => (
                                         <div className='px-3 border-b pb-3 cursor-pointer mb-3'>
                                             <p className='text-[#1D1D1D] capitalize text-[12px]'>{ftr.name} <span className='text-[10px]'>({ftr.duration})</span></p>
-                                            {/* <p className='text-[#828282] mt-2 mb-3 text-[12px]'>{feature.desc}</p> */}
                                             {
                                                 ftr.feature.map(benefit => (
                                                     <div className='flex items-center gap-1 mt-1'>
@@ -144,7 +216,7 @@ const Subscribe = ({baseUrl}) => {
                 <div className='w-full mt-7 px-[30px] flex items-center gap-5 '>
                     <button className='bg-[#2D3934] rounded-[4px] px-5 py-3 text-[#FAFAFA] font-[600]' onClick={()=> navigate('/sub-summary')}>View Summary</button>
                     <button className='border border-[#2D3934] rounded-[4px] py-3 px-6 text-[#2D3934] font-[600]' onClick={handleSubscription}>Add to cart</button>
-                </div>
+                </div> */}
             </div>
         </div>
         {
@@ -202,6 +274,10 @@ const Subscribe = ({baseUrl}) => {
                     </div>
                 </div>
             </>
+        }
+
+        {
+            confirmSubModal && <ConfirmSubModal setConfirmSubModal={setConfirmSubModal}/>
         }
     </div>
   )

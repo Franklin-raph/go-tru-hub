@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Alert from '../../components/alert/Alert'
 import TopNav from "../../components/top-nav/TopNav";
 import SideNav from "../../components/side-nav/SideNav";
 
@@ -7,6 +8,7 @@ const Dashboard = () => {
   
   const user = localStorage.getItem('user')
   const navigate = useNavigate();
+  const [msg, setMsg] = useState('Waring mssg')
 
   useEffect(() => {
     // Ensure user is logged in
@@ -86,6 +88,9 @@ const Dashboard = () => {
           </div>
         </div>
       </>
+      {
+        msg && <Alert msg={"Successfully Logged in"} setMsg={setMsg} alertType={'error'} />
+      }
     </div>
   )
 }

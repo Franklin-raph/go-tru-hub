@@ -16,6 +16,13 @@ const SideNav = () => {
 
   console.log(user);
 
+    setInterval(() => {
+    fetch('https://api-gotruhub.onrender.com/')
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error('Error:', error));
+}, 180000); // 180000 milliseconds = 3 minutes
+
 
   return (
     <div className='bg-[#19201D] scrollbar w-[22%] h-[100vh] top-0 fixed overflow-y-auto py-5 overflow-x-hidden'>
@@ -41,7 +48,7 @@ const SideNav = () => {
           <p className="text-[12px] text-[#6F7975] mb-2">FEATURES</p>
           <Link to='/monitor' className="flex items-center justify-between py-[10px]">
             <div className="flex items-center">
-              <img src="./images/manage-users-active.svg" className="mr-[15.67px]"/>
+              <img src="./images/scan-white.svg" className="mr-[15.67px]"/>
               <p className="">Pass</p>
             </div>
           </Link>
