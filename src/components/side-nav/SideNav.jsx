@@ -15,14 +15,14 @@ const SideNav = () => {
   const user = JSON.parse(localStorage.getItem('user'))
   const location = useLocation()
 
-  console.log(user);
+  // console.log(user);
 
-    setInterval(() => {
-    fetch('https://api-gotruhub.onrender.com/')
-        .then(response => response.json())
-        .then(data => console.log(data))
-        .catch(error => console.error('Error:', error));
-}, 180000); // 180000 milliseconds = 3 minutes
+//     setInterval(() => {
+//     fetch('https://api-gotruhub.onrender.com/')
+//         .then(response => response.json())
+//         .then(data => console.log(data))
+//         .catch(error => console.error('Error:', error));
+// }, 180000); // 180000 milliseconds = 3 minutes
 
 
   return (

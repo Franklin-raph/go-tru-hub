@@ -38,7 +38,8 @@ const CreateUser = ({baseUrl}) => {
     const [listOfGuardianDropDown, setListOfGuardianDropDown] = useState(false)
     const [linkToMemberDropDown, setLinkToMemberDropDown] = useState(false)
     const [regNum, setRegNum] = useState('')
-    // const [unitsArray, setUnitsArray] = useState([])
+    const [unitsArray, setUnitsArray] = useState([])
+    const [subUnitsArray, setSubUnitsArray] = useState([])
 
     const [piviotUnit, setPiviotUnit] = useState('')
     const [piviotUnitText, setPiviotUnitText] = useState('')
@@ -47,51 +48,51 @@ const CreateUser = ({baseUrl}) => {
 
     const [asignGuardian, setAsignGuardian] = useState(false)
 
-    const unitsArray = [
-        {
-            id:'1',
-            name:'Unit 1'
-        },
-        {
-            id:'2',
-            name:'Unit 2'
-        },
-        {
-            id:'3',
-            name:'Unit 3'
-        },
-        {
-            id:'4',
-            name:'Unit 4'
-        },
-        {
-            id:'5',
-            name:'Unit 5'
-        }
-    ]
+    // const unitsArray = [
+    //     {
+    //         id:'1',
+    //         name:'Unit 1'
+    //     },
+    //     {
+    //         id:'2',
+    //         name:'Unit 2'
+    //     },
+    //     {
+    //         id:'3',
+    //         name:'Unit 3'
+    //     },
+    //     {
+    //         id:'4',
+    //         name:'Unit 4'
+    //     },
+    //     {
+    //         id:'5',
+    //         name:'Unit 5'
+    //     }
+    // ]
 
-    const subUnitsArray = [
-        {
-            id:'1',
-            name:'Sub Unit 1'
-        },
-        {
-            id:'2',
-            name:'Sub Unit 2'
-        },
-        {
-            id:'3',
-            name:'Sub Unit 3'
-        },
-        {
-            id:'4',
-            name:'Sub Unit 4'
-        },
-        {
-            id:'5',
-            name:'Sub Unit 5'
-        }
-    ]
+    // const subUnitsArray = [
+    //     {
+    //         id:'1',
+    //         name:'Sub Unit 1'
+    //     },
+    //     {
+    //         id:'2',
+    //         name:'Sub Unit 2'
+    //     },
+    //     {
+    //         id:'3',
+    //         name:'Sub Unit 3'
+    //     },
+    //     {
+    //         id:'4',
+    //         name:'Sub Unit 4'
+    //     },
+    //     {
+    //         id:'5',
+    //         name:'Sub Unit 5'
+    //     }
+    // ]
 
     const userTypeArray = [
         {
@@ -122,19 +123,31 @@ const CreateUser = ({baseUrl}) => {
 
     useEffect(() => {
         getAllUnits()
+        // getSubUnit()
     },[])
 
     async function getAllUnits(){
         const response = await fetch(`${baseUrl}/units`, {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json',
                 Authorization:`Bearer ${user.data.access_token}`
             }
         })
         const data = await response.json()
         console.log(data);
-        // setUnitsArray(data)
+        setUnitsArray(data.data.units)
+    }
+
+    async function getSubUnit(id){
+        const response = await fetch(`${baseUrl}/unit/${id}/subunits`, {
+            method: 'GET',
+            headers: {
+                Authorization:`Bearer ${user.data.access_token}`
+            }
+        })
+        const data = await response.json()
+        console.log(data);
+        setSubUnitsArray(data.data.units)
     }
 
     async function handleFileUpload(file){
@@ -163,8 +176,39 @@ const CreateUser = ({baseUrl}) => {
         }
     }
 
-    async function createUser(){
-        console.log(JSON.stringify({ fullName, profileImage, role:userType, piviotUnit, subUnit, email, regNum }));
+    async function handleStaffCreate(){
+        if(!fullName || !email || !profileImage || !userType){
+            setMsg("All fields are required");
+            setAlertType('error')
+            setAlertTitle('Failed')
+            return;
+        }else{
+            setIsLoading(true)
+            const res = await fetch(`${baseUrl}/users/add-user`,{
+                method:"POST",
+                headers:{
+                    'Content-Type':'application/json',
+                    Authorization:`Bearer ${user.data.access_token}`
+                },
+                body:JSON.stringify({ fullName, profileImage, role:userType, email, regNum })
+            })
+            const data = await res.json()
+            if(res) setIsLoading(false)
+            if(res.ok) {
+                setMsg("User Created Successfully");
+                setAlertType('success')
+                setAlertTitle('Success')
+              }
+              if(!res.ok){
+                setMsg(data.message);
+                setAlertType('error')
+                setAlertTitle('Failed')
+              }
+            console.log(res, data);
+        }
+    }
+
+    async function handleStudentCreate(){
         if(!fullName || !email || !profileImage || !userType){
             setMsg("All fields are required");
             setAlertType('error')
@@ -193,6 +237,15 @@ const CreateUser = ({baseUrl}) => {
                 setAlertTitle('Failed')
               }
             console.log(res, data);
+        }
+    }
+
+    async function createUser(){
+        console.log(JSON.stringify({ fullName, profileImage, role:userType, piviotUnit, subUnit, email, regNum }));
+        if(userType === 'staff'){
+            handleStaffCreate()
+        }else if(userType === 'student'){
+            handleStudentCreate()
         }
     }
 
@@ -345,7 +398,8 @@ const CreateUser = ({baseUrl}) => {
                                                 <div className='px-3 border-b pb-3 cursor-pointer mb-3' onClick={() => {
                                                     setUnitDropDown(false) 
                                                     setPiviotUnitText(unit.name)
-                                                    setPiviotUnit(unit.id)
+                                                    setPiviotUnit(unit._id)
+                                                    getSubUnit(unit._id)
                                                 }}>
                                                     <p className='text-[#1D1D1D] capitalize text-[12px]'>{unit.name}</p>
                                                 </div>
@@ -367,7 +421,7 @@ const CreateUser = ({baseUrl}) => {
                                             subUnitsArray.map(unit => (
                                                 <div className='px-3 border-b pb-3 cursor-pointer mb-3' onClick={() => {
                                                     setSubUnitDropDown(false) 
-                                                    setSubUnit(unit.id)
+                                                    setSubUnit(unit._id)
                                                     setSubUnitText(unit.name)
                                                 }}>
                                                     <p className='text-[#1D1D1D] capitalize text-[12px]'>{unit.name}</p>
@@ -421,28 +475,10 @@ const CreateUser = ({baseUrl}) => {
                             <p className='text-[#4F4F4F] text-[14px] mt-4'>For the purpose of gotrupass, a member can have multiple authorities allowed to sign them in/out, upload the images of those authorities below. <span className='cursor-pointer text-secondary-color underline'>Learn more about gotrupass</span> </p>
                         }
                     </div>
+
                     {
-                        userType === "guardian" || asignGuardian &&
+                        userType === "guardian" &&
                         <>
-                            { asignGuardian &&
-                                <div className="mt-7">
-                                    <label className='block text-text-color text-left mb-2'>
-                                    Guardian’s Image <span className='text-red-500'>*</span>
-                                    </label>
-                                    <div className='relative flex items-center justify-center flex-col rounded-[16px] h-[300px] w-full' style={{ border:'1.5px dashed #D0D5DD' }}>
-                                        <img src="./images/file-upload.svg" alt="" />
-                                        <p className='text-text-color font-[600] mt-5'>Click to upload <span className='font-[400] text-[#475367]'>or drag and drop</span> </p>
-                                        <p className='text-[#98A2B3]'>PNG, JPG (max. 5mb)</p>
-                                        <div className='flex items-center gap-[15px] w-full mt-5'>
-                                            <div className='w-[35%] ml-auto h-[2px] bg-[#F0F2F5]'></div>
-                                            <p>OR</p>
-                                            <div className='w-[35%] mr-auto h-[2px] bg-[#F0F2F5]'></div>
-                                        </div>
-                                        <input type="file" className='cursor-pointer absolute opacity-0 h-full outline-none w-full rounded-[4px] bg-transparent text-[14px]'/>
-                                        <button className='text-white bg-primary-color rounded-[4px] mt-[2.5rem] px-[28px] py-[10px] text-center mx-auto'>Browse Files</button>
-                                    </div>
-                                </div>
-                            }
                             <div className="mt-7">
                                 <label className='block text-text-color text-left mb-2'>
                                     Image of guardian’s Signature <span className='text-red-500'>*</span>
@@ -479,6 +515,63 @@ const CreateUser = ({baseUrl}) => {
                             </div>
                         </>
                     }
+
+                    { asignGuardian &&
+                        <>
+                        <div className="mt-7">
+                            <label className='block text-text-color text-left mb-2'>
+                                Image of guardian’s Signature <span className='text-red-500'>*</span>
+                            </label>
+                            <div className='relative flex items-center justify-center flex-col rounded-[16px] h-[300px] w-full' style={{ border:'1.5px dashed #D0D5DD' }}>
+                                <img src="./images/file-upload.svg" alt="" />
+                                <p className='text-text-color font-[600] mt-5'>Click to upload <span className='font-[400] text-[#475367]'>or drag and drop</span> </p>
+                                <p className='text-[#98A2B3]'>PNG, JPG (max. 5mb)</p>
+                                <div className='flex items-center gap-[15px] w-full mt-5'>
+                                    <div className='w-[35%] ml-auto h-[2px] bg-[#F0F2F5]'></div>
+                                    <p>OR</p>
+                                    <div className='w-[35%] mr-auto h-[2px] bg-[#F0F2F5]'></div>
+                                </div>
+                                <input type="file" className='cursor-pointer absolute opacity-0 h-full outline-none w-full rounded-[4px] bg-transparent text-[14px]'/>
+                                <button className='text-white bg-primary-color rounded-[4px] mt-[2.5rem] px-[28px] py-[10px] text-center mx-auto'>Browse Files</button>
+                            </div>
+                        </div>
+                        <div className="mt-7">
+                            <label className='block text-text-color text-left mb-2'>
+                                Image of guardian’s Signature <span className='text-red-500'>*</span>
+                            </label>
+                            <div className='relative flex items-center justify-center flex-col rounded-[16px] h-[300px] w-full' style={{ border:'1.5px dashed #D0D5DD' }}>
+                                <img src="./images/file-upload.svg" alt="" />
+                                <p className='text-text-color font-[600] mt-5'>Click to upload <span className='font-[400] text-[#475367]'>or drag and drop</span> </p>
+                                <p className='text-[#98A2B3]'>PNG, JPG (max. 5mb)</p>
+                                <div className='flex items-center gap-[15px] w-full mt-5'>
+                                    <div className='w-[35%] ml-auto h-[2px] bg-[#F0F2F5]'></div>
+                                    <p>OR</p>
+                                    <div className='w-[35%] mr-auto h-[2px] bg-[#F0F2F5]'></div>
+                                </div>
+                                <input type="file" className='cursor-pointer absolute opacity-0 h-full outline-none w-full rounded-[4px] bg-transparent text-[14px]'/>
+                                <button className='text-white bg-primary-color rounded-[4px] mt-[2.5rem] px-[28px] py-[10px] text-center mx-auto'>Browse Files</button>
+                            </div>
+                        </div>
+                        <div className="mt-7">
+                            <label className='block text-text-color text-left mb-2'>
+                                Image of relation <span className='text-red-500'>*</span>
+                            </label>
+                            <div className='relative flex items-center justify-center flex-col rounded-[16px] h-[300px] w-full' style={{ border:'1.5px dashed #D0D5DD' }}>
+                                <img src="./images/file-upload.svg" alt="" />
+                                <p className='text-text-color font-[600] mt-5'>Click to upload <span className='font-[400] text-[#475367]'>or drag and drop</span> </p>
+                                <p className='text-[#98A2B3]'>PNG, JPG (max. 5mb)</p>
+                                <div className='flex items-center gap-[15px] w-full mt-5'>
+                                    <div className='w-[35%] ml-auto h-[2px] bg-[#F0F2F5]'></div>
+                                    <p>OR</p>
+                                    <div className='w-[35%] mr-auto h-[2px] bg-[#F0F2F5]'></div>
+                                </div>
+                                <input type="file" className='cursor-pointer absolute opacity-0 h-full outline-none w-full rounded-[4px] bg-transparent text-[14px]'/>
+                                <button className='text-white bg-primary-color rounded-[4px] mt-[2.5rem] px-[28px] py-[10px] text-center mx-auto'>Browse Files</button>
+                            </div>
+                        </div>
+                    </>
+                    }
+
                     {
                         isLoading ?
                         <BtnLoader bgColor="#191f1c"/>
