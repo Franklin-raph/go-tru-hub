@@ -88,9 +88,9 @@ const Dashboard = () => {
           </div>
         </div>
       </>
-      {
+      {/* {
         msg && <Alert msg={"Successfully Logged in"} setMsg={setMsg} alertType={'error'} />
-      }
+      } */}
     </div>
   )
 }

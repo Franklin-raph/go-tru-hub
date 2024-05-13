@@ -123,7 +123,10 @@ const Subscribe = ({baseUrl}) => {
                         <p className='text-[#4F4F4F]'>Select the subscription plan that is perfect for your organization to get the best of Gotruhub.</p>
                         <p className='text-[#25751E] underline font-[500] cursor-pointer' onClick={() => setAboutFeatureModal(!aboutFeatureModal)} >Learn more about our features</p>
                     </div>
-                    <button className="bg-[#646464] text-white px-5 py-3 rounded-[8px] text-[14px]" >Send Token</button>
+                    <div className='flex items-center gap-5'>
+                        <button className="bg-[#19201D] text-white px-5 py-3 rounded-[8px] text-[14px] w-[140px]" onClick={() => navigate('/token')}>Token</button>
+                        <button className={ localStorage.getItem('itemsInCart') ? `border border-[#19201D] text-[#19201D] px-5 py-3 rounded-[8px] text-[14px] w-[140px] font-[600]`: `border-[#646464] text-[#969696] font-[600] border px-5 py-3 rounded-[8px] text-[14px] w-[140px] cursor-not-allowed`} onClick={()=> navigate('/sub-summary')}>Cart</button>
+                    </div>
                 </div>
                 <div className='px-[30px]'>
                     <p className='font-[500] text-[20px] mb-2'>Basic Plans</p>

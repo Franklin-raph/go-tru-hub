@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { IoChevronDownOutline } from 'react-icons/io5'
 import { LuScanLine } from "react-icons/lu";
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { PiFileArrowUpThin } from "react-icons/pi";
 import { GoClock } from "react-icons/go";
 import { CiShop } from "react-icons/ci";
@@ -13,6 +13,7 @@ const SideNav = () => {
 
   const [tradeDropDown, setTradeDropDown] = useState(false)
   const user = JSON.parse(localStorage.getItem('user'))
+  const location = useLocation()
 
   console.log(user);
 
@@ -31,13 +32,13 @@ const SideNav = () => {
         </div>
         <div className="px-[32px] my-10 text-white">
           <p className="text-[12px] text-[#6F7975] mb-2">MAIN MENU</p>
-          <Link to='/dashboard' className="flex items-center justify-between py-[10px]">
+          <Link to='/dashboard' className={ location.pathname === '/dashboard' ? `flex items-center justify-between py-[10px] text-[#25751E]` :`flex items-center justify-between py-[10px]`}>
             <div className="flex items-center">
               <img src="./images/dashboard-active.svg" className="mr-[15.67px]"/>
               <p className="">Dashboard</p>
             </div>
           </Link>
-          <Link to='/monitor' className="flex items-center justify-between py-[10px]">
+          <Link to='/manage-users' className={ location.pathname === '/manage-users' || location.pathname === '/create-user' ? `flex items-center justify-between py-[10px] text-[#25751E]` :`flex items-center justify-between py-[10px]`}>
             <div className="flex items-center">
                 <img src="./images/manage-users-active.svg" className="mr-[15.67px]" alt="" />
                 <p className="">Manage users</p>
@@ -103,7 +104,7 @@ const SideNav = () => {
         </div>
         <div className="px-[32px] my-10 text-white">
           <p className="text-[12px] text-[#6F7975] mb-2">OTHERS</p>
-          <Link to='/subscribe' className="flex items-center justify-between py-[10px]">
+          <Link to='/subscribe' className={ location.pathname === '/subscribe' || location.pathname === '/token' || location.pathname === '/sub-summary' || location.pathname === '/active-subs' ? `flex items-center justify-between py-[10px] text-[#25751E]` :`flex items-center justify-between py-[10px]`}>
             <div className="flex items-center">
               <img src="./images/wallet-active.svg" className="mr-[15.67px]"/>
               <p className="">Subscription</p>

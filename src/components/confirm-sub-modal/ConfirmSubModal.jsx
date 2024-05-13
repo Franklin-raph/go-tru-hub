@@ -7,7 +7,7 @@ const ConfirmSubModal = ({setConfirmSubModal}) => {
     const [msg, setMsg] = useState('')
     const [quantity, setQuantity] = useState('')
     const [alertType, setAlertType] = useState()
-    const itemsInCart = localStorage.getItem('itemsInCart') || []
+    const itemsInCart = JSON.parse(localStorage.getItem('itemsInCart')) || []
 
     async function handleSubConfirmation(){
         if(!quantity){
@@ -15,8 +15,8 @@ const ConfirmSubModal = ({setConfirmSubModal}) => {
             setAlertType("error")
         }else{
             const item = {
-                name: plan.name,
-                price: plan.price,
+                id: plan.duration,
+                // price: plan.price,
                 quantity
             }
             itemsInCart.push(item)
