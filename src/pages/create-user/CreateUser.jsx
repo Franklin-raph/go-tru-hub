@@ -27,12 +27,15 @@ const CreateUser = ({baseUrl}) => {
     const [alertTitle, setAlertTitle] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const adminAccessArray = ['Gotru Pass', 'Gotru Trade', 'Gotru Monitor']
-    const [profileImage, setProfileImage] = useState('')
     const [fullName, setFullName] = useState('')
     const [email, setEmail] = useState('')
+    const [profileImage, setProfileImage] = useState('')
     const [usersImagePreview, setUserImagePreview] = useState('')
-    const [guardianSignatureImagePreview, setGuardianSignatureImagePreview] = useState('')
+    const [guardians, setGuardians] = useState('')
+    const [relationImage, setRelationImage] = useState('')
     const [relationImagePreview, setRelationImagePreview] = useState('')
+    const [signature, setSignature] = useState('')
+    const [signatureImagePreview, setSignatureImagePreview] = useState('')
     const [unitDropDown, setUnitDropDown] = useState(false)
     const [subUnitDropDown, setSubUnitDropDown] = useState(false)
     const [listOfGuardianDropDown, setListOfGuardianDropDown] = useState(false)
@@ -166,8 +169,115 @@ const CreateUser = ({baseUrl}) => {
           setMsg("File uploaded successfully");
           setAlertType('success')
           setAlertTitle('Success')
+          if(userType === 'guardian'){
+                setGuardians(data.data._id)
+            }else{
+                setProfileImage(data.data._id)
+          }
           setUserImagePreview(data.data.file)
-          setProfileImage(data.data._id)
+        }
+        if(!res.ok){
+          setMsg("File upload wasn't successfull");
+          setAlertType('error')
+          setAlertTitle('Failed')
+        }
+    }
+
+    async function handleRelationImageUpload(file){
+        console.log(file);
+        setfileUploadLoader(true)
+        console.log(`${baseUrl}/upload-media`);
+        const formData = new FormData()
+        formData.append('file', file)
+        const res = await fetch(`${baseUrl}/upload-media`,{
+          method:"POST",
+          body: formData
+        })
+        const data = await res.json()
+        if(res) setfileUploadLoader(false)
+        if(res.ok) {
+          setMsg("File uploaded successfully");
+          setAlertType('success')
+          setAlertTitle('Success')
+          setRelationImagePreview(data.data.file)
+          setRelationImage(data.data._id)
+        }
+        if(!res.ok){
+          setMsg("File upload wasn't successfull");
+          setAlertType('error')
+          setAlertTitle('Failed')
+        }
+    }
+
+    async function handleGuardianImageUpload(file){
+        console.log(file);
+        setfileUploadLoader(true)
+        console.log(`${baseUrl}/upload-media`);
+        const formData = new FormData()
+        formData.append('file', file)
+        const res = await fetch(`${baseUrl}/upload-media`,{
+          method:"POST",
+          body: formData
+        })
+        const data = await res.json()
+        if(res) setfileUploadLoader(false)
+        if(res.ok) {
+          setMsg("File uploaded successfully");
+          setAlertType('success')
+          setAlertTitle('Success')
+          setGuardians(data.data._id)
+        }
+        if(!res.ok){
+          setMsg("File upload wasn't successfull");
+          setAlertType('error')
+          setAlertTitle('Failed')
+        }
+    }
+
+    async function handleRelationImageUpload(file){
+        console.log(file);
+        setfileUploadLoader(true)
+        console.log(`${baseUrl}/upload-media`);
+        const formData = new FormData()
+        formData.append('file', file)
+        const res = await fetch(`${baseUrl}/upload-media`,{
+          method:"POST",
+          body: formData
+        })
+        const data = await res.json()
+        if(res) setfileUploadLoader(false)
+        if(res.ok) {
+          setMsg("File uploaded successfully");
+          setAlertType('success')
+          setAlertTitle('Success')
+          setRelationImagePreview(data.data.file)
+          setRelationImage(data.data._id)
+        }
+        if(!res.ok){
+          setMsg("File upload wasn't successfull");
+          setAlertType('error')
+          setAlertTitle('Failed')
+        }
+    }
+
+    async function handleSignatureUpload(file){
+        console.log(file);
+        setfileUploadLoader(true)
+        console.log(`${baseUrl}/upload-media`);
+        const formData = new FormData()
+        formData.append('file', file)
+        const res = await fetch(`${baseUrl}/upload-media`,{
+          method:"POST",
+          body: formData
+        })
+        const data = await res.json()
+        if(res) setfileUploadLoader(false)
+        if(res.ok) {
+          setMsg("File uploaded successfully");
+          setAlertType('success')
+          setAlertTitle('Success')
+          setSignatureImagePreview(data.data.file)
+          setSignature(data.data._id)
         }
         if(!res.ok){
           setMsg("File upload wasn't successfull");
@@ -240,12 +350,26 @@ const CreateUser = ({baseUrl}) => {
         }
     }
 
+    async function handleGuardianCreate(){
+        console.log({relationImage, profileImage, guardians, signature});
+    }
+
+    async function handleStudentGuardianCreate(){
+        console.log({relationImage, profileImage, guardians, signature});
+    }
+
     async function createUser(){
         console.log(JSON.stringify({ fullName, profileImage, role:userType, piviotUnit, subUnit, email, regNum }));
         if(userType === 'staff'){
             handleStaffCreate()
         }else if(userType === 'student'){
-            handleStudentCreate()
+            if(asignGuardian === true){
+                handleStudentGuardianCreate()
+            }else{
+                handleStudentCreate()
+            }
+        }else if(userType === 'guardian'){
+            handleGuardianCreate()
         }
     }
 
@@ -479,40 +603,51 @@ const CreateUser = ({baseUrl}) => {
                     {
                         userType === "guardian" &&
                         <>
-                            <div className="mt-7">
-                                <label className='block text-text-color text-left mb-2'>
-                                    Image of guardian’s Signature <span className='text-red-500'>*</span>
-                                </label>
-                                <div className='relative flex items-center justify-center flex-col rounded-[16px] h-[300px] w-full' style={{ border:'1.5px dashed #D0D5DD' }}>
-                                    <img src="./images/file-upload.svg" alt="" />
-                                    <p className='text-text-color font-[600] mt-5'>Click to upload <span className='font-[400] text-[#475367]'>or drag and drop</span> </p>
-                                    <p className='text-[#98A2B3]'>PNG, JPG (max. 5mb)</p>
-                                    <div className='flex items-center gap-[15px] w-full mt-5'>
-                                        <div className='w-[35%] ml-auto h-[2px] bg-[#F0F2F5]'></div>
-                                        <p>OR</p>
-                                        <div className='w-[35%] mr-auto h-[2px] bg-[#F0F2F5]'></div>
+                            {
+                                signatureImagePreview ?
+                                <img src={signatureImagePreview} alt="" className='rounded-[4px] w-[100px] h-[100px]'/>
+                                :
+                                <div className="mt-7">
+                                    <label className='block text-text-color text-left mb-2'>
+                                        Image of guardian’s Signature <span className='text-red-500'>*</span>
+                                    </label>
+                                    <div className='relative flex items-center justify-center flex-col rounded-[16px] h-[300px] w-full' style={{ border:'1.5px dashed #D0D5DD' }}>
+                                        <img src="./images/file-upload.svg" alt="" />
+                                        <p className='text-text-color font-[600] mt-5'>Click to upload <span className='font-[400] text-[#475367]'>or drag and drop</span> </p>
+                                        <p className='text-[#98A2B3]'>PNG, JPG (max. 5mb)</p>
+                                        <div className='flex items-center gap-[15px] w-full mt-5'>
+                                            <div className='w-[35%] ml-auto h-[2px] bg-[#F0F2F5]'></div>
+                                            <p>OR</p>
+                                            <div className='w-[35%] mr-auto h-[2px] bg-[#F0F2F5]'></div>
+                                        </div>
+                                        <input onChange={e => handleSignatureUpload(e.target.files[0])} type="file" className='cursor-pointer absolute opacity-0 h-full outline-none w-full rounded-[4px] bg-transparent text-[14px]'/>
+                                        <button className='text-white bg-primary-color rounded-[4px] mt-[2.5rem] px-[28px] py-[10px] text-center mx-auto'>Browse Files</button>
                                     </div>
-                                    <input type="file" className='cursor-pointer absolute opacity-0 h-full outline-none w-full rounded-[4px] bg-transparent text-[14px]'/>
-                                    <button className='text-white bg-primary-color rounded-[4px] mt-[2.5rem] px-[28px] py-[10px] text-center mx-auto'>Browse Files</button>
                                 </div>
-                            </div>
-                            <div className="mt-7">
-                                <label className='block text-text-color text-left mb-2'>
-                                    Image of relation <span className='text-red-500'>*</span>
-                                </label>
-                                <div className='relative flex items-center justify-center flex-col rounded-[16px] h-[300px] w-full' style={{ border:'1.5px dashed #D0D5DD' }}>
-                                    <img src="./images/file-upload.svg" alt="" />
-                                    <p className='text-text-color font-[600] mt-5'>Click to upload <span className='font-[400] text-[#475367]'>or drag and drop</span> </p>
-                                    <p className='text-[#98A2B3]'>PNG, JPG (max. 5mb)</p>
-                                    <div className='flex items-center gap-[15px] w-full mt-5'>
-                                        <div className='w-[35%] ml-auto h-[2px] bg-[#F0F2F5]'></div>
-                                        <p>OR</p>
-                                        <div className='w-[35%] mr-auto h-[2px] bg-[#F0F2F5]'></div>
+                            }
+                            
+                            {
+                                relationImagePreview ?
+                                <img src={relationImagePreview} alt="" className='rounded-[4px] w-[100px] h-[100px]'/>
+                                :
+                                <div className="mt-7">
+                                    <label className='block text-text-color text-left mb-2'>
+                                        Image of relation. <span className='text-red-500'>*</span>
+                                    </label>
+                                    <div className='relative flex items-center justify-center flex-col rounded-[16px] h-[300px] w-full' style={{ border:'1.5px dashed #D0D5DD' }}>
+                                        <img src="./images/file-upload.svg" alt="" />
+                                        <p className='text-text-color font-[600] mt-5'>Click to upload <span className='font-[400] text-[#475367]'>or drag and drop</span> </p>
+                                        <p className='text-[#98A2B3]'>PNG, JPG (max. 5mb)</p>
+                                        <div className='flex items-center gap-[15px] w-full mt-5'>
+                                            <div className='w-[35%] ml-auto h-[2px] bg-[#F0F2F5]'></div>
+                                            <p>OR</p>
+                                            <div className='w-[35%] mr-auto h-[2px] bg-[#F0F2F5]'></div>
+                                        </div>
+                                        <input type="file" onChange={e => handleRelationImageUpload(e.target.files[0])} className='cursor-pointer absolute opacity-0 h-full outline-none w-full rounded-[4px] bg-transparent text-[14px]'/>
+                                        <button className='text-white bg-primary-color rounded-[4px] mt-[2.5rem] px-[28px] py-[10px] text-center mx-auto'>Browse Files</button>
                                     </div>
-                                    <input type="file" className='cursor-pointer absolute opacity-0 h-full outline-none w-full rounded-[4px] bg-transparent text-[14px]'/>
-                                    <button className='text-white bg-primary-color rounded-[4px] mt-[2.5rem] px-[28px] py-[10px] text-center mx-auto'>Browse Files</button>
                                 </div>
-                            </div>
+                            }
                         </>
                     }
 
@@ -520,7 +655,7 @@ const CreateUser = ({baseUrl}) => {
                         <>
                         <div className="mt-7">
                             <label className='block text-text-color text-left mb-2'>
-                                Image of guardian’s Signature <span className='text-red-500'>*</span>
+                                Guardian’s Image <span className='text-red-500'>*</span>
                             </label>
                             <div className='relative flex items-center justify-center flex-col rounded-[16px] h-[300px] w-full' style={{ border:'1.5px dashed #D0D5DD' }}>
                                 <img src="./images/file-upload.svg" alt="" />
@@ -531,7 +666,7 @@ const CreateUser = ({baseUrl}) => {
                                     <p>OR</p>
                                     <div className='w-[35%] mr-auto h-[2px] bg-[#F0F2F5]'></div>
                                 </div>
-                                <input type="file" className='cursor-pointer absolute opacity-0 h-full outline-none w-full rounded-[4px] bg-transparent text-[14px]'/>
+                                <input  onChange={e => handleGuardianImageUpload(e.target.files[0])} type="file" className='cursor-pointer absolute opacity-0 h-full outline-none w-full rounded-[4px] bg-transparent text-[14px]'/>
                                 <button className='text-white bg-primary-color rounded-[4px] mt-[2.5rem] px-[28px] py-[10px] text-center mx-auto'>Browse Files</button>
                             </div>
                         </div>
@@ -548,7 +683,7 @@ const CreateUser = ({baseUrl}) => {
                                     <p>OR</p>
                                     <div className='w-[35%] mr-auto h-[2px] bg-[#F0F2F5]'></div>
                                 </div>
-                                <input type="file" className='cursor-pointer absolute opacity-0 h-full outline-none w-full rounded-[4px] bg-transparent text-[14px]'/>
+                                <input onChange={e => handleSignatureUpload(e.target.files[0])} type="file" className='cursor-pointer absolute opacity-0 h-full outline-none w-full rounded-[4px] bg-transparent text-[14px]'/>
                                 <button className='text-white bg-primary-color rounded-[4px] mt-[2.5rem] px-[28px] py-[10px] text-center mx-auto'>Browse Files</button>
                             </div>
                         </div>
@@ -565,7 +700,7 @@ const CreateUser = ({baseUrl}) => {
                                     <p>OR</p>
                                     <div className='w-[35%] mr-auto h-[2px] bg-[#F0F2F5]'></div>
                                 </div>
-                                <input type="file" className='cursor-pointer absolute opacity-0 h-full outline-none w-full rounded-[4px] bg-transparent text-[14px]'/>
+                                <input type="file" onChange={e => handleRelationImageUpload(e.target.files[0])} className='cursor-pointer absolute opacity-0 h-full outline-none w-full rounded-[4px] bg-transparent text-[14px]'/>
                                 <button className='text-white bg-primary-color rounded-[4px] mt-[2.5rem] px-[28px] py-[10px] text-center mx-auto'>Browse Files</button>
                             </div>
                         </div>
