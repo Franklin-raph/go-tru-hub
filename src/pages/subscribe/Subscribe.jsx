@@ -132,7 +132,7 @@ const Subscribe = ({baseUrl}) => {
                     <p className='font-[500] text-[20px] mb-2'>Basic Plans</p>
                     <div className="grid grid-cols-5 gap-4">
                         {
-                            subArray && subArray.map(plan => (
+                            arrayOfFeatures && arrayOfFeatures.map(plan => (
                                 <SubCard plan={plan} setConfirmSubModal={setConfirmSubModal}/>
                             ))
                         }
@@ -225,6 +225,7 @@ const Subscribe = ({baseUrl}) => {
         {
             msg && <Alert msg={msg} setMsg={setMsg} alertType={alertType}/>
         }
+
         {
             aboutFeatureModal &&
             <>
@@ -280,7 +281,7 @@ const Subscribe = ({baseUrl}) => {
         }
 
         {
-            confirmSubModal && <ConfirmSubModal setConfirmSubModal={setConfirmSubModal}/>
+            confirmSubModal && <ConfirmSubModal setConfirmSubModal={setConfirmSubModal} baseUrl={baseUrl}/>
         }
     </div>
   )

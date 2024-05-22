@@ -66,52 +66,6 @@ const CreateUser = ({baseUrl}) => {
 
     const [asignGuardian, setAsignGuardian] = useState(false)
 
-    // const unitsArray = [
-    //     {
-    //         id:'1',
-    //         name:'Unit 1'
-    //     },
-    //     {
-    //         id:'2',
-    //         name:'Unit 2'
-    //     },
-    //     {
-    //         id:'3',
-    //         name:'Unit 3'
-    //     },
-    //     {
-    //         id:'4',
-    //         name:'Unit 4'
-    //     },
-    //     {
-    //         id:'5',
-    //         name:'Unit 5'
-    //     }
-    // ]
-
-    // const subUnitsArray = [
-    //     {
-    //         id:'1',
-    //         name:'Sub Unit 1'
-    //     },
-    //     {
-    //         id:'2',
-    //         name:'Sub Unit 2'
-    //     },
-    //     {
-    //         id:'3',
-    //         name:'Sub Unit 3'
-    //     },
-    //     {
-    //         id:'4',
-    //         name:'Sub Unit 4'
-    //     },
-    //     {
-    //         id:'5',
-    //         name:'Sub Unit 5'
-    //     }
-    // ]
-
     const userTypeArray = [
         {
             label:'student',
@@ -136,6 +90,7 @@ const CreateUser = ({baseUrl}) => {
     ]
     const listOfGuardians = [ 'Celestine Ojiakor', 'Baron White', 'Kasiemobe Egu', 'Jane Doe' ]
     const linkToMemberArray = ['Brother', 'Sister', 'Father', 'Mother', 'Uncle', 'Teacher']
+    const [allStudent, setAllStudent] = useState([])
     const navigate = useNavigate()
     const user = JSON.parse(localStorage.getItem('user'))
 
@@ -145,7 +100,7 @@ const CreateUser = ({baseUrl}) => {
             return
         }
         getAllUnits()
-        // getSubUnit()
+        getAllStudents()
     },[])
 
     const [appPermissions, setAppPermissions] = useState([]);
@@ -157,6 +112,18 @@ const CreateUser = ({baseUrl}) => {
             setAppPermissions([...appPermissions, value]);
         }
     };
+
+    async function getAllStudents(){
+        const response = await fetch(`${baseUrl}/users/get-users/student`, {
+            method: 'GET',
+            headers: {
+                Authorization:`Bearer ${user.data.access_token}`
+            }
+        })
+        const data = await response.json()
+        console.log("All students => ",data);
+        setAllStudent(data.data.users)
+    }
 
     async function getAllUnits(){
         const response = await fetch(`${baseUrl}/units`, {
@@ -350,7 +317,7 @@ const CreateUser = ({baseUrl}) => {
 
     async function handleStudentCreate(){
         console.log({ fullName, profileImage, role:userType, piviotUnit, subUnit, email, regNum });
-        if(!fullName || !email || !profileImage || !userType){
+        if(!fullName || !regNum || !profileImage || !userType){
             setMsg("All fields are required");
             setAlertType('error')
             setAlertTitle('Failed')
@@ -363,7 +330,7 @@ const CreateUser = ({baseUrl}) => {
                     'Content-Type':'application/json',
                     Authorization:`Bearer ${user.data.access_token}`
                 },
-                body:JSON.stringify({ fullName, profileImage, role:userType, piviotUnit, subUnit, email, regNum })
+                body:JSON.stringify({ fullName, profileImage, role:userType, piviotUnit, subUnit, regNum })
             })
             const data = await res.json()
             if(res) setIsLoading(false)
@@ -382,7 +349,7 @@ const CreateUser = ({baseUrl}) => {
     }
 
     async function handleGuardianCreate(){
-        console.log({fullName, profileImage:guardians, relationImage, role:userType, signature, email, regNum});
+        console.log({fullName, profileImage:guardians, children, relationImage, role:userType, signature, email, regNum});
         if(!fullName || !email || !guardians || !userType){
             setMsg("All fields are required");
             setAlertType('error')
@@ -396,7 +363,7 @@ const CreateUser = ({baseUrl}) => {
                     'Content-Type':'application/json',
                     Authorization:`Bearer ${user.data.access_token}`
                 },
-                body:JSON.stringify({ fullName, profileImage:guardians, relationImage, role:userType, signature, email, regNum })
+                body:JSON.stringify({ fullName, children, profileImage:guardians, relationImage, role:userType, signature, email, regNum })
             })
             const data = await res.json()
             if(res) setIsLoading(false)
@@ -434,6 +401,23 @@ const CreateUser = ({baseUrl}) => {
         }
     }
 
+    const [selectedStudents, setSelectedStudents] = useState([]);
+    const [children, setChildren] = useState([])
+
+    const handleStudentSelect = (student) => {
+      if (!selectedStudents.includes(student)) {
+        setSelectedStudents([...selectedStudents, student]);
+        setChildren([...children, student._id])
+      }
+      console.log(student._id);
+    };
+  
+    const handleStudentDeselect = (student) => {
+        console.log(student);
+      setSelectedStudents(selectedStudents.filter((id) => id!== student));
+      setChildren(children.filter((id) => id!== student._id))
+    };
+
   return (
     <div>
         <SideNav />
@@ -450,27 +434,30 @@ const CreateUser = ({baseUrl}) => {
                             <div className='px-4 py-3 outline-none border w-full rounded-[4px]'>
                                 <input onChange={(e => setFullName(e.target.value))} placeholder='First and last name' type="text" className='outline-none w-full rounded-[4px] bg-transparent text-[14px]'/>
                             </div>
-                            {
+                            {/* {
                                 userType === 'student' && 
                                 <div className='flex items-center gap-1 mt-1'>
                                     <input type="checkbox" className='cursor-pointer' onChange={e => setAsignGuardian(e.target.checked)} />
                                     <p className='text-[#6F7975] text-[12px]'>Click to assign a guardian/supervisor to this member</p>
                                 </div>
-                            }
+                            } */}
                         </div>
-                        <div className='w-full'>
-                            <label className='block text-text-color text-left mb-2'>Email <span className='text-red-500'>*</span></label>
-                            <div className='px-4 py-3 border w-full rounded-[4px]'>
-                                <input onChange={e => setEmail(e.target.value)} placeholder='Enter email address' type="text" className='outline-none w-full rounded-[4px] bg-transparent text-[14px]'/>
-                            </div>
-                            {
-                                userType === 'student' && 
-                                <div className='flex items-center gap-1 mt-1'>
-                                    {/* <input type="checkbox" onChange={e => setAsignGuardian(e.target.checked)} /> */}
-                                    <p className='text-[#6F7975] text-[12px] opacity-0'>Click to assign a guardian/supervisor to this member</p>
+                        {
+                            userType !== 'student' &&
+                            <div className='w-full'>
+                                <label className='block text-text-color text-left mb-2'>Email <span className='text-red-500'>*</span></label>
+                                <div className='px-4 py-3 border w-full rounded-[4px]'>
+                                    <input onChange={e => setEmail(e.target.value)} placeholder='Enter email address' type="text" className='outline-none w-full rounded-[4px] bg-transparent text-[14px]'/>
                                 </div>
-                            }
-                        </div>
+                                {/* {
+                                    userType === 'student' && 
+                                    <div className='flex items-center gap-1 mt-1'>
+                                        <input type="checkbox" onChange={e => setAsignGuardian(e.target.checked)} />
+                                        <p className='text-[#6F7975] text-[12px] opacity-0'>Click to assign a guardian/supervisor to this member</p>
+                                    </div>
+                                } */}
+                            </div>
+                        }
                     </div>
                     
                     {userType === 'student' &&
@@ -534,30 +521,77 @@ const CreateUser = ({baseUrl}) => {
                                 </div>
                             }
                         </div>
-                        <div className='w-full'>
-                            <label className='block text-text-color text-left mb-2'>Registeration Number <span className='text-red-500'>*</span></label>
-                            <div className='px-4 py-3 border w-full rounded-[4px]'>
-                                <input onChange={e => setRegNum(e.target.value)} placeholder='Enter Registeration Number' type="text" className='outline-none w-full rounded-[4px] bg-transparent text-[14px]'/>
+                        {
+                            userType === 'student' &&
+                            <div className='w-full'>
+                                <label className='block text-text-color text-left mb-2'>Registeration Number <span className='text-red-500'>*</span></label>
+                                <div className='px-4 py-3 border w-full rounded-[4px]'>
+                                    <input onChange={e => setRegNum(e.target.value)} placeholder='Enter Registeration Number' type="text" className='outline-none w-full rounded-[4px] bg-transparent text-[14px]'/>
+                                </div>
                             </div>
-                        </div>
+                        }
                     </div>
 
                     {
                         userType === 'guardian'&&
                         <div className='relative w-full mt-7'>
-                            <label className='block text-text-color text-left mb-2'>Link to a member <span className='text-red-500'>*</span></label>
+                            <label className='block text-text-color text-left mb-2'>Member / Child / Children<span className='text-red-500' onClick={() => console.log({children, selectedStudents})}>*</span></label>
                             <div className='flex items-center justify-between px-4 py-3 border w-full rounded-[4px]'>
-                                <input type="text" placeholder='Select member' className='outline-none w-full rounded-[4px] bg-transparent text-[14px]'/>
+                                {
+                                    selectedStudents.length ?
+                                    <div className='flex items-center gap-2'>
+                                        {
+                                            selectedStudents.map(member => (
+                                                <div key={member._id} className="flex items-center gap-2 text-[12px] bg-gray-200 rounded-full px-3">
+                                                    {/* <input
+                                                        type="checkbox"
+                                                        checked={selectedStudents.includes(member._id)}
+                                                        onChange={() => handleStudentSelect(member._id)}
+                                                    /> */}
+                                                    <p>{member.fullName}</p>
+                                                    <button
+                                                        className="text-red-500"
+                                                        onClick={() => handleStudentDeselect(member)}
+                                                    >
+                                                        x
+                                                    </button>
+                                                    {/* {selectedStudents.includes(member._id) && (
+                                                    )} */}
+                                                </div>
+                                            ))
+                                        }
+                                    </div>
+                                    :
+                                    <input type="text" placeholder='Select member' className='outline-none w-full rounded-[4px] bg-transparent text-[14px]'/>
+                                }
+
                                 <IoChevronDownOutline color="d7d7d7" cursor='pointer' onClick={() => setLinkToMemberDropDown(!linkToMemberDropDown)}/>
                             </div>
                             {linkToMemberDropDown &&
                                 <div className='py-5 bg-white absolute overflow-y-scroll h-[220px] px-3 rounded-[12px] mt-2 z-[10] w-full'>
                                     {
-                                        linkToMemberArray.map(member => (
-                                            <div className='px-3 border-b pb-3 cursor-pointer mb-3' onClick={() => {
-                                                setLinkToMemberDropDown(false)
-                                            }}>
-                                                <p className='text-[#828282] mt-2 text-[12px]'>{member}</p>
+                                        allStudent.map(member => (
+                                            // <div className='px-3 border-b pb-3 cursor-pointer mb-3' onClick={() => {
+                                            //     setLinkToMemberDropDown(false)
+                                            // }}>
+                                            //     <p className='text-[#828282] mt-2 text-[12px]'>{member.fullName}</p>
+                                            // </div>
+                                            <div key={member._id} className="flex items-center gap-2">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={selectedStudents.includes(member)}
+                                                    onChange={() => handleStudentSelect(member)}
+                                                />
+                                                <p className='text-[#828282] mt-2 text-[12px]'>{member.fullName}</p>
+                                                <p className='text-[#828282] mt-2 text-[12px]'>({member.regNum})</p>
+                                                {/* {selectedStudents.includes(member._id) && (
+                                                <button
+                                                    className="text-red-500"
+                                                    onClick={() => handleStudentDeselect(member._id)}
+                                                >
+                                                    x
+                                                </button>
+                                                )} */}
                                             </div>
                                         ))
                                     }

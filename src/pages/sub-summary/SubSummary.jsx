@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import SideNav from '../../components/side-nav/SideNav'
 import TopNav from '../../components/top-nav/TopNav'
 import { useNavigate } from 'react-router-dom'
@@ -7,7 +7,7 @@ import { BiSolidTrash } from 'react-icons/bi'
 import PaystackPop from "@paystack/inline-js"
 import AlertModal from '../../components/alert-modals/AlertModal'
 
-const SubSummary = () => {
+const SubSummary = ({baseUrl}) => {
 
     const navigate = useNavigate()
     const user = JSON.parse(localStorage.getItem('user'))
@@ -15,36 +15,95 @@ const SubSummary = () => {
     const [msg, setMsg] = useState('')
     const [alertTitle, setAlertTitle] = useState('')
     const [alertType, setAlertType] = useState()
+    const itemsInCart = JSON.parse(localStorage.getItem('itemsInCart')) || []
+    const [totalPrice, setTotalPrice] = useState(0)
+    const [subArray, setSubArray] = useState([])
+    const [confirmPurchase, setConfirmPurchase] = useState(false)
 
-    function payWithPayStack(){
-        // console.log(id, amount, duration);
-        const payStack = new PaystackPop()
-        payStack.newTransaction({
-          key:"pk_test_12420d20e0b354e9670266456195a13f3a03ec68",
-          amount:28000 * 100,
-          email:user.data.details.email,
-          onSuccess(transaction){
-            setMsg('You have successfully subscribed to Gotruhub. Share the token received with your members to have access to the mobile app.')
-            setAlertType('success')
-            setAlertTitle('Successful')
-            // fundWallet()
-            console.log(transaction)
-            // subscribeUser(id, amount, duration)
-            // setFundAccountModal(false)
-            // setVerifyPaymentModal(true)
-            // handleVerifyAccountFund(transaction.reference, (+amount/750).toFixed(2))
-          },
-          oncancel(){
-            console.log("Failed Transaction")
-          }
+    // function payWithPayStack(){
+    //     // console.log(id, amount, duration);
+
+          
+    //     const payStack = new PaystackPop()
+    //     payStack.newTransaction({
+    //       key:"pk_test_12420d20e0b354e9670266456195a13f3a03ec68",
+    //       amount:totalPrice * 100,
+    //       email:user.data.details.email,
+    //       onSuccess(transaction){
+    //         setConfirmPurchase(false)
+    //         subscribeOrgs()
+    //         console.log(transaction)
+    //       },
+    //       oncancel(){
+    //         console.log("Failed Transaction")
+    //       }
+    //     })
+    //   }
+
+      async function payWithPayStack(){
+        console.log(subArray);
+        setIsLoading(true)
+        console.log(itemsInCart);
+        const res = await fetch(`${baseUrl}/plan/add-to-cart`,{
+            method:"POST",
+            headers:{
+                'Content-Type':'application/json',
+                Authorization:`Bearer ${user.data.access_token}`
+            },
+            body:JSON.stringify(subArray)
         })
+        const data = await res.json()
+        console.log(data);
+        if(res.ok){
+            setConfirmPurchase(false)
+            payNow()
+            // setMsg('You have successfully subscribed to Gotruhub. Share the token received with your members to have access to the mobile app.')
+            // setAlertType('success')
+            // setAlertTitle('Successful')
+            // localStorage.removeItem('itemsInCart')
+        }
+        if(!res.ok){
+            setMsg(data.message);
+            setAlertType('error')
+            setAlertTitle('Failed')
+        }
+        setIsLoading(false)
       }
 
-      async function removeFeature(){
+      async function payNow(){
+        const res = await fetch(`${baseUrl}/plan/pay`,{
+            headers:{
+                'Content-Type':'application/json',
+                Authorization:`Bearer ${user.data.access_token}`
+            },
+        })
+        const data = await res.json()
+        console.log(data.data.paystack.data.authorization_url);
+        if(res.ok){
+            // window.location.href = data.data.paystack.data.authorization_url
+        }
+      }
+
+      async function removeFeature(id){
+          // Filter out the item with the given id from the itemsInCart array
+        const updatedItemsInCart = itemsInCart.filter(item => item.id!== id);
+
+        // Update the itemsInCart state with the filtered array
+        localStorage.setItem('itemsInCart', JSON.stringify(updatedItemsInCart));
         setMsg('This feature was successfully removed from your package.')
         setAlertType('success')
         setAlertTitle('Successful')
       }
+
+      useEffect(() => {
+        const calculateTotalPrice = () => {
+          const total = itemsInCart.reduce((accumulator, currentValue) => {
+            return accumulator + currentValue.subTotalPrice;
+          }, 0);
+          setTotalPrice(total);
+        };
+        calculateTotalPrice();
+      },[itemsInCart])
 
   return (
     <div>
@@ -73,18 +132,25 @@ const SubSummary = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr style={{borderBottom:"1px solid #dcdcdc"}}>
-                                <td class="px-6 py-4">1</td>
-                                <td class="px-6 py-4">GotruPas + GotruMonitor</td>
-                                <td class="px-6 py-4">Monthly</td>
-                                <td class="px-6 py-4">700</td>
-                                <td class="px-6 py-4">200</td>
-                                <td class="px-6 py-4">#14,000</td>
-                                <td class="py-2 text-center text-white my-4">
-                                    <button className='bg-[#9A2525] rounded-[8px] px-6 py-3' onClick={removeFeature}>Remove</button>
-                                </td>
-                            </tr>
-                            <tr style={{borderBottom:"1px solid #dcdcdc"}}>
+                            {
+                                itemsInCart.map((item, index) => (
+                                    <tr style={{borderBottom:"1px solid #dcdcdc"}}>
+                                        <td class="px-6 py-4">{index + 1}</td>
+                                        <td class="px-6 py-4 capitalize">{item.name}</td>
+                                        <td class="px-6 py-4 capitalize">{item.duration}</td>
+                                        <td class="px-6 py-4">{item.price}</td>
+                                        <td class="px-6 py-4">{item.quantity}</td>
+                                        <td class="px-6 py-4">{item.subTotalPrice.toLocaleString('en-US', {
+                                            style: 'currency',
+                                            currency: 'NGN' // Change to your desired currency code (e.g., 'EUR', 'GBP', 'JPY', etc.)
+                                        })}</td>
+                                        <td class="py-2 text-center text-white my-4">
+                                            <button className='bg-[#9A2525] rounded-[8px] px-6 py-3' onClick={() => removeFeature(item.id)}>Remove</button>
+                                        </td>
+                                    </tr>
+                                ))
+                            }
+                            {/* <tr style={{borderBottom:"1px solid #dcdcdc"}}>
                                 <td class="px-6 py-4">2</td>
                                 <td class="px-6 py-4">GotruPas + GotruMonitor</td>
                                 <td class="px-6 py-4">Monthly</td>
@@ -94,21 +160,47 @@ const SubSummary = () => {
                                 <td class="py-2 text-center text-white my-4">
                                     <button className='bg-[#9A2525] rounded-[8px] px-6 py-3' onClick={removeFeature}>Remove</button>
                                 </td>
-                            </tr>
+                            </tr> */}
                         </tbody>
                     </table>
                 </div>
                 <div className='flex items-center justify-between mt-5 px-[30px]'>
                     <p></p>
                     <div className='flex items-center gap-8'>
-                        <p className='text-[#1D1D1D] font-[700] text-[18px]'>#28,000</p>
-                        <button onClick={payWithPayStack} className='bg-[#19201D] text-white font-[500] rounded-[8px] px-6 py-[9px]'>Pay Now</button>
+                        <p className='text-[#1D1D1D] font-[700] text-[18px]'>{totalPrice.toLocaleString('en-US', {
+                                            style: 'currency',
+                                            currency: 'NGN' // Change to your desired currency code (e.g., 'EUR', 'GBP', 'JPY', etc.)
+                                        })}</p>
+                        <button onClick={() => {
+                            setConfirmPurchase(true)
+                            const subArray = itemsInCart.map(item => ({
+                                quantity: item.quantity,
+                                subscriptionType: item.id
+                              }));
+                            
+                              setSubArray(subArray);
+                        }} className='bg-[#19201D] text-white font-[500] rounded-[8px] px-6 py-[9px]'>Pay Now</button>
                     </div>
                 </div>
             </div>
         </div>
         {msg &&
             <AlertModal msg={msg} alertType={alertType} setMsg={setMsg} alertTitle={alertTitle}/>
+        }
+        {
+            confirmPurchase &&
+            <>
+                <div className="h-full w-full fixed top-0 left-0 z-[99]" style={{ background:"rgba(14, 14, 14, 0.58)" }} onClick={() => { setConfirmPurchase(false)}}></div>
+                <div className="flex items-center flex-col text-center justify-center gap-3 bg-white w-[450px] fixed top-[50%] left-[50%] py-[50px] px-[2rem] z-[100]" style={{ transform: "translate(-50%, -50%)" }}>
+                    <img src="./images/approval.svg" alt="" />
+                    <p className='text-text-color font-[500]'>Confirm Purchase</p>
+                    <p className='text-[#6F7975] text-[14px]'>Are you sure, you want to make this purchase</p>
+                    <div className='flex items-center gap-5 justify-center mt-9'>
+                        <button className='border border-[#19201D] text-[#19201D] px-5 py-3 rounded-[4px] text-[14px] w-[140px] font-[600]' onClick={() => setConfirmPurchase(false)}>Back</button>
+                        <button className="bg-[#19201D] text-white px-5 py-3 rounded-[4px] text-[14px] w-[140px]" onClick={payWithPayStack} >Confirm</button>
+                    </div>
+                </div>
+            </>
         }
     </div>
   )

@@ -2,26 +2,45 @@ import React, { useState } from 'react'
 import { IoCloseOutline } from 'react-icons/io5'
 import Alert from '../alert/Alert';
 
-const ConfirmSubModal = ({setConfirmSubModal}) => {
+const ConfirmSubModal = ({setConfirmSubModal, baseUrl}) => {
     const plan = JSON.parse(localStorage.getItem('selectedPlan'));
     const [msg, setMsg] = useState('')
     const [quantity, setQuantity] = useState('')
     const [alertType, setAlertType] = useState()
     const itemsInCart = JSON.parse(localStorage.getItem('itemsInCart')) || []
 
+    const user = JSON.parse(localStorage.getItem('user'))
+
     async function handleSubConfirmation(){
         if(!quantity){
             setMsg("Please fill in the field")
             setAlertType("error")
         }else{
+            const subTotalPrice = plan.amount.$numberDecimal * quantity;
             const item = {
-                id: plan.duration,
-                // price: plan.price,
-                quantity
+                subscriptionType: plan._id,
+                quantity,
             }
-            itemsInCart.push(item)
-            localStorage.setItem('itemsInCart', JSON.stringify(itemsInCart))
+            // itemsInCart.push(item)
+            // localStorage.setItem('itemsInCart', JSON.stringify(itemsInCart))
             setConfirmSubModal(false)
+            console.log(JSON.stringify({
+                subscriptionType: plan._id,
+                quantity,
+            }));
+            const res = await fetch(`${baseUrl}/plan/add-to-cart`,{
+                method:"POST",
+                headers:{
+                    'Content-Type':'application/json',
+                    Authorization:`Bearer ${user.data.access_token}`
+                },
+                body:JSON.stringify({
+                    subscriptionType: plan._id,
+                    quantity,
+                })
+            })
+            const data = await res.json()
+            console.log(data);
         }
     }
 
@@ -44,7 +63,7 @@ const ConfirmSubModal = ({setConfirmSubModal}) => {
                         </div>
                     </div>
                     <p className='text-[14px] mb-1 text-[#1C2320] font-[500]'>Pass/<span className='text-gray-400 font-[400] text-[12px]'>{plan.duration}</span> </p>
-                    <p className='font-[500]'>#{plan.price}</p>
+                    <p className='font-[500]'>#{plan.amount.$numberDecimal}</p>
                 </div>
             </div>
             <div className='bg-[#fff] w-full py-[30px] px-[2rem]'>
