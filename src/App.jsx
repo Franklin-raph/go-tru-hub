@@ -26,8 +26,7 @@ import ManageUsers from './pages/manage-users/ManageUsers'
 
 function App() {
 
-  const baseUrl = 'https://api-gotruhub.onrender.com'
-  // https://test.yamltech.com/
+  const baseUrl = 'https://test.yamltech.com'
   const user = localStorage.getItem('user')
 
     return (

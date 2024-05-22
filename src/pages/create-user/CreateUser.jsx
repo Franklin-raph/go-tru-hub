@@ -26,7 +26,22 @@ const CreateUser = ({baseUrl}) => {
     const [alertType, setAlertType] = useState('')
     const [alertTitle, setAlertTitle] = useState('')
     const [isLoading, setIsLoading] = useState(false)
-    const adminAccessArray = ['Gotru Pass', 'Gotru Trade', 'Gotru Monitor']
+
+    const adminAccessArray = [
+        {
+            label:'Gotru Pass',
+            value:'pass'
+        },
+        {
+            label:'Gotru Monitor',
+            value:'monitor'
+        },
+        {
+            label:'Gotru Trade',
+            value:'trade'
+        }
+    ]
+
     const [fullName, setFullName] = useState('')
     const [email, setEmail] = useState('')
     const [profileImage, setProfileImage] = useState('')
@@ -113,11 +128,11 @@ const CreateUser = ({baseUrl}) => {
             info1:'This user carries out specific assignment that can be monitored e.g a teacher',
             info2:''
         },
-        {
-            label:'admin',
-            info1:'This user has admin level access to one or more of the features on gotruhub e.g a staff',
-            info2:''
-        }
+        // {
+        //     label:'admin',
+        //     info1:'This user has admin level access to one or more of the features on gotruhub e.g a staff',
+        //     info2:''
+        // }
     ]
     const listOfGuardians = [ 'Celestine Ojiakor', 'Baron White', 'Kasiemobe Egu', 'Jane Doe' ]
     const linkToMemberArray = ['Brother', 'Sister', 'Father', 'Mother', 'Uncle', 'Teacher']
@@ -125,9 +140,23 @@ const CreateUser = ({baseUrl}) => {
     const user = JSON.parse(localStorage.getItem('user'))
 
     useEffect(() => {
+        if(!user){
+            navigate('/login')
+            return
+        }
         getAllUnits()
         // getSubUnit()
     },[])
+
+    const [appPermissions, setAppPermissions] = useState([]);
+
+    const handleAppPermissionsChange = (value) => {
+        if (appPermissions.includes(value)) {
+            setAppPermissions(appPermissions.filter((access) => access!== value));
+        } else {
+            setAppPermissions([...appPermissions, value]);
+        }
+    };
 
     async function getAllUnits(){
         const response = await fetch(`${baseUrl}/units`, {
@@ -287,6 +316,7 @@ const CreateUser = ({baseUrl}) => {
     }
 
     async function handleStaffCreate(){
+        console.log(appPermissions);
         if(!fullName || !email || !profileImage || !userType){
             setMsg("All fields are required");
             setAlertType('error')
@@ -300,7 +330,7 @@ const CreateUser = ({baseUrl}) => {
                     'Content-Type':'application/json',
                     Authorization:`Bearer ${user.data.access_token}`
                 },
-                body:JSON.stringify({ fullName, profileImage, role:userType, email, regNum })
+                body:JSON.stringify({ fullName, profileImage, role:userType, email, regNum, appPermissions })
             })
             const data = await res.json()
             if(res) setIsLoading(false)
@@ -319,6 +349,7 @@ const CreateUser = ({baseUrl}) => {
     }
 
     async function handleStudentCreate(){
+        console.log({ fullName, profileImage, role:userType, piviotUnit, subUnit, email, regNum });
         if(!fullName || !email || !profileImage || !userType){
             setMsg("All fields are required");
             setAlertType('error')
@@ -351,7 +382,37 @@ const CreateUser = ({baseUrl}) => {
     }
 
     async function handleGuardianCreate(){
-        console.log({relationImage, profileImage, guardians, signature});
+        console.log({fullName, profileImage:guardians, relationImage, role:userType, signature, email, regNum});
+        if(!fullName || !email || !guardians || !userType){
+            setMsg("All fields are required");
+            setAlertType('error')
+            setAlertTitle('Failed')
+            return;
+        }else{
+            setIsLoading(true)
+            const res = await fetch(`${baseUrl}/users/add-user`,{
+                method:"POST",
+                headers:{
+                    'Content-Type':'application/json',
+                    Authorization:`Bearer ${user.data.access_token}`
+                },
+                body:JSON.stringify({ fullName, profileImage:guardians, relationImage, role:userType, signature, email, regNum })
+            })
+            const data = await res.json()
+            if(res) setIsLoading(false)
+            if(res.ok) {
+                setMsg("User Created Successfully");
+                setAlertType('success')
+                setAlertTitle('Success')
+              }
+              if(!res.ok){
+                setMsg(data.message);
+                setAlertType('error')
+                setAlertTitle('Failed')
+              }
+            console.log(res, data);
+        }
+        
     }
 
     async function handleStudentGuardianCreate(){
@@ -558,15 +619,21 @@ const CreateUser = ({baseUrl}) => {
                         </div>
                     }
                     {
-                        userType === 'admin' &&
+                        userType === 'staff' &&
                             <div className="mt-7">
                                 <label className='block text-text-color text-left mb-2'>Allow this admin access to <span className='text-red-500'>*</span></label>
                                 <div className='flex items-center'>
                                     {
                                         adminAccessArray.map(access => (
                                             <div className='flex items-center gap-2 w-full rounded-[4px]'>
-                                                <input type="checkbox" className='outline-none rounded-[4px] bg-transparent text-[14px]'/>
-                                                <p className='text-[#828282]'>{access}</p>
+                                                <input 
+                                                    type="checkbox" 
+                                                    value={access.value} 
+                                                    checked={appPermissions.includes(access.value)}
+                                                    onChange={() => handleAppPermissionsChange(access.value)}
+                                                    className='outline-none rounded-[4px] bg-transparent text-[14px]'
+                                                />
+                                                <p className='text-[#828282]'>{access.label}</p>
                                             </div>
                                         ))
                                     }
