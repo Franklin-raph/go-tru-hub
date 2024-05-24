@@ -8,7 +8,6 @@ const Dashboard = () => {
   
   const user = localStorage.getItem('user')
   const navigate = useNavigate();
-  const [msg, setMsg] = useState('Waring mssg')
 
   useEffect(() => {
     // Ensure user is logged in

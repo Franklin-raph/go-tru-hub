@@ -1,20 +1,24 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import AlertModal from '../../components/alert-modals/AlertModal'
 import SideNav from '../../components/side-nav/SideNav'
 import TopNav from '../../components/top-nav/TopNav'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import SendTokenModal from '../../components/send-token-modal/SendTokenModal'
 import ReactPaginate from 'react-paginate'
 
-const ActiveSubs = () => {
+const SendToken = ({baseUrl}) => {
 
     const navigate = useNavigate()
+    const { id } = useParams()
     const user = JSON.parse(localStorage.getItem('user'))
     const [isLoading, setIsLoading] = useState(false)
     const [msg, setMsg] = useState('')
     const [alertTitle, setAlertTitle] = useState('Confirm')
     const [alertType, setAlertType] = useState('success')
     const [sendTokenModal, setSendTokenModal] = useState(false)
+    const [allGuardians, setAllGuardians]= useState([])
+    const [selectedGuardians, setSelectedGuardians] = useState([])
+    const [planInfo, setPlanInfo] = useState()
 
     const activeSubs = [
     {
@@ -620,29 +624,97 @@ const ActiveSubs = () => {
       }
     ]
 
-    const [pageNumber, setPageNumber] = useState(0)
+    // const [pageNumber, setPageNumber] = useState(0)
 
-    const usersPerPage = 10
-    const visitedPages = pageNumber * usersPerPage
+    // const usersPerPage = 10
+    // const visitedPages = pageNumber * usersPerPage
 
-    const displayUsers = activeSubs
-        .slice(visitedPages, visitedPages + usersPerPage)
-        .map((sub, index) => {
-            return(
-                <tr style={{borderBottom:"1px solid #dcdcdc"}}>
-                    <td class="px-6 py-4">{index +1}</td>
-                    <td class="px-6 py-4">{sub.name}</td>
-                    <td class="px-6 py-4">{sub.email}</td>
-                    <td class="px-6 py-4">{sub.unit}</td>
-                    <td class="px-6 py-4">{sub.subUnit}</td>
-                </tr>
-            )
-        })
+    // const displayUsers = activeSubs
+    //     .slice(visitedPages, visitedPages + usersPerPage)
+    //     .map((sub, index) => {
+    //         return(
+    //             <tr style={{borderBottom:"1px solid #dcdcdc"}}>
+    //                 <td class="px-6 py-4">{index +1}</td>
+    //                 <td class="px-6 py-4">{sub.name}</td>
+    //                 <td class="px-6 py-4">{sub.email}</td>
+    //                 <td class="px-6 py-4">{sub.unit}</td>
+    //                 <td class="px-6 py-4">{sub.subUnit}</td>
+    //             </tr>
+    //         )
+    //     })
 
-    const pageCount = Math.ceil(activeSubs.length / usersPerPage)
+    // const pageCount = Math.ceil(activeSubs.length / usersPerPage)
 
-    const changePage  = ({selected}) => {
-        setPageNumber(selected)
+    // const changePage  = ({selected}) => {
+    //     setPageNumber(selected)
+    // }
+
+    async function getAllGuardians(){
+      const res = await fetch(`${baseUrl}/users/get-users/guardian?page=0`,{
+          headers:{
+              'Content-Type':'application/json',
+              Authorization:`Bearer ${user.data.access_token}`
+          }
+      })
+      const data = await res.json()
+      console.log(data.data.users);
+      setAllGuardians(data.data.users)
+    }
+
+    async function getPlanInfo(){
+      const res = await fetch(`${baseUrl}/plan/${id}`,{
+          headers:{
+              Authorization:`Bearer ${user.data.access_token}`
+          }
+      })
+      const data = await res.json()
+      console.log(data.data);
+      setPlanInfo(data.data)
+    }
+
+    useEffect(() => {
+        getPlanInfo()
+        getAllGuardians()
+    },[])
+
+    const handleCheckboxChange = (id) => {
+      if (selectedGuardians.includes(id)) {
+        setSelectedGuardians(selectedGuardians.filter((selectedId) => selectedId!== id));
+      } else {
+        setSelectedGuardians([...selectedGuardians, id]);
+      }
+    };
+
+    async function sendToken(){
+      console.log(selectedGuardians, planInfo);
+      setIsLoading(true)
+      const res = await fetch(`${baseUrl}/tokens/send-token`,{
+          headers:{
+              'Content-Type':'application/json',
+              Authorization:`Bearer ${user.data.access_token}`
+          },
+          method:'POST',
+          body:JSON.stringify({
+            users:selectedGuardians,
+            plan: planInfo._id
+          })
+      })
+      const data = await res.json()
+      if(res) setIsLoading(false)
+      console.log(data);
+      if(res.ok){
+        // navigate('/token')
+        getPlanInfo()
+        setSendTokenModal(false)
+        setAlertTitle('Successfull')
+        setAlertType('success')
+        setMsg('The tokens has been successfully sent to the selected members. This process may take about 48 hours to show up in their registered email address.')
+      }else{
+        setMsg(data.message)
+        setSendTokenModal(false)
+        setAlertType('error')
+        setAlertTitle('Failed')
+      }
     }
 
 
@@ -654,27 +726,75 @@ const ActiveSubs = () => {
             <div className="">
                 <div className="flex justify-between items-start mb-[3rem] bg-[#F2FCF7] px-[30px] py-[1rem]">
                     <div className="flex items-center gap-2">
-                        <img src="./images/arrow-left.svg" alt="" onClick={() => navigate('/subscribe')} className='cursor-pointer' />
-                        <p className="text-[28px] text-primary-color font-[600]">GotruTrade + GotruMonitor (Weekly)</p>
+                      <div>
+                        <>
+                          <div className='flex items-center gap-2'>
+                            <div className='flex gap-3'>
+                            <img src="./images/arrow-left.svg" alt="" onClick={() => navigate('/token')} className='cursor-pointer' />
+                            {
+                              planInfo && planInfo.subscriptionType.feature.length > 1 
+                              ? planInfo.subscriptionType.feature.map((ft, i) => 
+                                <div className="flex items-center gap-2">
+                                  <p className="text-[24px] text-primary-color font-[600]">{ft.name}</p>
+                                  {i < planInfo.subscriptionType.feature.length - 1 && <span> + </span>}
+                                </div>
+                              )
+                                :
+                                <p className="text-[24px] text-primary-color font-[600]">{planInfo?.subscriptionType?.feature[0].name}</p>
+                            }
+                          </div>
+                          {
+                            planInfo && 
+                            <p className='text-[20px] text-gray-500'>({planInfo.subscriptionType.duration})</p>
+                          }
+                          </div>
+                        </>
+                        {
+                          planInfo && 
+                          <p className='ml-9 text-[14px] text-gray-500'>Tokens Left: {planInfo.quantityLeft}</p>
+                        }
+                      </div>
                     </div>
-                    <button className="bg-[#2D3934] text-white px-5 py-3 rounded-[8px] text-[14px]" onClick={() => setSendTokenModal('By clicking the confirm button, 10 tokens will be sent to the selected members email.')} >Send Token</button>
+                    <button 
+                      className="bg-[#2D3934] text-white px-5 py-3 rounded-[8px] text-[14px]" onClick={() => {
+                        setAlertTitle('Confirm')
+                        setAlertType('success')
+                        setSendTokenModal(`By clicking the confirm button, ${selectedGuardians.length} token(s) will be sent to the selected members email.`)
+                    }}>Send Token
+                    </button>
                 </div>
                 <div class="relative overflow-x-auto">
                     <table class="w-full text-sm text-left rtl:text-left">
                         <thead class="text-[14px] border-b">
                             <tr>
                                 <th scope="col" class="px-6 py-3 th1 font-[700]">S/N</th>
+                                <th scope="col" class="px-6 py-3 font-[700]">Profile Pic</th>
                                 <th scope="col" class="px-6 py-3 font-[700]">Name</th>
                                 <th scope="col" class="px-6 py-3 font-[700]">Email</th>
-                                <th scope="col" class="px-6 py-3 font-[700]">Unit</th>
-                                <th scope="col" class="px-6 py-3 font-[700]">Sub-unit</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
-                            {displayUsers}
+                            {
+                              allGuardians.map((sub, index) => {
+                                  return(
+                                      <tr style={{borderBottom:"1px solid #dcdcdc"}}>
+                                          <td class="px-6 py-4">{index +1}</td>
+                                          <td class="px-6 py-4">
+                                            <img src={sub.profileImage.file} alt={`${sub.fullName} img`} />
+                                          </td>
+                                          <td class="px-6 py-4">{sub.fullName}</td>
+                                          <td class="px-6 py-4">{sub.defaultEmail}</td>
+                                          <td>
+                                            <input type="checkbox" checked={selectedGuardians.includes(sub._id)} onChange={() => handleCheckboxChange(sub._id)} />
+                                          </td>
+                                      </tr>
+                                  )
+                              })
+                            }
                         </tbody>
                     </table>
-                    <ReactPaginate
+                    {/* <ReactPaginate
                         previousLabel={'Prev'}
                         nextLabel = {'Next'}
                         pageCount={pageCount}
@@ -682,13 +802,13 @@ const ActiveSubs = () => {
                         containerClassName='flex items-center gap-9 mt-5 justify-end pr-[30px] paginationBtns'
                         activeClassName='bg-secondary-color text-white'
                         disabledClassName='bg-gray-500 cursor-not-allowed'
-                    />
+                    /> */}
                 </div>
             </div>
         </div>
         {
             sendTokenModal &&
-            <SendTokenModal setAlertType={setAlertType} setAlertTitle={setAlertTitle} sendTokenModal={sendTokenModal} alertType={alertType} setMsg={setMsg} alertTitle={alertTitle} setSendTokenModal={setSendTokenModal}/>
+            <SendTokenModal isLoading={isLoading} sendToken={sendToken} sendTokenModal={sendTokenModal} alertType={alertType} alertTitle={alertTitle} setSendTokenModal={setSendTokenModal}/>
         }
 
         {
@@ -700,4 +820,4 @@ const ActiveSubs = () => {
   )
 }
 
-export default ActiveSubs
+export default SendToken

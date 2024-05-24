@@ -2,11 +2,9 @@ import React, { useState } from 'react'
 import { IoCloseOutline } from 'react-icons/io5'
 import Alert from '../alert/Alert';
 
-const ConfirmSubModal = ({setConfirmSubModal, baseUrl}) => {
+const ConfirmSubModal = ({setConfirmSubModal, baseUrl, setAlertType, setMsg}) => {
     const plan = JSON.parse(localStorage.getItem('selectedPlan'));
-    const [msg, setMsg] = useState('')
     const [quantity, setQuantity] = useState('')
-    const [alertType, setAlertType] = useState()
     const itemsInCart = JSON.parse(localStorage.getItem('itemsInCart')) || []
 
     const user = JSON.parse(localStorage.getItem('user'))
@@ -40,6 +38,10 @@ const ConfirmSubModal = ({setConfirmSubModal, baseUrl}) => {
                 })
             })
             const data = await res.json()
+            if(res.ok){
+                setAlertType('success')
+                setMsg("Plan successfully added to cart")
+            }
             console.log(data);
         }
     }
@@ -76,9 +78,9 @@ const ConfirmSubModal = ({setConfirmSubModal, baseUrl}) => {
                 </div>
             </div>
         </div>
-        {
+        {/* {
             msg && <Alert msg={msg} setMsg={setMsg} alertType={alertType} />
-        }
+        } */}
     </div>
   )
 }

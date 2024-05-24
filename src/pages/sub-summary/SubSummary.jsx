@@ -15,7 +15,7 @@ const SubSummary = ({baseUrl}) => {
     const [msg, setMsg] = useState('')
     const [alertTitle, setAlertTitle] = useState('')
     const [alertType, setAlertType] = useState()
-    const itemsInCart = JSON.parse(localStorage.getItem('itemsInCart')) || []
+    const [itemsInCart, setItemsInCart] = useState([])
     const [totalPrice, setTotalPrice] = useState(0)
     const [subArray, setSubArray] = useState([])
     const [confirmPurchase, setConfirmPurchase] = useState(false)
@@ -40,35 +40,35 @@ const SubSummary = ({baseUrl}) => {
     //     })
     //   }
 
-      async function payWithPayStack(){
-        console.log(subArray);
-        setIsLoading(true)
-        console.log(itemsInCart);
-        const res = await fetch(`${baseUrl}/plan/add-to-cart`,{
-            method:"POST",
-            headers:{
-                'Content-Type':'application/json',
-                Authorization:`Bearer ${user.data.access_token}`
-            },
-            body:JSON.stringify(subArray)
-        })
-        const data = await res.json()
-        console.log(data);
-        if(res.ok){
-            setConfirmPurchase(false)
-            payNow()
-            // setMsg('You have successfully subscribed to Gotruhub. Share the token received with your members to have access to the mobile app.')
-            // setAlertType('success')
-            // setAlertTitle('Successful')
-            // localStorage.removeItem('itemsInCart')
-        }
-        if(!res.ok){
-            setMsg(data.message);
-            setAlertType('error')
-            setAlertTitle('Failed')
-        }
-        setIsLoading(false)
-      }
+    //   async function payWithPayStack(){
+    //     console.log(subArray);
+    //     setIsLoading(true)
+    //     console.log(itemsInCart);
+    //     const res = await fetch(`${baseUrl}/plan/add-to-cart`,{
+    //         method:"POST",
+    //         headers:{
+    //             'Content-Type':'application/json',
+    //             Authorization:`Bearer ${user.data.access_token}`
+    //         },
+    //         body:JSON.stringify(subArray)
+    //     })
+    //     const data = await res.json()
+    //     console.log(data);
+    //     if(res.ok){
+    //         setConfirmPurchase(false)
+    //         payNow()
+    //         // setMsg('You have successfully subscribed to Gotruhub. Share the token received with your members to have access to the mobile app.')
+    //         // setAlertType('success')
+    //         // setAlertTitle('Successful')
+    //         // localStorage.removeItem('itemsInCart')
+    //     }
+    //     if(!res.ok){
+    //         setMsg(data.message);
+    //         setAlertType('error')
+    //         setAlertTitle('Failed')
+    //     }
+    //     setIsLoading(false)
+    //   }
 
       async function payNow(){
         const res = await fetch(`${baseUrl}/plan/pay`,{
@@ -80,30 +80,52 @@ const SubSummary = ({baseUrl}) => {
         const data = await res.json()
         console.log(data.data.paystack.data.authorization_url);
         if(res.ok){
-            // window.location.href = data.data.paystack.data.authorization_url
+            window.location.href = data.data.paystack.data.authorization_url
         }
       }
 
       async function removeFeature(id){
-          // Filter out the item with the given id from the itemsInCart array
-        const updatedItemsInCart = itemsInCart.filter(item => item.id!== id);
-
-        // Update the itemsInCart state with the filtered array
-        localStorage.setItem('itemsInCart', JSON.stringify(updatedItemsInCart));
-        setMsg('This feature was successfully removed from your package.')
-        setAlertType('success')
-        setAlertTitle('Successful')
+        const res = await fetch(`${baseUrl}/plan/${id}`,{
+            method:"DELETE",
+            headers:{
+                Authorization:`Bearer ${user.data.access_token}`
+            }
+        })
+        // const data = await res.json()
+        console.log(res);
+        if(res.ok){
+            getMyPlans()
+            setMsg('This feature was successfully removed from your package.')
+            setAlertType('success')
+            setAlertTitle('Successful')
+        }
       }
 
       useEffect(() => {
         const calculateTotalPrice = () => {
           const total = itemsInCart.reduce((accumulator, currentValue) => {
-            return accumulator + currentValue.subTotalPrice;
+            return accumulator + currentValue.amount;
           }, 0);
           setTotalPrice(total);
         };
         calculateTotalPrice();
-      },[itemsInCart])
+    },[itemsInCart])
+
+    useEffect(() => {
+        getMyPlans()
+    },[])
+
+      async function getMyPlans(){
+        const res = await fetch(`${baseUrl}/plan/my-cart`,{
+            headers:{
+                'Content-Type':'application/json',
+                Authorization:`Bearer ${user.data.access_token}`
+            }
+        })
+        const data = await res.json()
+        console.log(data.data.plans);
+        setItemsInCart(data.data.plans)
+      }
 
   return (
     <div>
@@ -136,31 +158,23 @@ const SubSummary = ({baseUrl}) => {
                                 itemsInCart.map((item, index) => (
                                     <tr style={{borderBottom:"1px solid #dcdcdc"}}>
                                         <td class="px-6 py-4">{index + 1}</td>
-                                        <td class="px-6 py-4 capitalize">{item.name}</td>
-                                        <td class="px-6 py-4 capitalize">{item.duration}</td>
-                                        <td class="px-6 py-4">{item.price}</td>
-                                        <td class="px-6 py-4">{item.quantity}</td>
-                                        <td class="px-6 py-4">{item.subTotalPrice.toLocaleString('en-US', {
+                                        <td class="px-6 py-4 capitalize">{item.subscriptionType.name}</td>
+                                        <td class="px-6 py-4 capitalize">{item.planValidity}</td>
+                                        <td class="px-6 py-4">{item.subscriptionType.amount.$numberDecimal.toLocaleString('en-US', {
                                             style: 'currency',
-                                            currency: 'NGN' // Change to your desired currency code (e.g., 'EUR', 'GBP', 'JPY', etc.)
+                                            currency: 'NGN'
+                                        })}</td>
+                                        <td class="px-6 py-4">{item.quantity}</td>
+                                        <td class="px-6 py-4">{item.amount.toLocaleString('en-US', {
+                                            style: 'currency',
+                                            currency: 'NGN'
                                         })}</td>
                                         <td class="py-2 text-center text-white my-4">
-                                            <button className='bg-[#9A2525] rounded-[8px] px-6 py-3' onClick={() => removeFeature(item.id)}>Remove</button>
+                                            <button className='bg-[#9A2525] rounded-[8px] px-6 py-3' onClick={() => removeFeature(item._id)}>Remove</button>
                                         </td>
                                     </tr>
                                 ))
                             }
-                            {/* <tr style={{borderBottom:"1px solid #dcdcdc"}}>
-                                <td class="px-6 py-4">2</td>
-                                <td class="px-6 py-4">GotruPas + GotruMonitor</td>
-                                <td class="px-6 py-4">Monthly</td>
-                                <td class="px-6 py-4">700</td>
-                                <td class="px-6 py-4">200</td>
-                                <td class="px-6 py-4">#14,000</td>
-                                <td class="py-2 text-center text-white my-4">
-                                    <button className='bg-[#9A2525] rounded-[8px] px-6 py-3' onClick={removeFeature}>Remove</button>
-                                </td>
-                            </tr> */}
                         </tbody>
                     </table>
                 </div>
@@ -168,18 +182,10 @@ const SubSummary = ({baseUrl}) => {
                     <p></p>
                     <div className='flex items-center gap-8'>
                         <p className='text-[#1D1D1D] font-[700] text-[18px]'>{totalPrice.toLocaleString('en-US', {
-                                            style: 'currency',
-                                            currency: 'NGN' // Change to your desired currency code (e.g., 'EUR', 'GBP', 'JPY', etc.)
-                                        })}</p>
-                        <button onClick={() => {
-                            setConfirmPurchase(true)
-                            const subArray = itemsInCart.map(item => ({
-                                quantity: item.quantity,
-                                subscriptionType: item.id
-                              }));
-                            
-                              setSubArray(subArray);
-                        }} className='bg-[#19201D] text-white font-[500] rounded-[8px] px-6 py-[9px]'>Pay Now</button>
+                            style: 'currency',
+                            currency: 'NGN' // Change to your desired currency code (e.g., 'EUR', 'GBP', 'JPY', etc.)
+                        })}</p>
+                        <button onClick={payNow} className='bg-[#19201D] text-white font-[500] rounded-[8px] px-6 py-[9px]'>Pay Now</button>
                     </div>
                 </div>
             </div>

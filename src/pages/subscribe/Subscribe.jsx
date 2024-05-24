@@ -17,7 +17,7 @@ const Subscribe = ({baseUrl}) => {
     const [selectedFeature, setSelectedFeature] = useState('')
     const [selectedFeatureDuration, setSelectedFeatureDuration] = useState('')
     const [msg, setMsg] = useState('')
-    const [alertType, setAlertType] = useState()
+    const [alertType, setAlertType] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
     const [aboutFeatureModal, setAboutFeatureModal] = useState(false)
@@ -27,19 +27,19 @@ const Subscribe = ({baseUrl}) => {
 
     const [checkedIds, setCheckedIds] = useState([]);
 
-    const handleGoClick = () => {
-        const checkedIds = [];
-        arrayOfFeatures.forEach(feature => {
-            feature.benefit.forEach(ben => {
-                const checkbox = document.getElementById(`checkbox-${ben.id}`);
-                if (checkbox.checked) {
-                    checkedIds.push(ben.id);
-                }
-            });
-        });
-        console.log("Checked IDs:", checkedIds);
-        setCheckedIds(checkedIds);
-    };
+    // const handleGoClick = () => {
+    //     const checkedIds = [];
+    //     arrayOfFeatures.forEach(feature => {
+    //         feature.benefit.forEach(ben => {
+    //             const checkbox = document.getElementById(`checkbox-${ben.id}`);
+    //             if (checkbox.checked) {
+    //                 checkedIds.push(ben.id);
+    //             }
+    //         });
+    //     });
+    //     console.log("Checked IDs:", checkedIds);
+    //     setCheckedIds(checkedIds);
+    // };
 
     async function getSubs(){
         const res = await fetch(`${baseUrl}/subscriptions`,{
@@ -59,57 +59,57 @@ const Subscribe = ({baseUrl}) => {
 
     console.log(arrayOfFeatures);
 
-    async function handleSubscription(){
-        const res = await fetch(`${baseUrl}/plan/add-to-cart`,{
-            method:"POST",
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization:`Bearer ${user.data.access_token}`
-            },
-            body: JSON.stringify({ subscriptionType, quantity })
-        })
-        const data = await res.json()
-        if(res.ok){
-            setMsg("Subscription Added Successfully");
-            setAlertType('success')
-            setQuantity('')
-            setSelectedFeature('')
-            setSelectedFeatureDuration('')
-        }
-        if(!res.ok){
-            setMsg("Subscription Was Not Successfully Added");
-            setAlertType('error')
-        }
-        console.log(res, data);
-        console.log(quantity, subscriptionType);
-    }
+    // async function handleSubscription(){
+    //     const res = await fetch(`${baseUrl}/plan/add-to-cart`,{
+    //         method:"POST",
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             Authorization:`Bearer ${user.data.access_token}`
+    //         },
+    //         body: JSON.stringify({ subscriptionType, quantity })
+    //     })
+    //     const data = await res.json()
+    //     if(res.ok){
+    //         setMsg("Subscription Added Successfully");
+    //         setAlertType('success')
+    //         setQuantity('')
+    //         setSelectedFeature('')
+    //         setSelectedFeatureDuration('')
+    //     }
+    //     if(!res.ok){
+    //         setMsg("Subscription Was Not Successfully Added");
+    //         setAlertType('error')
+    //     }
+    //     console.log(res, data);
+    //     console.log(quantity, subscriptionType);
+    // }
 
-    const subArray = [
-        {
-            price:'250',
-            duration:'Weekly'
-        },
-        {
-            price:'700',
-            duration:'Yearly'
-        },
-        {
-            price:'500',
-            duration:'Mothly'
-        },
-        {
-            price:'900',
-            duration:'Weekly'
-        },
-        {
-            price:'400',
-            duration:'14 Weeks'
-        },
-        {
-            price:'900',
-            duration:'24 Weeks'
-        }
-    ]
+    // const subArray = [
+    //     {
+    //         price:'250',
+    //         duration:'Weekly'
+    //     },
+    //     {
+    //         price:'700',
+    //         duration:'Yearly'
+    //     },
+    //     {
+    //         price:'500',
+    //         duration:'Mothly'
+    //     },
+    //     {
+    //         price:'900',
+    //         duration:'Weekly'
+    //     },
+    //     {
+    //         price:'400',
+    //         duration:'14 Weeks'
+    //     },
+    //     {
+    //         price:'900',
+    //         duration:'24 Weeks'
+    //     }
+    // ]
 
   return (
     <div>
@@ -125,7 +125,7 @@ const Subscribe = ({baseUrl}) => {
                     </div>
                     <div className='flex items-center gap-5'>
                         <button className="bg-[#19201D] text-white px-5 py-3 rounded-[8px] text-[14px] w-[140px]" onClick={() => navigate('/token')}>Token</button>
-                        <button className={ localStorage.getItem('itemsInCart') ? `border border-[#19201D] text-[#19201D] px-5 py-3 rounded-[8px] text-[14px] w-[140px] font-[600]`: `border-[#646464] text-[#969696] font-[600] border px-5 py-3 rounded-[8px] text-[14px] w-[140px] cursor-not-allowed`} onClick={()=> navigate('/sub-summary')}>Cart</button>
+                        <button className="border-[#646464] text-[#969696] font-[600] border px-5 py-3 rounded-[8px] text-[14px] w-[140px]" onClick={()=> navigate('/sub-summary')}>Cart</button>
                     </div>
                 </div>
                 <div className='px-[30px]'>
@@ -281,7 +281,7 @@ const Subscribe = ({baseUrl}) => {
         }
 
         {
-            confirmSubModal && <ConfirmSubModal setConfirmSubModal={setConfirmSubModal} baseUrl={baseUrl}/>
+            confirmSubModal && <ConfirmSubModal setMsg={setMsg} setAlertType={setAlertType} setConfirmSubModal={setConfirmSubModal} baseUrl={baseUrl}/>
         }
     </div>
   )
