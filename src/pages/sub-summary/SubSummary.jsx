@@ -116,7 +116,7 @@ const SubSummary = ({baseUrl}) => {
     },[])
 
       async function getMyPlans(){
-        const res = await fetch(`${baseUrl}/plan/my-cart`,{
+        const res = await fetch(`${baseUrl}/plan/pending`,{
             headers:{
                 'Content-Type':'application/json',
                 Authorization:`Bearer ${user.data.access_token}`

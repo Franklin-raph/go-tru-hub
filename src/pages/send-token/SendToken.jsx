@@ -662,7 +662,7 @@ const SendToken = ({baseUrl}) => {
     }
 
     async function getPlanInfo(){
-      const res = await fetch(`${baseUrl}/plan/${id}`,{
+      const res = await fetch(`${baseUrl}/plan/single/${id}`,{
           headers:{
               Authorization:`Bearer ${user.data.access_token}`
           }

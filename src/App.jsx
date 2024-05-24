@@ -23,6 +23,8 @@ import SubSummary from './pages/sub-summary/SubSummary'
 import Token from './pages/token/Token'
 import SendToken from './pages/send-token/SendToken'
 import ManageUsers from './pages/manage-users/ManageUsers'
+import SingleUser from './pages/single-user/SingleUser'
+import ProfileEdit from './pages/profile-edit/ProfileEdit'
 
 function App() {
 
@@ -50,8 +52,10 @@ function App() {
             <Route path='/subscribe' element={<Subscribe baseUrl={baseUrl}/>} />
             <Route path='/sub-summary' element={<SubSummary baseUrl={baseUrl}/>} />
             <Route path='/token' element={<Token baseUrl={baseUrl}/>} />
-            <Route path='/send-token/:id' element={<SendToken baseUrl={baseUrl}/>} />
             <Route path='/manage-users' element={<ManageUsers baseUrl={baseUrl}/>} />
+            <Route path='/profile-edit/:id' element={<ProfileEdit baseUrl={baseUrl}/>} />
+            <Route path='/send-token/:id' element={<SendToken baseUrl={baseUrl}/>} />
+            <Route path='/user/:id' element={<SingleUser baseUrl={baseUrl}/>} />
             <Route path='*' element={<div>404</div>} />
         </Routes>
       </HashRouter>
