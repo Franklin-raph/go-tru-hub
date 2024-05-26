@@ -249,7 +249,7 @@ const Subscribe = ({baseUrl}) => {
                                 <p className='text-[#4F4F4F] text-[14px] mt-2'>This feature enables organizations to effectively manage their members' sign-in and sign-out activities. With GotruPass, organizations can maintain a comprehensive record of the exact locations where their members sign in, ensuring accurate tracking. Moreover, it provides a vital layer of security by enabling organizations to identify the authorized personnel responsible for signing members in or out. By leveraging GotruPass, organizations can effortlessly track the presence of individuals within their premises, enabling them to maintain precise and up-to-date records of who has successfully signed in and who hasn't at any given moment.</p>
                             </div>
                         </div>
-                        <div className='flex items-center gap-9 bg-[#F2F2F2] rounded-[12px] px-9 py-5'>
+                        <div className='flex items-center gap-9 bg-[#F2F2F2] rounded-[12px] px-9 py-5 my-10'>
                             <div className='rounded-[4px] bg-[#119353] py-[2rem] px-[1rem] text-center text-white'>
                                 <div className='bg-white inline-flex p-3 rounded-full items-center justify-center'>
                                     <img src="./images/Tick-Square.svg" alt="" className='w-[20px]' />
