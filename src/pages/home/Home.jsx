@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Footer from '../../components/footer/Footer'
 import Navbar from '../../components/navbar/Navbar'
@@ -6,6 +6,7 @@ import Navbar from '../../components/navbar/Navbar'
 const Home = () => {
 
     const tabArray = ['Gotru Trade', 'Gotru Pass', 'Gotru Monitor']
+    const [selectedTab, setSelectedTab] = useState('Gotru Trade')
     const navigate = useNavigate()
     const user = localStorage.getItem('user')
     
@@ -39,21 +40,50 @@ const Home = () => {
                     {
                         tabArray.map((tab, index) => (
                             <div key={index} className='flex items-center justify-center gap-[100px]'>
-                                <p className='text-center cursor-pointer text-[#6F7975]'>{tab}</p>
+                                <p className='text-center cursor-pointer text-[#6F7975]' onClick={() => setSelectedTab(tab)}>{tab}</p>
                             </div>
                         ))
                     }
                 </div>
-                <div className='flex justify-between lg:items-start gap-[2rem] lg:text-left text-center w-[90%] flex-col lg:flex-row items-center mx-auto mt-[5rem]'>
-                    <img src="./trade_img.svg" className='max-w-[100%]' alt="" />
-                    <div className='g:w-[50%] w-[90%]'>
-                        <p className='text-[32px] font-[500] mb-3'>Gotru Trade</p>
-                        <p className='text-[#6F7975]'>With our ready to use inventory and ledger management systems, sales and payment management is seamless and can be done without cash. It is most suitable for cooperative trading.</p>
-                        <div className=''>
-                            <button onClick={() => navigate('/register')} className='text-white bg-primary-color rounded-[8px] mt-[2.5rem] px-[35px] py-[16px] text-center'>Get Started</button>
+                {
+                    selectedTab === "Gotru Trade" &&
+                    <div className='flex justify-between lg:items-start gap-[2rem] lg:text-left text-center w-[90%] flex-col lg:flex-row items-center mx-auto mt-[5rem]'>
+                        <img src="./trade_img.svg" className='max-w-[100%]' alt="" />
+                        <div className='g:w-[50%] w-[90%]'>
+                            <p className='text-[32px] font-[500] mb-3'>Gotru Trade</p>
+                            <p className='text-[#6F7975]'>With our ready to use inventory and ledger management systems, sales and payment management is seamless and can be done without cash. It is most suitable for cooperative trading.</p>
+                            <div className=''>
+                                <button onClick={() => navigate('/register')} className='text-white bg-primary-color rounded-[8px] mt-[2.5rem] px-[35px] py-[16px] text-center'>Get Started</button>
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
+                {
+                    selectedTab === "Gotru Pass" &&
+                    <div className='flex justify-between lg:items-start gap-[2rem] lg:text-left text-center w-[90%] flex-col lg:flex-row items-center mx-auto mt-[5rem]'>
+                        <img src="./images/go-tru-pass.svg" className='max-w-[100%]' alt="" />
+                        <div className='g:w-[50%] w-[90%]'>
+                            <p className='text-[32px] font-[500] mb-3'>Gotru Pass</p>
+                            <p className='text-[#6F7975]'>With this feature, schools/corporate organizations captures resumption you and exit times of students/members of staff in real time, it also sends automatic and instant notifications to parent's/Management's contacts at each capture.</p>
+                            <div className=''>
+                                <button onClick={() => navigate('/register')} className='text-white bg-primary-color rounded-[8px] mt-[2.5rem] px-[35px] py-[16px] text-center'>Get Started</button>
+                            </div>
+                        </div>
+                    </div>
+                }
+                {
+                    selectedTab === "Gotru Monitor" &&
+                    <div className='flex justify-between lg:items-start gap-[2rem] lg:text-left text-center w-[90%] flex-col lg:flex-row items-center mx-auto mt-[5rem]'>
+                        <img src="./trade_img.svg" className='max-w-[100%]' alt="" />
+                        <div className='g:w-[50%] w-[90%]'>
+                            <p className='text-[32px] font-[500] mb-3'>Gotru Monitor</p>
+                            <p className='text-[#6F7975]'>This feature captures resumption and exit times to distinct assignments in real time. With this, promptness and due diligence to duty will be enshrined.</p>
+                            <div className=''>
+                                <button onClick={() => navigate('/register')} className='text-white bg-primary-color rounded-[8px] mt-[2.5rem] px-[35px] py-[16px] text-center'>Get Started</button>
+                            </div>
+                        </div>
+                    </div>
+                }
             </div>
             <div className='bg-primary-color py-[4rem] my-[10rem]'>
                 <h1 className='text-white font-[400] text-[18px] sm:text-[28px] md:text-[38px] w-[80%] lg:w-[40%] mb-10 mx-auto text-center'>Why Corporate Organizations choose Gotruhub</h1>
