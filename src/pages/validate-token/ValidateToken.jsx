@@ -69,7 +69,7 @@ const ValidateToken = ({baseUrl}) => {
     <>
         <Navbar />
         <div className='w-[100%] mx-auto my-[7rem]'>
-        <div className='w-[70%] mx-auto'>
+        <div className='w-[100%] md:w-[70%] mx-auto'>
             <div
                 className="center"
                 style={{ padding: "0 8vw", position: "relative" }}

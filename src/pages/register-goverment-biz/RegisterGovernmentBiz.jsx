@@ -40,7 +40,7 @@ const RegisterGovernmentBiz = () => {
     <div>
       <Navbar />
         <div className='w-[100%] mx-auto my-[4rem]'>
-            <div className='w-[55%] mx-auto'>
+            <div className='md:w-[55%] w-[90%] mx-auto'>
                 <div className='flex items-center justify-between'>
                     <div className='flex items-center gap-1 cursor-pointer' onClick={() => navigate('/register')}>
                         <GoChevronLeft />
@@ -83,7 +83,7 @@ const RegisterGovernmentBiz = () => {
                   <div className='w-full relative mt-8'>
                     <label className='block text-left mb-2'>State</label>
                     <div className='px-4 py-3 outline-none border w-full rounded-[4px] flex items-center justify-between'>
-                      <input value={state} placeholder='Select level' type="text" className='outline-none w-full rounded-[4px]'/>
+                      <input value={state} placeholder='Select State' type="text" className='outline-none w-full rounded-[4px]'/>
                       <GoChevronDown cursor={'pointer'} onClick={() => setStateDropDown(!stateDropDown)}/>
                     </div>
                       {

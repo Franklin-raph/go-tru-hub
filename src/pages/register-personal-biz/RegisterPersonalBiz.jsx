@@ -62,7 +62,7 @@ const RegisterPersonalBiz = ({baseUrl}) => {
     <div>
         <Navbar />
         <div className='w-[100%] mx-auto my-[4rem]'>
-            <div className='w-[55%] mx-auto'>
+            <div className='md:w-[55%] w-[90%] mx-auto'>
                 <div className='flex items-center justify-between'>
                     <div className='flex items-center gap-1 cursor-pointer' onClick={() => navigate('/register')}>
                         <GoChevronLeft />

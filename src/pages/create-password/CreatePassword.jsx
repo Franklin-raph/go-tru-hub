@@ -105,7 +105,7 @@ const CreatePassword = ({baseUrl}) => {
       <div
         className="className='w-[100%] mx-auto my-[4rem]"
       >
-            <div className='w-[40%] mx-auto'>
+            <div className='md:w-[40%] sm:w-[60%] w-[90%] mx-auto'>
                 <h3 className='text-center mx-[20px] text-[30px] mb-[3rem]'>Create Password</h3>
                 <div className="" style={{marginBottom:"30px"}}>
                   <p style={{marginBottom:"5px"}}>Enter Password</p>
@@ -127,7 +127,7 @@ const CreatePassword = ({baseUrl}) => {
                     )}
                   </div>
                 </div>
-                <div className="grid grid-cols-3 text-[12px] mt-2 gap-1">
+                <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 text-[12px] mt-2 gap-1">
                   {
                     lowerValidated ? 
                     <p className='border border-[#25751E] rounded-[4px] px-2 py-1 bg-[#DEEADD] text-[#1D1D1D]'>Lowercase letter e.g. a</p>

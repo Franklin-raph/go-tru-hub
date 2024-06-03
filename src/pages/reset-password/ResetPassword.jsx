@@ -48,7 +48,7 @@ const ResetPassword = ({baseUrl}) => {
     <>
       <Navbar />
       <div className='w-[100%] mx-auto text-center my-[4rem]'>
-        <div className='w-[40%] mx-auto'>
+        <div className='md:w-[40%] sm:w-[60%] w-[90%] mx-auto'>
           <p className='text-[28px] mb-[40px] text-text-color'>Reset password</p>
           <div>
             <label className='block text-left mb-2'>Email Address</label>

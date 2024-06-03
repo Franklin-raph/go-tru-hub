@@ -65,7 +65,7 @@ const ChangePassword = ({baseUrl}) => {
       <div
         className="className='w-[100%] mx-auto my-[4rem]"
       >
-            <div className='w-[40%] mx-auto'>
+            <div className='md:w-[40%] sm:w-[60%] w-[90%] mx-auto'>
                 <h3 className='text-center mx-[20px] text-[30px] mb-[3rem]'>Reset Password</h3>
                 <div className="" style={{marginBottom:"30px"}}>
                   <p style={{marginBottom:"5px"}}>Enter Password</p>
