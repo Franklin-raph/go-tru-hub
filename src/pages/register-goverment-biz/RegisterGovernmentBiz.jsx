@@ -42,7 +42,7 @@ const RegisterGovernmentBiz = () => {
         <div className='w-[100%] mx-auto my-[4rem]'>
             <div className='md:w-[55%] w-[90%] mx-auto'>
                 <div className='flex items-center justify-between'>
-                    <div className='flex items-center gap-1 cursor-pointer' onClick={() => navigate('/register')}>
+                    <div className='sm:flex items-center gap-1 cursor-pointer hidden' onClick={() => navigate('/register')}>
                         <GoChevronLeft />
                         <p>Back</p>
                     </div>
@@ -50,7 +50,7 @@ const RegisterGovernmentBiz = () => {
                     <p></p>
                 </div>
                 <p className='text-[#828282] mt-8 mb-10'>By proceeding, you are registering your organization as a government/licensed institution. Not a government/licensed institution? Return to previous screen and select your organization type.</p>
-                <div className='flex items-center gap-5 w-full'>
+                <div className='flex flex-col sm:flex-row items-center gap-5 w-full'>
                   <div className='w-full relative'>
                       <label className='block text-left mb-2'>Government level</label>
                       <div className='px-4 py-3 outline-none border w-full rounded-[4px] flex items-center justify-between'>
@@ -105,7 +105,7 @@ const RegisterGovernmentBiz = () => {
                   }
 
                   {govtLevel === 'Local' &&
-                    <div className='flex items-center gap-5 w-full'>
+                    <div className='flex flex-col sm:flex-row items-center gap-5 w-full'>
                       <div className='w-full relative mt-8'>
                         <label className='block text-left mb-2'>State</label>
                         <div className='px-4 py-3 outline-none border w-full rounded-[4px] flex items-center justify-between'>
@@ -154,7 +154,7 @@ const RegisterGovernmentBiz = () => {
                     </div>
                   }
 
-                <div className='flex items-center gap-5 w-full my-[3rem]'>
+                <div className='flex flex-col sm:flex-row items-center gap-5 w-full my-[3rem]'>
                     <div className='w-full'>
                         <label className='block text-left mb-2'>Contact address</label>
                         <input type="text" className='px-4 py-3 outline-none border w-full rounded-[4px]'/>
@@ -164,7 +164,7 @@ const RegisterGovernmentBiz = () => {
                         <input type="text" className='px-4 py-3 outline-none border w-full rounded-[4px]'/>
                     </div>
                 </div>
-                <div className='flex items-center gap-5 w-full'>
+                <div className='flex flex-col sm:flex-row items-center gap-5 w-full'>
                     <div className='w-full'>
                         <label className='block text-left mb-2'>Email address</label>
                         <input type="text" className='px-4 py-3 outline-none border w-full rounded-[4px]'/>

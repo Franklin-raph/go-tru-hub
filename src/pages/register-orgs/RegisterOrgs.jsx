@@ -115,7 +115,7 @@ const RegisterOrgs = ({baseUrl}) => {
         <div className='w-[100%] mx-auto my-[4rem]'>
             <div className='md:w-[55%] w-[90%] mx-auto'>
                 <div className='flex items-center justify-between'>
-                    <div className='flex items-center gap-1 cursor-pointer' onClick={() => navigate('/register')}>
+                    <div className='sm:flex items-center gap-1 cursor-pointer hidden' onClick={() => navigate('/register')}>
                         <GoChevronLeft />
                         <p>Back</p>
                     </div>
@@ -123,7 +123,7 @@ const RegisterOrgs = ({baseUrl}) => {
                     <p></p>
                 </div>
                 <p className='text-[#828282] mt-8 mb-10'>By proceeding, you are registering your organization as a registered business. Not registered? Return to previous screen and select your organization type.</p>
-                <div className='flex items-center gap-5 w-full'>
+                <div className='flex flex-col sm:flex-row items-center gap-5 w-full'>
                     <div className='w-full'>
                         <label className='block text-left mb-2'>Name of Establishment</label>
                         <input type="text" onChange={e => setNameOfEstablishment(e.target.value)} className='px-4 py-3 outline-none border w-full rounded-[4px]'/>
@@ -133,7 +133,7 @@ const RegisterOrgs = ({baseUrl}) => {
                         <input type="text" onChange={e => setBizType(e.target.value)} className='px-4 py-3 outline-none border w-full rounded-[4px]'/>
                     </div>
                 </div>
-                <div className='flex items-center gap-5 w-full my-[3rem]'>
+                <div className='flex flex-col sm:flex-row items-center gap-5 w-full my-[3rem]'>
                     <div className='w-full'>
                         <label className='block text-left mb-2'>Phone Number</label>
                         <input type="text" onChange={e => setPhone(e.target.value)} className='px-4 py-3 outline-none border w-full rounded-[4px]'/>
@@ -143,7 +143,7 @@ const RegisterOrgs = ({baseUrl}) => {
                         <input type="text" onChange={e => setEmail(e.target.value)} className='px-4 py-3 outline-none border w-full rounded-[4px]'/>
                     </div>
                 </div>
-                <div className='flex items-center gap-5 w-full'>
+                <div className='flex flex-col sm:flex-row items-center gap-5 w-full'>
                     <div className='w-full'>
                         <div className="flex items-center justify-between">
                             <label className='block text-left mb-2'>Enter Referral Code</label>
@@ -156,7 +156,7 @@ const RegisterOrgs = ({baseUrl}) => {
                         <input type="text" onChange={e => setBusinessAddress(e.target.value)} className='px-4 py-3 outline-none border w-full rounded-[4px]'/>
                     </div>
                 </div>
-                <div className='flex items-center gap-5 w-full my-[3rem]'>
+                <div className='flex flex-col sm:flex-row items-center gap-5 w-full my-[3rem]'>
                     <div className='w-full'>
                         <label className='block text-left mb-2'>Year of Establishment</label>
                         <input type="text" onChange={e => setYearOfEstablishment(e.target.value)} className='px-4 py-3 outline-none border w-full rounded-[4px]'/>
@@ -166,7 +166,7 @@ const RegisterOrgs = ({baseUrl}) => {
                         <input onChange={e => setNameOfProprietor(e.target.value)} type="text" className='px-4 py-3 outline-none border w-full rounded-[4px]'/>
                     </div>
                 </div>
-                <div className='flex items-center gap-5 w-full my-[3rem]'>
+                <div className='flex flex-col sm:flex-row items-center gap-5 w-full my-[3rem]'>
                     <div className='relative flex items-center gap-3 p-4 rounded-[4px] w-full cursor-pointer' style={{ border:'1px dashed gray' }}>
                     {cacImage ? (
                         <div className='py-[10px] flex items-center gap-3'>

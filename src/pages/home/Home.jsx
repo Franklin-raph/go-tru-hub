@@ -32,7 +32,7 @@ const Home = () => {
                 <h1 className='text-primary-color font-[500] text-[18px] sm:text-[32px] md:text-[48px] lg:w-[70%] xl:[w-50%] md:px-[1rem] mx-auto'>
                     We’re all about helping you manage your organization
                 </h1>
-                <p className='leading-[1.6] w-[580px] mx-auto mt-8'>
+                <p className='leading-[1.6] w-full sm:w-[580px] mx-auto mt-8'>
                     Our product is aimed at simplifying organization's management processes and helping to keep track of team activities.
                 </p>
                 <div className='flex items-center justify-center gap-[20px] mt-10'>
