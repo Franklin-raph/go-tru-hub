@@ -2,7 +2,7 @@ import React from 'react'
 
 const WalletCard = ({ title, amount }) => {
   return (
-    <div className="bg-gradient-to-r from-green-400 to-blue-500 p-4 rounded-lg shadow-lg text-white w-[90%] flex-shrink-0 snap-center">
+    <div className="cursor-pointer bg-gradient-to-r from-green-400 to-blue-500 p-4 rounded-lg shadow-lg text-white w-[90%] flex-shrink-0 snap-center">
       <div className="flex justify-between items-center">
         <h3 className="text-sm font-medium">{title}</h3>
         <div className="w-6 h-6 bg-white text-green-500 rounded-full flex items-center justify-center">

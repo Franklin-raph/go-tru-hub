@@ -8,8 +8,8 @@ const queryClinet = new QueryClient({})
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <QueryClientProvider client={queryClinet}>
+    {/* <QueryClientProvider client={queryClinet}> */}
       <App />
-    </QueryClientProvider>
-  </React.StrictMode>,
+    {/* </QueryClientProvider> */}
+  </React.StrictMode>
 )

@@ -19,17 +19,17 @@ const Home = () => {
     <>
         <Navbar />
         <div>
-            <h1 className='mt-[7rem] text-[48px] text-primary-color leading-20 text-center font-[500] w-[80%] mx-auto'>Manage your mega stores, employees, team members and collect revenue with just one app</h1>
-            <p className='mt-[5rem] w-[850px] text-justify leading-[1.6] mx-auto'>
+            <h1 className='mt-[7rem] text-[18px] sm:text-[32px] md:text-[48px] text-primary-color leading-20 text-center font-[500] lg:w-[80%] sm:w-[90%] w-full px-[1rem] mx-auto'>Manage your mega stores, employees, team members and collect revenue with just one app</h1>
+            <p className='mt-[3rem] md:mt-[5rem] w-[85%] md:w-[60%] text-justify leading-[1.6] mx-auto'>
                 Gotruhub is a multi tenant digital platform built for diverse functions which include cooperative trading. It also allow you manage your mega stores, manage staff members, help schools/parents keep track of students security and school attendance record.
                 <Link to='/about' className='text-secondary-color font-[500]'> Learn More</Link>
             </p>
             <div className='text-center'>
                 <button onClick={() => navigate('/register')} className='text-white bg-primary-color rounded-[8px] mt-[4rem] px-[35px] py-[16px] text-center mx-auto'>Get Started with Gotruhub</button>
             </div>
-            <img src="/land-1.svg" className='mx-auto mt-[5rem] mb-[10rem] max-w-[75%]' alt="" />
+            <img src="/land-1.svg" className='mx-auto mt-[5rem] mb-[10rem] md:max-w-[75%] max-w-[95%]' alt="" />
             <div className='text-center'>
-                <h1 className='text-primary-color font-[500] text-[48px] w-[50%] mx-auto'>
+                <h1 className='text-primary-color font-[500] text-[18px] sm:text-[32px] md:text-[48px] lg:w-[70%] xl:[w-50%] md:px-[1rem] mx-auto'>
                     We’re all about helping you manage your organization
                 </h1>
                 <p className='leading-[1.6] w-[580px] mx-auto mt-8'>
@@ -44,9 +44,9 @@ const Home = () => {
                         ))
                     }
                 </div>
-                <div className='flex justify-between items-start gap-[2rem] text-left w-[90%] mx-auto mt-[5rem]'>
+                <div className='flex justify-between lg:items-start gap-[2rem] lg:text-left text-center w-[90%] flex-col lg:flex-row items-center mx-auto mt-[5rem]'>
                     <img src="./trade_img.svg" className='max-w-[100%]' alt="" />
-                    <div className='w-[50%]'>
+                    <div className='g:w-[50%] w-[90%]'>
                         <p className='text-[32px] font-[500] mb-3'>Gotru Trade</p>
                         <p className='text-[#6F7975]'>With our ready to use inventory and ledger management systems, sales and payment management is seamless and can be done without cash. It is most suitable for cooperative trading.</p>
                         <div className=''>
@@ -56,8 +56,8 @@ const Home = () => {
                 </div>
             </div>
             <div className='bg-primary-color py-[4rem] my-[10rem]'>
-                <h1 className='text-white font-[400] text-[38px] w-[40%] mb-10 mx-auto text-center'>Why Corporate Organizations choose Gotruhub</h1>
-                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 text-white gap-[5rem]'>
+                <h1 className='text-white font-[400] text-[18px] sm:text-[28px] md:text-[38px] w-[80%] lg:w-[40%] mb-10 mx-auto text-center'>Why Corporate Organizations choose Gotruhub</h1>
+                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 text-white gap-[5rem] px-[2rem]'>
                     <div className='text-center flex flex-col items-center justify-center'>
                         <img src="./security.svg" alt="" />
                         <p className='my-5 text-[20px]'>Encrypted information</p>
@@ -81,10 +81,10 @@ const Home = () => {
                 </div>
             </div>
             <div className='text-center'>
-                <h1 className='text-primary-color font-[500] text-[48px] w-[50%] mx-auto'>
+                <h1 className='text-primary-color font-[500] text-[18px] sm:text-[32px] md:text-[48px] lg:w-[65%] md:w-[75%] w-[90%] mx-auto'>
                     Sign up with Gotruhub to start managing your team
                 </h1>
-                <p className='leading-[1.6] w-[580px] mx-auto mt-6'>
+                <p className='leading-[1.6] mx-auto mt-6'>
                     Create account instantly to start managing your team and resources.
                 </p>
                 <div className='text-center'>
