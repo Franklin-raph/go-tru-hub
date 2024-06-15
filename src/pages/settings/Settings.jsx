@@ -9,7 +9,7 @@ import BtnLoader from '../../components/btn-loader/BtnLoader';
 const Settings = () => {
 
     const [editLocationModal, setEditLocationModal] = useState(false)
-    const [deleteLocationModal, setDeleteLocationModal] = useState(false)
+    const [deleteOrgsModal, setDeleteOrgsModal] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
 
     const [password, setPassword] = useState('');
@@ -125,14 +125,14 @@ const Settings = () => {
                             <img src="./images/user.svg" alt="" className='w-[15px]' />
                             <p className='text-[#19201D]'>My Account</p>
                         </div>
-                        <p className='text-[#9A2525] mt-4 cursor-pointer'>Delete my organization</p>
+                        <p className='text-[#9A2525] mt-4 cursor-pointer inline-block' onClick={() => setDeleteOrgsModal(true)}>Delete my organization</p>
                     </div>
                     <div className='bg-[#F7F7F7] px-8 py-6 w-[90%] rounded-[16px]'>
                         <div className='flex items-center gap-3'>
                             <img src="./images/chat.svg" alt="" className='w-[15px]' />
                             <p className='text-[#19201D]'>Support</p>
                         </div>
-                        <p className='text-[#19201D] mt-4 cursor-pointer'>Get in touch</p>
+                        <p className='text-[#19201D] mt-4 cursor-pointer inline-block'>Get in touch</p>
                     </div>
                 </div>
             </div>
@@ -167,19 +167,19 @@ const Settings = () => {
             </>
         }
 
-        {   deleteLocationModal &&
+        {   deleteOrgsModal &&
             <>
-                <div className="h-full w-full fixed top-0 left-0 z-[99]" style={{ background:"rgba(14, 14, 14, 0.58)" }} onClick={() => setDeleteLocationModal(false)}></div>
+                <div className="h-full w-full fixed top-0 left-0 z-[99]" style={{ background:"rgba(14, 14, 14, 0.58)" }} onClick={() => setDeleteOrgsModal(false)}></div>
                 <div className="flex items-center flex-col text-center justify-center gap-3 bg-white w-[450px] fixed top-[50%] left-[50%] py-[50px] px-[2rem] z-[100]" style={{ transform: "translate(-50%, -50%)" }}>
                     <img src="./images/approval.svg" alt="" />
-                    <p className='text-text-color font-[500]'>Confirm</p>
-                    <p className='text-[#6F7975] text-[14px]'>Are you sure you want to delete this location? This action cannot be undone.</p>
+                    <p className='text-text-color font-[500]'>Delete organization</p>
+                    <p className='text-[#6F7975] text-[14px]'>Are you sure you want to delete this organization? This action cannot be undone and all users created by your organization will lose access to Gotruhub</p>
                     {
                         isLoading ? 
                         <BtnLoader />
                         :
                         <div className='flex items-center gap-5 justify-center mt-9'>
-                            <button className='border border-[#19201D] text-[#19201D] px-5 py-3 rounded-[4px] text-[14px] w-[140px] font-[600]' onClick={() => setDeleteLocationModal(false)}>Back</button>
+                            <button className='border border-[#19201D] text-[#19201D] px-5 py-3 rounded-[4px] text-[14px] w-[140px] font-[600]' onClick={() => setDeleteOrgsModal(false)}>Back</button>
                             <button className="bg-[#9A2525] text-white px-5 py-3 rounded-[4px] text-[14px] w-[140px]" onClick={() => console.log("hello")}>Delete</button>
                         </div>
                     }

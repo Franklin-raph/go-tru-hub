@@ -1,18 +1,33 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import SideNav from '../../components/side-nav/SideNav'
 import TopNav from '../../components/top-nav/TopNav'
 import { CiFilter } from 'react-icons/ci'
 import { GoChevronDown } from 'react-icons/go'
 import { useNavigate } from 'react-router-dom'
 
-const Orders = () => {
+const Orders = ({baseUrl}) => {
 
     const navigate = useNavigate()
     const [filterDropDown, setFilterDropdown] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
-    const [allTransaction, setAllTransactions] = useState([])
+    const [allOrders, setAllOrders] = useState([])
     const [msg, setMsg] = useState('')
     const filterArray = ['All', "Admin sales", "Admin Purchases"]
+    const user = JSON.parse(localStorage.getItem('user'))
+
+    async function getAllOrders(){
+        const res = await fetch(`${baseUrl}/trade/admin/orders`,{
+            headers:{
+                Authorization:`Bearer ${user.data.access_token}`
+            }
+        })
+        const data = await res.json()
+        console.log(data.data);
+    }
+
+    useEffect(() => {
+        getAllOrders()
+    },[])
 
 
   return (

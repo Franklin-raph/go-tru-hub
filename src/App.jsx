@@ -36,6 +36,9 @@ import SingleOrder from './pages/single-order/SingleOrder'
 import Pass from './pages/pass/Pass'
 import Location from './pages/location/Location'
 import Settings from './pages/settings/Settings'
+import Notification from './pages/notification/Notification'
+import Calendar from './pages/calendar/Calendar'
+import CreateSession from './pages/create-session/CreateSession'
 
 function App() {
 
@@ -78,6 +81,9 @@ function App() {
             <Route path='/pass' element={<Pass baseUrl={baseUrl}/>} />
             <Route path='/location' element={<Location baseUrl={baseUrl}/>} />
             <Route path='/settings' element={<Settings baseUrl={baseUrl}/>} />
+            <Route path='/notification' element={<Notification baseUrl={baseUrl}/>} />
+            <Route path='/calendar' element={<Calendar baseUrl={baseUrl}/>} />
+            <Route path='/create-session' element={<CreateSession baseUrl={baseUrl}/>} />
 
             <Route path='*' element={<div>404</div>} />
         </Routes>
