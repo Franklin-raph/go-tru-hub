@@ -732,7 +732,7 @@ const SendToken = ({baseUrl}) => {
                             <div className='flex gap-3'>
                             <img src="./images/arrow-left.svg" alt="" onClick={() => navigate('/token')} className='cursor-pointer' />
                             {
-                              planInfo && planInfo.subscriptionType.feature.length > 1 
+                              planInfo && planInfo?.subscriptionType?.feature?.length > 1 
                               ? planInfo.subscriptionType.feature.map((ft, i) => 
                                 <div className="flex items-center gap-2">
                                   <p className="text-[24px] text-primary-color font-[600]">{ft.name}</p>
@@ -745,7 +745,7 @@ const SendToken = ({baseUrl}) => {
                           </div>
                           {
                             planInfo && 
-                            <p className='text-[20px] text-gray-500'>({planInfo.subscriptionType.duration})</p>
+                            <p className='text-[20px] text-gray-500'>({planInfo?.subscriptionType?.duration})</p>
                           }
                           </div>
                         </>

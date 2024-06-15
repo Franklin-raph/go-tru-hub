@@ -48,14 +48,14 @@ const Token = ({baseUrl}) => {
                                 <div className='shadow-lg px-[20px] py-[16px] rounded-[12px] flex items-center justify-between mb-5'>
                                     <div>
                                         <p className='text-[#19201D] text-[18px] mb-2 font-[500]'>{
-                                            sub.subscriptionType.feature.length > 1
+                                            sub.subscriptionType?.feature?.length > 1
                                             ? sub.subscriptionType.feature.map((ft, i) => (
                                                     <span key={i}>
                                                     {ft.name}
                                                     {i < sub.subscriptionType.feature.length - 1 && <span> + </span>}
                                                     </span>
                                                 ))
-                                                : sub.subscriptionType.feature[0].name
+                                                : sub.subscriptionType?.feature[0].name
                                             }
                                         </p>
                                         <p className='text-[#828282]'>{sub.quantityLeft} / {sub.quantity} Tokens Used</p>

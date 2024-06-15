@@ -86,3 +86,7 @@ html, body{
     background-color: #166534;
     color: #fff;
   }
+
+  .gradient-bg{
+    background: linear-gradient(to top left, #005C56, #208E7A, #1E8547, #003802)
+  }

@@ -25,6 +25,12 @@ import SendToken from './pages/send-token/SendToken'
 import ManageUsers from './pages/manage-users/ManageUsers'
 import SingleUser from './pages/single-user/SingleUser'
 import ProfileEdit from './pages/profile-edit/ProfileEdit'
+import Wallet from './pages/wallet/Wallet'
+import BankAccount from './pages/bank-account/BankAccount'
+import UpdateBankAccount from './pages/update-bank-account/UpdateBankAccount'
+import WalletRestriction from './pages/wallet-restriction/WalletRestriction'
+import WithdrawalRequest from './pages/withdrawal-request/WithdrawalRequest'
+import TransactionHistory from './pages/transaction-history/TransactionHistory'
 
 function App() {
 
@@ -56,6 +62,13 @@ function App() {
             <Route path='/profile-edit/:id' element={<ProfileEdit baseUrl={baseUrl}/>} />
             <Route path='/send-token/:id' element={<SendToken baseUrl={baseUrl}/>} />
             <Route path='/user/:id' element={<SingleUser baseUrl={baseUrl}/>} />
+            <Route path='/wallet' element={<Wallet baseUrl={baseUrl}/>} />
+            <Route path='/wallet-restriction' element={<WalletRestriction baseUrl={baseUrl}/>} />
+            <Route path='/bank-account' element={<BankAccount baseUrl={baseUrl}/>} />
+            <Route path='/update-bank-account' element={<UpdateBankAccount baseUrl={baseUrl}/>} />
+            <Route path='/request-withdrawal' element={<WithdrawalRequest baseUrl={baseUrl}/>} />
+            <Route path='/transaction-history' element={<TransactionHistory baseUrl={baseUrl}/>} />
+            
             <Route path='*' element={<div>404</div>} />
         </Routes>
       </HashRouter>
@@ -63,3 +76,9 @@ function App() {
 }
 
 export default App
+
+
+  // {
+  //   "email": "nwaforglory6@gmail.com",
+  //     "password":"Password#1234"
+  // }

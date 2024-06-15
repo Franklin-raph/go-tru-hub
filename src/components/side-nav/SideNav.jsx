@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { IoChevronDownOutline } from 'react-icons/io5'
 import { LuScanLine } from "react-icons/lu";
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { PiFileArrowUpThin } from "react-icons/pi";
 import { GoClock } from "react-icons/go";
 import { CiShop } from "react-icons/ci";
@@ -12,7 +12,9 @@ import { BiTargetLock } from "react-icons/bi";
 const SideNav = () => {
 
   const [tradeDropDown, setTradeDropDown] = useState(false)
+  const [monitorDropDown, setMonitorDropDown] = useState(false)
   const user = JSON.parse(localStorage.getItem('user'))
+  const navigate = useNavigate()
   const location = useLocation()
 
   // console.log(user);
@@ -64,11 +66,7 @@ const SideNav = () => {
             </div>
             {tradeDropDown &&
               <div className='mt-3 ml-4'>
-                <div className='flex items-center gap-2 mb-4'>
-                  <CiShop />
-                  <p className="">Shop</p>
-                </div>
-                <div className='flex items-center gap-2 my-4'>
+                <div className='flex items-center gap-2 my-4 cursor-pointer' onClick={() => navigate('/wallet')}>
                   <img src="./images/wallet-active.svg"/>
                   <p className="">Wallet</p>
                 </div>
@@ -76,11 +74,7 @@ const SideNav = () => {
                   <img src="./images/orders.svg"/>
                   <p className="">Orders</p>
                 </div>
-                <div className='flex items-center gap-2 my-4'>
-                  <img src="./images/inventory.svg"/>
-                  <p className="">Inventory</p>
-                </div>
-                <div className='flex items-center gap-2 my-4'>
+                <div className='flex items-center gap-2 my-4 cursor-pointer' onClick={() => navigate('/transaction-history')}>
                   <img src="./images/clock-1.svg"/>
                   <p className="">Transaction History</p>
                 </div>
@@ -88,13 +82,36 @@ const SideNav = () => {
             }
           </div>
 
-          <Link to='/monitor' className="flex items-center justify-between py-[10px]">
-            <div className="flex items-center">
-              <LuScanLine color="d7d7d7" className="mr-[15.67px]"/>
-              <p className="">Monitor</p>
+          <div className="flex flex-col justify-between py-[10px]">
+            <div className="flex items-center justify-between w-full cursor-pointer" onClick={() => setMonitorDropDown(!monitorDropDown)}>
+              <div className="flex items-center">
+                  <LuScanLine className="mr-[15.67px]"/>
+                  <p className="">Monitor</p>
+              </div>
+              <IoChevronDownOutline color="d7d7d7"/>
             </div>
-            <IoChevronDownOutline color="d7d7d7"/>
-          </Link>
+            {monitorDropDown &&
+              <div className='mt-3 ml-4'>
+                <div className='flex items-center gap-2 my-4'>
+                  <img src="./images/wallet-active.svg"/>
+                  <p className="">Summary</p>
+                </div>
+                <div className='flex items-center gap-2 my-4'>
+                  <img src="./images/orders.svg"/>
+                  <p className="">Units</p>
+                </div>
+                <div className='flex items-center gap-2 my-4'>
+                  <img src="./images/clock-1.svg"/>
+                  <p className="">Assignments</p>
+                </div>
+                <div className='flex items-center gap-2 my-4'>
+                  <img src="./images/clock-1.svg"/>
+                  <p className="">Grading System</p>
+                </div>
+              </div>
+            }
+          </div>
+
           <Link to='/monitor' className="flex items-center justify-between py-[10px]">
             <div className="flex items-center">
               <PiFileArrowUpThin color="d7d7d7" className="mr-[15.67px]"/>
