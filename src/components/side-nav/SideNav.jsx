@@ -49,7 +49,7 @@ const SideNav = () => {
         </div>
         <div className="px-[32px] my-10 text-white">
           <p className="text-[12px] text-[#6F7975] mb-2">FEATURES</p>
-          <Link to='/monitor' className="flex items-center justify-between py-[10px]">
+          <Link to='/pass' className="flex items-center justify-between py-[10px]">
             <div className="flex items-center">
               <img src="./images/scan-white.svg" className="mr-[15.67px]"/>
               <p className="">Pass</p>
@@ -70,7 +70,7 @@ const SideNav = () => {
                   <img src="./images/wallet-active.svg"/>
                   <p className="">Wallet</p>
                 </div>
-                <div className='flex items-center gap-2 my-4'>
+                <div className='flex items-center gap-2 my-4 cursor-pointer' onClick={() => navigate('/orders')}>
                   <img src="./images/orders.svg"/>
                   <p className="">Orders</p>
                 </div>
@@ -127,13 +127,13 @@ const SideNav = () => {
               <p className="">Subscription</p>
             </div>
           </Link>
-          <Link to='/monitor' className="flex items-center justify-between py-[10px]">
+          <Link to='#' className="flex items-center justify-between py-[10px]">
             <div className="flex items-center">
                 <img src="./images/notification.svg" className="mr-[15.67px]" alt="" />
                 <p className="">Notification</p>
             </div>
           </Link>
-          <Link to='/monitor' className="flex items-center justify-between py-[10px]">
+          <Link to='/settings' className={ location.pathname === '/settings' ? `flex items-center justify-between py-[10px] text-[#25751E]` :`flex items-center justify-between py-[10px]`}>
             <div className="flex items-center">
               <img src="./images/setting.svg" className='mr-[15.67px]' alt="" />
               <p className="">Account</p>

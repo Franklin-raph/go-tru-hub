@@ -34,7 +34,7 @@ const Wallet = ({baseUrl}) => {
       console.log(data.data);
     }
     if(res.status === 401){
-      setError("This feature is for PRO only")
+      setError(data.message)
     }
     console.log(data);
   }

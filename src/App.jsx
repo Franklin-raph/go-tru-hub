@@ -31,6 +31,11 @@ import UpdateBankAccount from './pages/update-bank-account/UpdateBankAccount'
 import WalletRestriction from './pages/wallet-restriction/WalletRestriction'
 import WithdrawalRequest from './pages/withdrawal-request/WithdrawalRequest'
 import TransactionHistory from './pages/transaction-history/TransactionHistory'
+import Orders from './pages/orders/Orders'
+import SingleOrder from './pages/single-order/SingleOrder'
+import Pass from './pages/pass/Pass'
+import Location from './pages/location/Location'
+import Settings from './pages/settings/Settings'
 
 function App() {
 
@@ -68,7 +73,12 @@ function App() {
             <Route path='/update-bank-account' element={<UpdateBankAccount baseUrl={baseUrl}/>} />
             <Route path='/request-withdrawal' element={<WithdrawalRequest baseUrl={baseUrl}/>} />
             <Route path='/transaction-history' element={<TransactionHistory baseUrl={baseUrl}/>} />
-            
+            <Route path='/orders' element={<Orders baseUrl={baseUrl}/>} />
+            <Route path='/order/:id' element={<SingleOrder baseUrl={baseUrl}/>} />
+            <Route path='/pass' element={<Pass baseUrl={baseUrl}/>} />
+            <Route path='/location' element={<Location baseUrl={baseUrl}/>} />
+            <Route path='/settings' element={<Settings baseUrl={baseUrl}/>} />
+
             <Route path='*' element={<div>404</div>} />
         </Routes>
       </HashRouter>

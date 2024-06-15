@@ -1,6 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import SideNav from '../../components/side-nav/SideNav'
 import TopNav from '../../components/top-nav/TopNav'
+import { CiFilter } from 'react-icons/ci'
+import { GoChevronDown } from 'react-icons/go'
+import { useNavigate } from 'react-router-dom'
 
 const Orders = () => {
 
@@ -18,7 +21,7 @@ const Orders = () => {
         <div className="w-[78%] ml-auto pb-5">
             <TopNav />
             <div className="">
-                <div className="flex justify-between items-start mb-[3rem] bg-[#F2FCF7] px-[30px] py-[1rem]">
+                <div className="flex justify-between items-start mb-[1rem] bg-[#F2FCF7] px-[30px] py-[1rem]">
                     <div>
                         <div className="flex items-center gap-2">
                             <img src="./images/arrow-left.svg" alt="" onClick={() => navigate('/wallet')} className='cursor-pointer' />
@@ -31,7 +34,7 @@ const Orders = () => {
                             <p className='px-5 border-l'>Filter</p>
                             <GoChevronDown />
                         </div>
-                        
+                        <button className='text-white text-[14px] bg-[#2D3934] w-full rounded-[4px] px-[15px] py-[6px] text-center mx-auto'>Assign Pick Up</button>
                         <div className='absolute top-[40px] z-10'>
                             {
                                     filterDropDown &&
@@ -52,49 +55,43 @@ const Orders = () => {
                         </div>
                     </div>
                 </div>
-                <div class="relative overflow-x-auto mx-5 mt-10 p-8">
-                    <table class="w-full text-sm text-left rtl:text-left">
-                    <thead class="text-[14px] border-b">
-                        <tr>
-                            <th scope="col" class="py-3 th1 font-[700]">Action</th>
-                            <th scope="col" class="py-3 font-[700]">User</th>
-                            <th scope="col" class="py-3 font-[700]">Role</th>
-                            <th scope="col" class="py-3 font-[700]">Date and Time</th>
-                            <th scope="col" class="py-3 font-[700]">Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr className='text-[#19201D]'>
-                            <td className='py-3'>Wallet withdrawal</td>
-                            <td>Timi Gowon</td>
-                            <td>Member</td>
-                            <td>24 October 2024, 10:00AM</td>
-                            <td className='text-[#25751E]'>#300,000</td>
-                        </tr>
-                        <tr className='text-[#19201D]'>
-                            <td className='py-3'>Cash sales</td>
-                            <td>Timi Gowon</td>
-                            <td>Admin</td>
-                            <td>24 October 2024, 10:00AM</td>
-                            <td className='text-[#25751E]'>#300,000</td>
-                        </tr>
-                        <tr className='text-[#19201D]'>
-                            <td className='py-3'>Wallet deposits</td>
-                            <td>Timi Gowon</td>
-                            <td>Admin</td>
-                            <td>24 October 2024, 10:00AM</td>
-                            <td className='text-[#25751E]'>#300,000</td>
-                        </tr>
-                        <tr className='text-[#19201D]'>
-                            <td className='py-3'>Purchases</td>
-                            <td>Timi Gowon</td>
-                            <td>Member</td>
-                            <td>24 October 2024, 10:00AM</td>
-                            <td className='text-[#25751E]'>#300,000</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                <div class="relative overflow-x-auto mx-5 p-8 flex flex-col gap-3">
+                    <div>
+                        <p>Nwaigwe Zainab Ayomide <span className='text-[#333]'>- Assignee</span> </p>
+                    </div>
+                    <div className='bg-[#F7F7F7] flex  items-center justify-between px-5 py-3 rounded-[8px] text-[12px] text-[#4F4F4F]'>
+                        <p className='font-[600] text-black'>#0008926TY</p>
+                        <p className='text-[#333]'>#2000</p>
+                        <p>Timi Gowon - Member</p>
+                        <p className='text-[#25751E] bg-[#25751E1A] px-3 rounded-full py-[2px]'>Delivered</p>
+                        <p>21 October 2024, 10:00AM</p>
+                        <button className='bg-[#19201D] text-white px-[20px] py-2 rounded-[6px]' onClick={() => navigate('/order/0008926TY')} >View</button>
+                    </div>
+                    <div className='bg-[#F7F7F7] flex  items-center justify-between px-5 py-3 rounded-[8px] text-[12px] text-[#4F4F4F]'>
+                        <p className='font-[600] text-black'>#0008926TY</p>
+                        <p className='text-[#333]'>#2000</p>
+                        <p>Timi Gowon - Admin</p>
+                        <p className='text-[#9A7225] bg-[#9A72251A] px-3 rounded-full py-[2px]'>Not delivered</p>
+                        <p>21 October 2024, 10:00AM</p>
+                        <button className='bg-[#19201D] text-white px-[20px] py-2 rounded-[6px]' onClick={() => navigate('/order/0008926AB')} >View</button>
+                    </div>
+                    <div className='bg-[#F7F7F7] flex  items-center justify-between px-5 py-3 rounded-[8px] text-[12px] text-[#4F4F4F]'>
+                        <p className='font-[600] text-black'>#0008926TY</p>
+                        <p className='text-[#333]'>#2000</p>
+                        <p>Timi Gowon - Member</p>
+                        <p className='text-[#25751E] bg-[#25751E1A] px-3 rounded-full py-[2px]'>Delivered</p>
+                        <p>21 October 2024, 10:00AM</p>
+                        <button className='bg-[#19201D] text-white px-[20px] py-2 rounded-[6px]' onClick={() => navigate('/order/0008926FG')} >View</button>
+                    </div>
+                    <div className='bg-[#F7F7F7] flex  items-center justify-between px-5 py-3 rounded-[8px] text-[12px] text-[#4F4F4F]'>
+                        <p className='font-[600] text-black'>#0008926TY</p>
+                        <p className='text-[#333]'>#2000</p>
+                        <p>Timi Gowon - Member</p>
+                        <p className='text-[#25751E] bg-[#25751E1A] px-3 rounded-full py-[2px]'>Delivered</p>
+                        <p>21 October 2024, 10:00AM</p>
+                        <button className='bg-[#19201D] text-white px-[20px] py-2 rounded-[6px]'>View</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
