@@ -2,33 +2,75 @@ import React, { useEffect, useState } from 'react'
 import TopNav from '../../components/top-nav/TopNav'
 import SideNav from '../../components/side-nav/SideNav'
 import { useNavigate } from 'react-router-dom'
-import { IoWalletOutline } from "react-icons/io5";
-import { SlOptionsVertical } from "react-icons/sl";
+import { IoChevronDownOutline } from "react-icons/io5";
+import { FiLoader } from "react-icons/fi";
+import Alert from '../../components/alert/Alert';
+
 
 const UpdateBankAccount = () => {
 
     const navigate = useNavigate()
     const user = JSON.parse(localStorage.getItem('user'))
-    const [allBanks, setAllBanks] = useState(['Access Bank', 'Uba Bank', 'Zenith Bank', 'First Bank'])
+    const [allBanks, setAllBanks] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState('')
     const [bankDropDown, setBankDropDown] = useState(false)
     const [selectedBank, setSelectedBank] = useState('Select bank')
+    const [accNum, setAccNum] = useState('')
+    const [bankCode, setBankCode] = useState('')
+    const [accInfoLoading, setAccInfoLoading] = useState(false)
+    const [accountName, setAccountName] = useState('')
+
+    const [msg, setMsg] = useState('')
+    const [alertType, setAlertType] = useState()
     // const allBanks = 
 
     useEffect(() => {
         getListOfBanks()
     },[])
+
+    useEffect(() => {
+        if (accNum.length === 10) {
+            getAccountName()
+        }
+    }, [accNum])
+
     async function getListOfBanks() {
-        const res = await fetch('https://vapi.verifyme.ng/v1/banks')
+        const res = await fetch('https://api.paystack.co/bank')
         const data = await res.json()
-        console.log(data);
+        setAllBanks(data.data)
+        console.log(data.data);
+    }
+
+    async function getAccountName(){
+        if(selectedBank === 'Select bank' || selectedBank === ''){
+            setAlertType('error')
+            setMsg('Please select a bank')
+            return
+        }else{
+            setAccInfoLoading(true)
+            console.log(bankCode);
+            const res = await fetch(`https://api.paystack.co/bank/resolve?account_number=${accNum}&bank_code=${bankCode}`,{
+                headers : {
+                    'Authorization': 'Bearer sk_test_9a412d97576fd7676fb5d561e06b96546f9303de'
+                }
+            })
+            const data = await res.json()
+            if(res) setAccInfoLoading(false)
+            setAccountName(data.data.account_name)
+        if(!res.ok){
+            setAlertType('error')
+            setMsg(data.message)
+            return
+        }
+            console.log(data);
+        }
     }
 
   return (
     <div>
         <SideNav />
-        <div className="w-[78%] ml-auto pb-5">
+        <div className="w-[78%] ml-auto pb-5 h-[100dvh]">
             <TopNav />
             <div className="">
                 <div className="flex justify-between items-start mb-[3rem] bg-[#F2FCF7] px-[30px] py-[1rem]">
@@ -48,18 +90,19 @@ const UpdateBankAccount = () => {
                         <p>Bank</p>
                         <div className='flex items-center justify-between border border-[#25751E] rounded-[6px] py-3 px-5 bg-[#25751E26]'>
                             <p>{selectedBank}</p>
-                            <img src="./images/arrow-down.svg" alt="" className='cursor-pointer' onClick={() => setBankDropDown(!bankDropDown)}/>
+                            <IoChevronDownOutline className='cursor-pointer' onClick={() => setBankDropDown(!bankDropDown)} />
                         </div>
                         {
                             bankDropDown &&
-                            <div className='absolute top-[80px] border rounded-[5px] bg-white w-full'>
+                            <div className='absolute top-[80px] border rounded-[5px] bg-white w-full h-[300px] overflow-y-scroll'>
                                 {
                                     allBanks.map(bank => {
                                         return (
                                             <p className='cursor-pointer hover:bg-gray-300 p-2' onClick={() => {
-                                                setSelectedBank(bank)
+                                                setSelectedBank(bank.name)
                                                 setBankDropDown(!bankDropDown)
-                                            }}>{bank}</p>
+                                                setBankCode(bank.code)
+                                            }}>{bank.name}</p>
                                         )
                                     })
                                 }
@@ -69,15 +112,20 @@ const UpdateBankAccount = () => {
                     <div>
                         <p>Account Number</p>
                         <div className='flex items-center justify-between border border-[#25751E] rounded-[6px] py-3 px-5 bg-[#25751E26]'>
-                            <input type="text" placeholder='Enter Account Number' className='bg-transparent' />
-                            <p>O</p>
+                            <input type="number" onChange={(e) => setAccNum(e.target.value)} placeholder='Enter Account Number' className='bg-transparent outline-none' />
+                            {
+                                accInfoLoading && <FiLoader className='text-gray-500 animate-spin' />
+                            }
                         </div>
-                        <p>Account Name</p>
+                        <p className='mt-1'>Account Name: {accountName} </p>
                     </div>
                     <button className='text-white bg-primary-color w-full rounded-[4px] mt-[.5rem] px-[35px] py-[16px] text-center mx-auto'>Proceed</button>
                 </div>
             </div>
         </div>
+        {
+          msg && <Alert msg={msg} setMsg={setMsg} alertType={alertType}/>
+        }
     </div>
   )
 }

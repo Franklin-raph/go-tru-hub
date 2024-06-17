@@ -771,7 +771,8 @@ const SendToken = ({baseUrl}) => {
                                 <th scope="col" class="px-6 py-3 font-[700]">Profile Pic</th>
                                 <th scope="col" class="px-6 py-3 font-[700]">Name</th>
                                 <th scope="col" class="px-6 py-3 font-[700]">Email</th>
-                                <th></th>
+                                <th>Select Member</th>
+                                <th>Number of tokens</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -787,6 +788,9 @@ const SendToken = ({baseUrl}) => {
                                           <td class="px-6 py-4">{sub.defaultEmail}</td>
                                           <td>
                                             <input type="checkbox" checked={selectedGuardians.includes(sub._id)} onChange={() => handleCheckboxChange(sub._id)} />
+                                          </td>
+                                          <td>
+                                            <input type="text" className='w-[50px] outline-none border' />
                                           </td>
                                       </tr>
                                   )

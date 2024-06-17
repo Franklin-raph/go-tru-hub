@@ -39,6 +39,7 @@ import Settings from './pages/settings/Settings'
 import Notification from './pages/notification/Notification'
 import Calendar from './pages/calendar/Calendar'
 import CreateSession from './pages/create-session/CreateSession'
+import CreateSemester from './pages/create-semester/CreateSemester'
 
 function App() {
 
@@ -84,6 +85,7 @@ function App() {
             <Route path='/notification' element={<Notification baseUrl={baseUrl}/>} />
             <Route path='/calendar' element={<Calendar baseUrl={baseUrl}/>} />
             <Route path='/create-session' element={<CreateSession baseUrl={baseUrl}/>} />
+            <Route path='/create-semester/:session' element={<CreateSemester baseUrl={baseUrl}/>} />
 
             <Route path='*' element={<div>404</div>} />
         </Routes>

@@ -78,7 +78,6 @@ const Login = ({baseUrl}) => {
               <BtnLoader bgColor="#191f1c"/>
               :
               <button onClick={login} className='text-white bg-primary-color w-full rounded-[4px] mt-[2.5rem] px-[35px] py-[16px] text-center mx-auto'>Login</button>
-              // <button onClick={verifyAccount} className='text-white bg-primary-color w-full rounded-[4px] mt-[2.5rem] px-[35px] py-[16px] text-center mx-auto'>Proceed</button>
           }
           <p className='mt-10'>New to Gotru? <span className='text-secondary-color  cursor-pointer' onClick={() => navigate('/register')}>Sign up</span> </p>
         </div>
