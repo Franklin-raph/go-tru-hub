@@ -19,6 +19,7 @@ const CreateSemester = ({baseUrl}) => {
     const [sessionTypeDropDown, setSessionTypeDropDown] = useState(false)
     const [startDate, setStartDate] = useState('')
     const [endDate, setEndDate] = useState('')
+    const [sessionType, setSessionType] = useState('')
     const sessionTypesArray = [
         {
             name: 'HS',
@@ -59,15 +60,48 @@ const CreateSemester = ({baseUrl}) => {
     }
 
     async function createSemester(){
-        const res = await fetch(`${baseUrl}/term/${session}`,{
+        setLoading(true)
+        console.log(JSON.stringify({
+            name,
+            startDate,
+            endDate,
+            sessionType,
+            sessionId: session
+        }));
+        const res = await fetch(`${baseUrl}/term`,{
             method:"POST",
             headers:{
-                'Authorization':`Bearer ${user.data.access_token}`
+                'Authorization':`Bearer ${user.data.access_token}`,
+                'Content-Type':'application/json'
             },
             body:JSON.stringify({
-                name
+                name,
+                startDate,
+                endDate,
+                sessionType,
+                sessionId: session
             })
         })
+        console.log("After request ====> ",JSON.stringify({
+            name,
+            startDate,
+            endDate,
+            sessionType,
+            sessionId: session
+        }));
+        const data = await res.json()
+        console.log(data);
+        if(res) setLoading(false)
+        if(res.ok){
+            setMsg('Semester created successfully')
+            setAlertType('success')
+            return;
+        }
+        if(!res.ok){
+            setMsg(data.message);
+            setAlertType('error');
+            return;
+        }
     }
 
     useEffect(() => {
@@ -111,8 +145,7 @@ const CreateSemester = ({baseUrl}) => {
                                                 <p className='cursor-pointer hover:bg-gray-300 p-2' onClick={() => {
                                                     setSelectedSessionType(type.value)
                                                     setSessionTypeDropDown(!sessionTypeDropDown)
-                                                    // setBankDropDown(!bankDropDown)
-                                                    // setBankCode(bank.code)
+                                                    setSessionType(type.name)
                                                 }}>{type.value}</p>
                                             )
                                         })
@@ -122,11 +155,11 @@ const CreateSemester = ({baseUrl}) => {
                         </div>
                         <div>
                             <p className='text-[#19201D] font-[450] mb-1'>Start Date</p>
-                            <input type="date" onChange={(e) => setAccNum(e.target.value)} placeholder='Enter Account Number' className='w-full border border-[#25751E] rounded-[6px] py-3 px-5 bg-[#25751E26] outline-none' />
+                            <input type="date" onChange={(e) => setStartDate(e.target.value)} placeholder='Enter Account Number' className='w-full border border-[#25751E] rounded-[6px] py-3 px-5 bg-[#25751E26] outline-none' />
                         </div>
                         <div>
                             <p className='text-[#19201D] font-[450] mb-1'>End Date</p>
-                            <input type="date" onChange={(e) => setAccNum(e.target.value)} placeholder='Enter Account Number' className='w-full border border-[#25751E] rounded-[6px] py-3 px-5 bg-[#25751E26] outline-none' />
+                            <input type="date" onChange={(e) => setEndDate(e.target.value)} placeholder='Enter Account Number' className='w-full border border-[#25751E] rounded-[6px] py-3 px-5 bg-[#25751E26] outline-none' />
                             <p className='mt-1 text-[#865C1D] text-[14px]'>This should not be above 4 months</p>
                         </div>
                     </div>

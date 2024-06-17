@@ -120,7 +120,7 @@ const SideNav = () => {
             }
           </div>
 
-          <Link to='/monitor' className="flex items-center justify-between py-[10px]">
+          <Link to='/result' className="flex items-center justify-between py-[10px]">
             <div className="flex items-center">
               <PiFileArrowUpThin color="d7d7d7" className="mr-[15.67px]"/>
               <p className="">Result</p>

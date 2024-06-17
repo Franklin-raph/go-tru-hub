@@ -24,17 +24,14 @@ const Wallet = ({baseUrl}) => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${user.token}`
+        'Authorization':`Bearer ${user.data.access_token}`
       }
     })
     const data = await res.json()
+    console.log(data.data);
     if(res) setIsLoading(false)
     if(res.ok){
-      setAllWithdrawals(data.data)
-      console.log(data.data);
-    }
-    if(res.status === 401){
-      setError(data.message)
+      setAllWithdrawals(data.data.withdrawalRequests)
     }
     console.log(data);
   }
@@ -111,14 +108,29 @@ const Wallet = ({baseUrl}) => {
                           <th scope="col" class="py-3 th1 font-[700]">S/N</th>
                           <th scope="col" class="py-3 font-[700]">Member</th>
                           <th scope="col" class="py-3 font-[700]">Date and Time</th>
-                          <th scope="col" class="py-3 font-[700]">Wallet Bal.</th>
                           <th scope="col" class="py-3 font-[700]">Request Amt.</th>
                           <th scope="col" class="py-3 font-[700]">Status</th>
                           <th scope="col" class="py-3 font-[700]"></th>
                       </tr>
                   </thead>
                   <tbody>
-                    <tr className='text-[#19201D]'>
+                    {
+                      allWithdrawals.map((withdrawal, index) => (
+                        <tr className='text-[#19201D]'>
+                          <td className='py-3'>{index + 1}</td>
+                          <td>{withdrawal?.user || 'N/A'}</td>
+                          <td>{new Date(withdrawal.createdAt).toString().split(" ").slice(0, 4).join(" ")}</td>
+                          <td>#{withdrawal.amount}</td>
+                          <td className='pr-5'>
+                            <div className='text-[#D8A04C] bg-[#D8A04C1A] py-1 rounded text-center'>Pending</div>
+                          </td>
+                          <td>
+                            <SlOptionsVertical className='cursor-pointer'/>
+                          </td>
+                        </tr>
+                      ))
+                    }
+                    {/* <tr className='text-[#19201D]'>
                       <td className='py-3'>1.</td>
                       <td>Timi Gowon</td>
                       <td>24 October 2024, 10:00AM</td>
@@ -130,46 +142,7 @@ const Wallet = ({baseUrl}) => {
                       <td>
                         <SlOptionsVertical />
                       </td>
-                    </tr>
-                    <tr className='text-[#19201D]'>
-                      <td className='py-3'>1.</td>
-                      <td>Timi Gowon</td>
-                      <td>24 October 2024, 10:00AM</td>
-                      <td className='text-[#25751E]'>#300,000</td>
-                      <td>#30,000</td>
-                      <td className='pr-5'>
-                        <div className='text-[#9A2525] bg-[#9A25251A] py-1 rounded text-center'>Declined</div>
-                      </td>
-                      <td>
-                        <SlOptionsVertical />
-                      </td>
-                    </tr>
-                    <tr className='text-[#19201D]'>
-                      <td className='py-3'>1.</td>
-                      <td>Timi Gowon</td>
-                      <td>24 October 2024, 10:00AM</td>
-                      <td className='text-[#25751E]'>#300,000</td>
-                      <td>#30,000</td>
-                      <td className='pr-5'>
-                        <div className='text-[#25751E] bg-[#25751E1A] py-1 rounded text-center'>Paid</div>
-                      </td>
-                      <td>
-                        <SlOptionsVertical />
-                      </td>
-                    </tr>
-                    <tr className='text-[#19201D]'>
-                      <td className='py-3'>1.</td>
-                      <td>Timi Gowon</td>
-                      <td>24 October 2024, 10:00AM</td>
-                      <td className='text-[#25751E]'>#300,000</td>
-                      <td>#30,000</td>
-                      <td className='pr-5'>
-                        <div className='text-[#016FF1] bg-[#016FF11A] py-1 rounded text-center'>Approved</div>
-                      </td>
-                      <td>
-                        <SlOptionsVertical />
-                      </td>
-                    </tr>
+                    </tr> */}
                   </tbody>
               </table>
             }
