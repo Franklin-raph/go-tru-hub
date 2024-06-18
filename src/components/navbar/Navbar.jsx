@@ -43,8 +43,8 @@ const Navbar = () => {
             <li>
                 <Link to='/login'>Login</Link>
             </li>
-            <li className='border md:border-white border-black px-7 py-[10px] rounded-[6px]'>
-                <Link to='/register'>Sign Up</Link>
+            <li>
+                <Link to='/register' className='border md:border-white border-black px-7 py-[10px] rounded-[6px]'>Sign Up</Link>
             </li>
         </ul>
     </nav>

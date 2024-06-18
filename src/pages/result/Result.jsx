@@ -48,7 +48,7 @@ const Result = ({baseUrl}) => {
                         <p className="text-[28px] text-primary-color font-[600]">Result</p>
                     </div>
                     <div className='flex items-center gap-5'>
-                        <button className="bg-[#2D3934] text-white px-5 py-3 rounded-[8px] text-[14px]" onClick={() => navigate('/create-session')}>Create Session</button>
+                        {/* <button className="bg-[#2D3934] text-white px-5 py-3 rounded-[8px] text-[14px]" onClick={() => navigate('/create-session')}>Create Session</button> */}
                     </div>
                 </div>
                 <div className='px-[30px]'>
@@ -63,7 +63,7 @@ const Result = ({baseUrl}) => {
                         allSessions && allSessions.map((session) => (
                             <div className='flex items-center justify-between p-3 shadow rounded-[8px] my-4 bg-white'>
                                 <p>{session.name}</p>
-                                <button onClick={() => navigate(`/create-semester/${session._id}`)} className='bg-[#19201D] py-2 px-4 rounded-[4px] text-white text-[14px]'>View</button>
+                                <button onClick={() => navigate(`/semester-result-info/${session._id}`)} className='bg-[#19201D] py-2 px-4 rounded-[4px] text-white text-[14px]'>View</button>
                             </div>
                         )).reverse()
                     }

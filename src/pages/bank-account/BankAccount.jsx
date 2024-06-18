@@ -5,10 +5,24 @@ import { useNavigate } from 'react-router-dom'
 import { IoWalletOutline } from "react-icons/io5";
 import { SlOptionsVertical } from "react-icons/sl";
 
-const BankAccount = () => {
+const BankAccount = ({baseUrl}) => {
 
     const navigate = useNavigate()
     const user = JSON.parse(localStorage.getItem('user'))
+
+    async function getBankAccountDetails(){
+        const res = await fetch(`${baseUrl}/bank`,{
+            headers:{
+                'Authorization': `Bearer ${user.data.access_token}`
+            }
+        })
+        const data = await res.json()
+        console.log(data)
+    }
+
+    useEffect(() => {
+        getBankAccountDetails()
+    },[])
 
 
   return (

@@ -53,7 +53,7 @@ const RegisterPersonalBiz = ({baseUrl}) => {
           }
           if(res.ok){
             localStorage.setItem('reg-email', JSON.stringify(data.data.organization.email))
-            navigate('/verify-token')
+            navigate('/verify-account')
           }
           console.log(res, data);
     }

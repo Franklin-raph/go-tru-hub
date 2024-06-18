@@ -41,6 +41,8 @@ import Calendar from './pages/calendar/Calendar'
 import CreateSession from './pages/create-session/CreateSession'
 import CreateSemester from './pages/create-semester/CreateSemester'
 import Result from './pages/result/Result'
+import SessionInfo from './pages/session-info/SessionInfo'
+import ResultSemesterInfo from './pages/result-semester-info/ResultSemesterInfo'
 
 function App() {
 
@@ -88,6 +90,8 @@ function App() {
             <Route path='/result' element={<Result baseUrl={baseUrl}/>} />
             <Route path='/create-session' element={<CreateSession baseUrl={baseUrl}/>} />
             <Route path='/create-semester/:session' element={<CreateSemester baseUrl={baseUrl}/>} />
+            <Route path='/session-info/:session' element={<SessionInfo baseUrl={baseUrl}/>} />
+            <Route path='/semester-result-info/:session' element={<ResultSemesterInfo baseUrl={baseUrl}/>} />
 
             <Route path='*' element={<div>404</div>} />
         </Routes>

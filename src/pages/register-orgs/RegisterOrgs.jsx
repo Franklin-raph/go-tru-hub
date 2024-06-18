@@ -105,7 +105,6 @@ const RegisterOrgs = ({baseUrl}) => {
             navigate('/verify-account')
           }
           console.log(res, data);
-          // console.log(raw);
         }
       }
 

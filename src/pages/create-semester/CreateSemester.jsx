@@ -127,8 +127,9 @@ const CreateSemester = ({baseUrl}) => {
                     </div>
                     <div className='w-full flex flex-col gap-7'>
                         <div>
-                            <p className='text-[#19201D] font-[450] mb-1'>Session name</p>
-                            <p className='border border-[#25751E] rounded-[6px] py-3 px-5 bg-[#25751E1A]'>{name}</p>
+                            <p className='text-[#19201D] font-[450] mb-1'>Semester Name or Term Name </p>
+                            <input type="text" onChange={e => setName(e.target.value)}  placeholder='First Term' className='w-full border border-[#25751E] rounded-[6px] py-3 px-5 bg-[#25751E26] outline-none'  />
+                            {/* <p className='border border-[#25751E] rounded-[6px] py-3 px-5 bg-[#25751E1A]'>{name}</p> */}
                         </div>
                         <div className='relative'>
                             <p>Session Type</p>

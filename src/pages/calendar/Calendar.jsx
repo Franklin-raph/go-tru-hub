@@ -63,7 +63,8 @@ const Calendar = ({baseUrl}) => {
                         allSessions && allSessions.map((session) => (
                             <div className='flex items-center justify-between p-3 shadow rounded-[8px] my-4 bg-white'>
                                 <p>{session.name}</p>
-                                <button onClick={() => navigate(`/create-semester/${session._id}`)} className='bg-[#19201D] py-2 px-4 rounded-[4px] text-white text-[14px]'>Create Semester</button>
+                                {/* <button onClick={() => navigate(`/create-semester/${session._id}`)} className='bg-[#19201D] py-2 px-4 rounded-[4px] text-white text-[14px]'>Create Semester</button> */}
+                                <button onClick={() => navigate(`/session-info/${session._id}`)} className='bg-[#19201D] py-2 px-4 rounded-[4px] text-white text-[14px]'>View</button>
                             </div>
                         )).reverse()
                     }
