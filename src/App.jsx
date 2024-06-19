@@ -43,6 +43,12 @@ import CreateSemester from './pages/create-semester/CreateSemester'
 import Result from './pages/result/Result'
 import SessionInfo from './pages/session-info/SessionInfo'
 import ResultSemesterInfo from './pages/result-semester-info/ResultSemesterInfo'
+import Units from './pages/units/Units'
+import CreateUnit from './pages/create-unit/CreateUnit'
+import CreateSubUnit from './pages/create-sub-unit/CreateSubUnit'
+import SingleUnit from './pages/single-unit/SingleUnit'
+import Assignments from './pages/assignments/Assignments'
+import CreateAssignment from './pages/create-assignment/CreateAssignment'
 
 function App() {
 
@@ -92,6 +98,12 @@ function App() {
             <Route path='/create-semester/:session' element={<CreateSemester baseUrl={baseUrl}/>} />
             <Route path='/session-info/:session' element={<SessionInfo baseUrl={baseUrl}/>} />
             <Route path='/semester-result-info/:session' element={<ResultSemesterInfo baseUrl={baseUrl}/>} />
+            <Route path='/units' element={<Units baseUrl={baseUrl}/>} />
+            <Route path='/create-unit' element={<CreateUnit baseUrl={baseUrl}/>} />
+            <Route path='/create-sub-unit' element={<CreateSubUnit baseUrl={baseUrl}/>} />
+            <Route path='/unit/:id' element={<SingleUnit baseUrl={baseUrl}/>} />
+            <Route path='/assignments' element={<Assignments baseUrl={baseUrl}/>} />
+            <Route path='/create-assignment' element={<CreateAssignment baseUrl={baseUrl}/>} />
 
             <Route path='*' element={<div>404</div>} />
         </Routes>

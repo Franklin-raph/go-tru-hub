@@ -104,11 +104,11 @@ const SideNav = () => {
                   <RxDashboard />
                   <p className="">Summary</p>
                 </div>
-                <div className='flex items-center gap-2 my-4 cursor-pointer'>
+                <div className='flex items-center gap-2 my-4 cursor-pointer' onClick={() => navigate('/units')} >
                   <img src="./images/orders.svg"/>
                   <p className="">Units</p>
                 </div>
-                <div className='flex items-center gap-2 my-4 cursor-pointer'>
+                <div className='flex items-center gap-2 my-4 cursor-pointer' onClick={() => navigate('/assignments')}>
                   <IoBookSharp />
                   <p className="">Assignments</p>
                 </div>
