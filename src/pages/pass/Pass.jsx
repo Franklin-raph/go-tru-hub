@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import SideNav from '../../components/side-nav/SideNav'
 import TopNav from '../../components/top-nav/TopNav'
 import { CiFilter } from "react-icons/ci";
@@ -6,14 +6,30 @@ import { GoChevronDown } from "react-icons/go";
 import { useNavigate } from 'react-router-dom';
 import { SlOptionsVertical } from 'react-icons/sl';
 
-const Pass = () => {
+const Pass = ({baseUrl}) => {
 
     const navigate = useNavigate()
     const [filterDropDown, setFilterDropdown] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
-    const [allTransaction, setAllTransactions] = useState([])
+    const [passHistory, setPassHistory] = useState([])
     const [msg, setMsg] = useState('')
     const filterArray = ['All', "Cash sales", "Wallet sales", "Purchases", "Deposits", "Withdrawals"]
+    const user = JSON.parse(localStorage.getItem('user'))
+
+    async function getPassHistory(){
+        const res = await fetch(`${baseUrl}/pass-history`,{
+            headers:{
+                'Authorization':`Bearer ${user.data.access_token}`
+            }
+        })
+        const data = await res.json()
+        setPassHistory(data.data)
+        console.log(data.data[1]);
+    }
+
+    useEffect(() => {
+        getPassHistory()
+    },[])
 
   return (
     <div>
@@ -61,26 +77,35 @@ const Pass = () => {
                         <tr>
                             <th scope="col" class="py-3 th1 font-[700]">S/N</th>
                             <th scope="col" class="py-3 font-[700]">Member</th>
-                            <th scope="col" class="py-3 font-[700]">Authority</th>
-                            <th scope="col" class="py-3 font-[700]">Admin</th>
+                            <th scope="col" class="py-3 font-[700]">Role</th>
                             <th scope="col" class="py-3 font-[700]">Location</th>
                             <th scope="col" class="py-3 font-[700]">Time</th>
                             <th scope="col" class="py-3 font-[700]">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr className='text-[#19201D]'>
-                            <td className='py-3'>1.</td>
-                            <td>Timi Gowon</td>
-                            <td>Member</td>
-                            <td>Aisha Nwosu</td>
-                            <td className='text-[#25751E] underline'>40.7128, -74.0060</td>
-                            <td>08:15AM</td>
-                            <td>
-                                <p className='text-[#418B47] py-1 px-2 rounded-[3px] bg-[#5FB56766] inline'>Sign-in</p>
-                            </td>
-                        </tr>
-                        <tr className='text-[#19201D]'>
+                        {
+                            passHistory && passHistory?.map((item, index) => {
+                                const formattedTime = new Date(item?.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+                                return (
+                                    <tr className='text-[#19201D]'>
+                                        <td className='py-3'>{index + 1}</td>
+                                        <td className='flex items-center gap-1 py-3'>
+                                            <img src={item?.user?.profileImage?.file} className='w-[30px]' alt="" />
+                                            <p>{item?.user?.fullName}</p>
+                                        </td>
+                                        <td>{item.user.role}</td>
+                                        <td className='text-[#25751E] underline'>{item?.coordinate[0]}, {item?.coordinate[1]}</td>
+                                        <td>{formattedTime}</td>
+                                        <td>
+                                            <p className={item?.actionType === "sign-out" ? 'text-[#9A2525] py-1 px-2 rounded-[3px] bg-[#9A252566] inline':'text-[#418B47] py-1 px-2 rounded-[3px] bg-[#5FB56766] inline'}>{item?.actionType}</p>
+                                        </td>
+                                    </tr>
+                                )
+                            })
+                        }
+                        {/* <tr className='text-[#19201D]'>
                             <td className='py-3'>2.</td>
                             <td>Timi Gowon</td>
                             <td>Member</td>
@@ -123,7 +148,7 @@ const Pass = () => {
                             <td>
                                 <p className='text-[#418B47] py-1 px-2 rounded-[3px] bg-[#5FB56766] inline'>Sign-in</p>
                             </td>
-                        </tr>
+                        </tr> */}
                     </tbody>
                 </table>
               </div>

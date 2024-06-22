@@ -37,14 +37,14 @@ const SingleUnit = ({baseUrl}) => {
             }
         })
         const data = await res.json()
-        console.log(data.data.units[0].unit.name);
+        console.log(data);
         if(!res.ok){
             setMsg(data.message);
             setAlertType('error');
             return;
         }
         if(res.ok){
-            setUnitName(data.data.units[0].unit.name)
+            setUnitName(data?.data?.units[0]?.unit?.name)
             setAllSubUnits(data.data.units);
             setAlertType('success');
             return;

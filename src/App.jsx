@@ -29,7 +29,7 @@ import Wallet from './pages/wallet/Wallet'
 import BankAccount from './pages/bank-account/BankAccount'
 import UpdateBankAccount from './pages/update-bank-account/UpdateBankAccount'
 import WalletRestriction from './pages/wallet-restriction/WalletRestriction'
-import WithdrawalRequest from './pages/withdrawal-request/WithdrawalRequest'
+import WithdrawalInfo from './pages/withdrawal-info/WithdrawalInfo'
 import TransactionHistory from './pages/transaction-history/TransactionHistory'
 import Orders from './pages/orders/Orders'
 import SingleOrder from './pages/single-order/SingleOrder'
@@ -49,6 +49,7 @@ import CreateSubUnit from './pages/create-sub-unit/CreateSubUnit'
 import SingleUnit from './pages/single-unit/SingleUnit'
 import Assignments from './pages/assignments/Assignments'
 import CreateAssignment from './pages/create-assignment/CreateAssignment'
+import OrgzProfile from './pages/orgz-profile/OrgzProfile'
 
 function App() {
 
@@ -84,7 +85,7 @@ function App() {
             <Route path='/wallet-restriction' element={<WalletRestriction baseUrl={baseUrl}/>} />
             <Route path='/bank-account' element={<BankAccount baseUrl={baseUrl}/>} />
             <Route path='/update-bank-account' element={<UpdateBankAccount baseUrl={baseUrl}/>} />
-            <Route path='/request-withdrawal' element={<WithdrawalRequest baseUrl={baseUrl}/>} />
+            <Route path='/withdrawal-info/:id' element={<WithdrawalInfo baseUrl={baseUrl}/>} />
             <Route path='/transaction-history' element={<TransactionHistory baseUrl={baseUrl}/>} />
             <Route path='/orders' element={<Orders baseUrl={baseUrl}/>} />
             <Route path='/order/:id' element={<SingleOrder baseUrl={baseUrl}/>} />
@@ -104,6 +105,7 @@ function App() {
             <Route path='/unit/:id' element={<SingleUnit baseUrl={baseUrl}/>} />
             <Route path='/assignments' element={<Assignments baseUrl={baseUrl}/>} />
             <Route path='/create-assignment' element={<CreateAssignment baseUrl={baseUrl}/>} />
+            <Route path='/orgz-profile' element={<OrgzProfile baseUrl={baseUrl}/>} />
 
             <Route path='*' element={<div>404</div>} />
         </Routes>

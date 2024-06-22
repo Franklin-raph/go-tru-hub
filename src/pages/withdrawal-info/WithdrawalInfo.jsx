@@ -1,17 +1,73 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import SideNav from '../../components/side-nav/SideNav'
 import TopNav from '../../components/top-nav/TopNav'
 import { GoChevronDown } from "react-icons/go";
 import { IoWalletOutline } from 'react-icons/io5';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import BtnLoader from '../../components/btn-loader/BtnLoader';
+import Alert from '../../components/alert/Alert';
 
 
-const WithdrawalRequest = () => {
+const WithdrawalInfo = ({baseUrl}) => {
 
-    const status = ["Pending", "Paid", "Approved", "Declined"]
+    const user = JSON.parse(localStorage.getItem('user'))
+    const status = ["pending", "completed", "rejected"]
     const [selectedStatus, setSelectedStatus] = useState(status[0])
     const [statusDropDown, setStatusDropDown] = useState(false)
+    const [amount, setAmount] = useState()
+    const [accountName, setAccountName] = useState()
+    const [accountNumber, setAccountNumber] = useState()
+    const [bankName, setBankName] = useState()
     const navigate = useNavigate()
+    const [isLoading, setIsLoading] = useState(false)
+    const [msg, setMsg] = useState('')
+    const [alertType, setAlertType] = useState()
+    const { id } = useParams()
+
+    async function getWithdrawalInfo(){
+        const res = await fetch(`${baseUrl}/trade/withdrawals/${id}`,{
+            headers:{
+                Authorization:`Bearer ${user.data.access_token}`
+            }
+        })
+        const data = await res.json()
+        setAmount(data.data.amount)
+        setAccountName(data.data.user.accountName)
+        setAccountNumber(data.data.user.accountNum)
+        setBankName(data.data.user.bankName)
+        console.log(data.data)
+    }
+
+    async function updateWithdrawalStatus(){
+        setIsLoading(true)
+        const res = await fetch(`${baseUrl}/trade/withdrawals/${id}`,{
+            method: 'PUT',
+            headers:{
+                "Content-Type":"application/json",
+                Authorization:`Bearer ${user.data.access_token}`
+            },
+            body: JSON.stringify({
+                status: selectedStatus
+            })
+        })
+        const data = await res.json()
+        if(res) setIsLoading(false)
+        console.log(data);
+        if(res.ok){
+            setMsg(data.message);
+            setAlertType('success');
+            return;
+        }
+        if(!res.ok){
+            setMsg(data.message);
+            setAlertType('error');
+            return;
+        }
+    }
+
+    useEffect(() => {
+        getWithdrawalInfo()
+    },[])
 
   return (
     <div>
@@ -44,8 +100,8 @@ const WithdrawalRequest = () => {
                             <p className='text-[12px]'>Members Full Nmae</p>
                         </div>
                         <p className='text-[14px] my-5'>User Account</p>
-                        <p className='my-3'>Anagolum Beluchukwu Calistus</p>
-                        <p>United Bank for Africa (4567923458)</p>
+                        <p className='my-3'>{accountName}</p>
+                        <p>{bankName} ({accountNumber})</p>
                     </div>
                     <div className='flex item-center justify-center flex-col mx-auto gap-8 w-full'>
                         <div className='w-full'>
@@ -58,7 +114,7 @@ const WithdrawalRequest = () => {
                         </div>
                         <div>
                             <p>Amount requested by user</p>
-                            <input type="text" placeholder='NGN 2,000' className='border border-[#25751E] rounded-[6px] outline-none py-3 px-5 bg-[#25751E26] w-full'/>
+                            <input value={amount} type="text" placeholder='NGN 2,000' className='border border-[#25751E] rounded-[6px] outline-none py-3 px-5 bg-[#25751E26] w-full'/>
                         </div>
                         <div className='relative'>
                             <p>Update Status</p>
@@ -84,13 +140,22 @@ const WithdrawalRequest = () => {
                             </div>
                             }
                         </div>
-                        <button className='text-white bg-primary-color w-full rounded-[4px] mt-[.5rem] px-[35px] py-[16px] text-center mx-auto'>Update status</button>
+                        {
+                            isLoading ? 
+                            <BtnLoader bgColor="#191f1c"/>
+                            :
+                            <button onClick={updateWithdrawalStatus} className='text-white bg-primary-color w-full rounded-[4px] mt-[.5rem] px-[35px] py-[16px] text-center mx-auto'>Update status</button>
+                        }
+                        
                     </div>
                 </div>
             </div>
         </div>
+        {
+            msg && <Alert msg={msg} setMsg={setMsg} alertType={alertType} />
+        }
     </div>
   )
 }
 
-export default WithdrawalRequest
+export default WithdrawalInfo

@@ -44,7 +44,7 @@ const Token = ({baseUrl}) => {
                     <div className='w-full'>
                         <p className='text-[#19201D] font-[700] text-[24px] mb-10'>Active Subscriptions</p>
                         {
-                            activeSubs && activeSubs.map(sub => (
+                            activeSubs && activeSubs?.map(sub => (
                                 <div className='shadow-lg px-[20px] py-[16px] rounded-[12px] flex items-center justify-between mb-5'>
                                     <div>
                                         <p className='text-[#19201D] text-[18px] mb-2 font-[500]'>{
@@ -52,13 +52,13 @@ const Token = ({baseUrl}) => {
                                             ? sub.subscriptionType.feature.map((ft, i) => (
                                                     <span key={i}>
                                                     {ft.name}
-                                                    {i < sub.subscriptionType.feature.length - 1 && <span> + </span>}
+                                                    {i < sub?.subscriptionType?.feature?.length - 1 && <span> + </span>}
                                                     </span>
                                                 ))
-                                                : sub.subscriptionType?.feature[0].name
+                                                : sub.subscriptionType?.feature[0]?.name
                                             }
                                         </p>
-                                        <p className='text-[#828282]'>{sub.quantityLeft} / {sub.quantity} Tokens Used</p>
+                                        <p className='text-[#828282]'>{sub?.quantityLeft} / {sub?.quantity} Tokens Used</p>
                                     </div>
                                     <GoChevronRight className='text-[20px] text-[#4F4F4F] cursor-pointer' onClick={() => navigate(`/send-token/${sub._id}`)}/>
                                 </div>

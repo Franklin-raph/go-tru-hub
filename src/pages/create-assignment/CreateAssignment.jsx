@@ -59,20 +59,20 @@ const CreateAssignment = ({baseUrl}) => {
                     </div>
                 </div>
                 <div className='px-[30px] w-[500px] mx-auto'>
-                <div className='mb-5'>
-                    <p className='text-[#19201D]'>Assignment Name</p>
-                    <input type="text" onChange={e => setName(e.target.value)} className='border py-3 px-3 rounded mt-1 w-full outline-none' placeholder='Enter assignment name' />
-                </div>
-                <div className='mb-5'>
-                    <p className='text-[#19201D]'>Assignment Code</p>
-                    <input type="text" onChange={e => setCourseCode(e.target.value)} className='border py-3 px-3 rounded mt-1 w-full outline-none' placeholder='Enter assignment code' />
-                </div>
-                {
-                    loading ? 
-                    <BtnLoader bgColor="#191f1c"/>
-                    :
-                    <button onClick={createAssignment} className='text-white bg-primary-color w-full rounded-[4px] mt-[.5rem] px-[35px] py-[16px] text-center mx-auto'>Create Assignment</button>
-                }
+                  <div className='mb-5'>
+                      <p className='text-[#19201D]'>Assignment Name</p>
+                      <input type="text" onChange={e => setName(e.target.value)} className='border py-3 px-3 rounded mt-1 w-full outline-none' placeholder='Enter assignment name' />
+                  </div>
+                  <div className='mb-5'>
+                      <p className='text-[#19201D]'>Assignment Code</p>
+                      <input type="text" onChange={e => setCourseCode(e.target.value)} className='border py-3 px-3 rounded mt-1 w-full outline-none' placeholder='Enter assignment code' />
+                  </div>
+                  {
+                      loading ? 
+                      <BtnLoader bgColor="#191f1c"/>
+                      :
+                      <button onClick={createAssignment} className='text-white bg-primary-color w-full rounded-[4px] mt-[.5rem] px-[35px] py-[16px] text-center mx-auto'>Create Assignment</button>
+                  }
                 </div>
             </div>
         </div>

@@ -4,6 +4,8 @@ import SideNav from '../../components/side-nav/SideNav'
 import { useNavigate } from 'react-router-dom'
 import { IoWalletOutline } from "react-icons/io5";
 import { SlOptionsVertical } from "react-icons/sl";
+import { TbCurrencyNaira } from "react-icons/tb";
+import { IoChevronForwardOutline } from "react-icons/io5";
 
 
 const Wallet = ({baseUrl}) => {
@@ -52,7 +54,6 @@ const Wallet = ({baseUrl}) => {
               <div className='flex items-center gap-5'>
                 <button className="border border-[#1D1D1D] px-5 py-3 rounded-[8px] text-[14px]" onClick={() => navigate('/bank-account')}>Bank Account</button>
                 <button className="bg-[#2D3934] text-white px-5 py-3 rounded-[8px] text-[14px]" onClick={() => navigate('/wallet-restriction')}>Wallet Restriction</button>
-                <button className="bg-[#2D3934] text-white px-5 py-3 rounded-[8px] text-[14px]" onClick={() => navigate('/request-withdrawal')}>Request Withdrawal</button>
               </div>
           </div>
           <div className="flex items-center gap-5 px-5">
@@ -115,20 +116,33 @@ const Wallet = ({baseUrl}) => {
                   </thead>
                   <tbody>
                     {
-                      allWithdrawals.map((withdrawal, index) => (
-                        <tr className='text-[#19201D]'>
-                          <td className='py-3'>{index + 1}</td>
-                          <td>{withdrawal?.user || 'N/A'}</td>
-                          <td>{new Date(withdrawal.createdAt).toString().split(" ").slice(0, 4).join(" ")}</td>
-                          <td>#{withdrawal.amount}</td>
-                          <td className='pr-5'>
-                            <div className='text-[#D8A04C] bg-[#D8A04C1A] py-1 rounded text-center'>Pending</div>
-                          </td>
-                          <td>
-                            <SlOptionsVertical className='cursor-pointer'/>
-                          </td>
-                        </tr>
-                      ))
+                      allWithdrawals.map((withdrawal, index) => {
+                        const formattedDate = new Date(withdrawal?.createdAt).toLocaleDateString([], { year: 'numeric', month: '2-digit', day: '2-digit' });
+                        const formattedTime = new Date(withdrawal?.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+                        return(
+                          <tr className='text-[#19201D]'>
+                            <td className='py-3'>{index + 1}</td>
+                            <td>{withdrawal?.user || 'N/A'}</td>
+                            <td><p className="flex items-center gap-3">{formattedDate} <p className="p-[3px] bg-[#828282] rounded-full"></p> {formattedTime}</p></td>
+                            <td className='flex items-center gap-1 py-3'> <TbCurrencyNaira className='text-[20px]'/> {withdrawal.amount}</td>
+                            <td className='pr-5'>
+                              {
+                                withdrawal?.status === "pending" && <div className='text-[#D8A04C] bg-[#D8A04C1A] py-1 rounded text-center capitalize'>{withdrawal.status}</div>
+                              }
+                              {
+                                withdrawal?.status === "rejected" && <div className='text-[#9A2525] bg-[#9A25251A] py-1 rounded text-center capitalize'>{withdrawal.status}</div>
+                              }
+                              {
+                                withdrawal?.status === "completed" && <div className='text-[#418B47] bg-[#5FB56766] py-1 rounded text-center capitalize'>{withdrawal.status}</div>
+                              }
+                            </td>
+                            <td>
+                              <IoChevronForwardOutline className='cursor-pointer' onClick={() => navigate(`/withdrawal-info/${withdrawal._id}`)}/>
+                            </td>
+                          </tr>
+                        )
+                      })
                     }
                     {/* <tr className='text-[#19201D]'>
                       <td className='py-3'>1.</td>
