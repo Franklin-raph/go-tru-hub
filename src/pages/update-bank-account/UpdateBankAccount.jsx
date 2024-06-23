@@ -52,7 +52,7 @@ const UpdateBankAccount = () => {
             console.log(bankCode);
             const res = await fetch(`https://api.paystack.co/bank/resolve?account_number=${accNum}&bank_code=${bankCode}`,{
                 headers : {
-                    'Authorization': 'Bearer sk_test_9a412d97576fd7676fb5d561e06b96546f9303de'
+                    'Authorization': `Bearer sk_test_9a412d97576fd7676fb5d561e06b96546f9303de`
                 }
             })
             const data = await res.json()
@@ -85,8 +85,81 @@ const UpdateBankAccount = () => {
                         <button className="bg-[#2D3934] text-white px-5 py-3 rounded-[8px] text-[14px]" onClick={() => navigate('/update-bank-account')}>Update Account</button>
                     </div> */}
                 </div>
-                <div className='flex item-center justify-center flex-col w-[40%] mx-auto gap-8'>
-                    <div className='relative'>
+                <div className='flex item-center justify-center flex-col w-[90%] mx-auto'>
+
+
+
+
+
+                <div className='flex flex-col sm:flex-row items-center gap-5 w-full'>
+                    <div className='w-full'>
+                        <label className='block text-left mb-2'>Business Name</label>
+                        <input type="text" onChange={e => setNameOfEstablishment(e.target.value)} className='px-4 py-3 outline-none border w-full rounded-[4px]'/>
+                    </div>
+                    <div className='w-full'>
+                        <label className='block text-left mb-2'>Primary Contact Email</label>
+                        <input type="text" onChange={e => setBizType(e.target.value)} className='px-4 py-3 outline-none border w-full rounded-[4px]'/>
+                    </div>
+                </div>
+                <div className='flex flex-col sm:flex-row items-center gap-5 w-full my-[3rem]'>
+                    <div className='w-full relative'>
+                        <label className='block text-left mb-2'>Settlement Bank</label>
+                        <div className='flex items-center justify-between border rounded-[6px] py-3 px-5 w-full'>
+                            <input type="text" value={selectedBank} onChange={e => setEmail(e.target.value)} className='outline-none w-full rounded-[4px]'/>
+                            <IoChevronDownOutline className='cursor-pointer' onClick={() => setBankDropDown(!bankDropDown)} />
+                        </div>
+                        <p className='mt-1 opacity-0'>Account Name: {accountName} </p>
+                        {
+                            bankDropDown &&
+                            <div className='absolute z-10 top-[80px] border rounded-[5px] bg-white w-full h-[350px] overflow-y-scroll'>
+                                {
+                                    allBanks.map(bank => {
+                                        return (
+                                            <p className='cursor-pointer hover:bg-gray-300 p-2' onClick={() => {
+                                                setSelectedBank(bank.name)
+                                                setBankDropDown(!bankDropDown)
+                                                setBankCode(bank.code)
+                                            }}>{bank.name}</p>
+                                        )
+                                    })
+                                }
+                            </div>
+                        }
+                    </div>
+                    <div className='w-full'>
+                        <label className='block text-left mb-2'>Account Number</label>
+                        <div className='flex items-center justify-between border rounded-[6px] py-3 px-5'>
+                            <input type="number" onChange={(e) => setAccNum(e.target.value)} placeholder='Enter Account Number' className='bg-transparent outline-none' />
+                            {
+                                accInfoLoading && <FiLoader className='text-gray-500 animate-spin' />
+                            }
+                        </div>
+                        <p className='mt-1'>Account Name: {accountName} </p>
+                        {/* <input type="text" onChange={e => setPhone(e.target.value)} className='px-4 py-3 outline-none border w-full rounded-[4px]'/> */}
+                    </div>
+                </div>
+                <div className='flex flex-col sm:flex-row items-center gap-5 w-full'>
+                    <div className='w-full'>
+                        <div className="flex items-center justify-between">
+                            <label className='block text-left mb-2'>Primary Contact Name</label>
+                        </div>
+                        <input type="text" onChange={e => setReferalCode(e.target.value)} className='px-4 py-3 outline-none border w-full rounded-[4px]'/>
+                    </div>
+                    <div className='w-full'>
+                        <label className='block text-left mb-2'>Primary Contact Phone</label>
+                        <input type="text" onChange={e => setBusinessAddress(e.target.value)} className='px-4 py-3 outline-none border w-full rounded-[4px]'/>
+                    </div>
+                </div>
+                <div className='flex flex-col sm:flex-row items-center gap-5 w-full my-[3rem]'>
+                    <div className='w-full'>
+                        <label className='block text-left mb-2'>Description</label>
+                        <input type="text" onChange={e => setYearOfEstablishment(e.target.value)} className='px-4 py-3 outline-none border w-full rounded-[4px]'/>
+                    </div>
+                </div>
+
+                
+
+                    {/* <div className='relative'>
                         <p>Bank</p>
                         <div className='flex items-center justify-between border border-[#25751E] rounded-[6px] py-3 px-5 bg-[#25751E26]'>
                             <p>{selectedBank}</p>
@@ -108,8 +181,8 @@ const UpdateBankAccount = () => {
                                 }
                             </div>
                         }
-                    </div>
-                    <div>
+                    </div> */}
+                    {/* <div>
                         <p>Account Number</p>
                         <div className='flex items-center justify-between border border-[#25751E] rounded-[6px] py-3 px-5 bg-[#25751E26]'>
                             <input type="number" onChange={(e) => setAccNum(e.target.value)} placeholder='Enter Account Number' className='bg-transparent outline-none' />
@@ -118,7 +191,7 @@ const UpdateBankAccount = () => {
                             }
                         </div>
                         <p className='mt-1'>Account Name: {accountName} </p>
-                    </div>
+                    </div> */}
                     <button className='text-white bg-primary-color w-full rounded-[4px] mt-[.5rem] px-[35px] py-[16px] text-center mx-auto'>Proceed</button>
                 </div>
             </div>
