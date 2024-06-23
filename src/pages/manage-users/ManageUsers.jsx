@@ -71,10 +71,16 @@ const ManageUsers = ({baseUrl}) => {
                                       <p>{user.fullName}</p>
                                     </td>
                                     <td class="px-6 py-4">{user.email ? user.email : "N/A"}</td>
-                                    <td class="px-6 py-4">{user.role}</td>
+                                    <td class="px-6 py-4 capitalize">{user.role}</td>
                                     <td class="px-6 py-4">{formatDate(user.createdAt)}</td>
                                     <td>
-                                      <button className='text-white bg-[#2D3934] px-4 py-2 rounded-[4px]' onClick={() => navigate(`/user/${user._id}`)}>View</button>  
+                                      <button className='text-white bg-[#2D3934] px-4 py-2 rounded-[4px]' onClick={() => {
+                                        if(user.role === "student"){
+                                          navigate(`/user/${user._id}`)
+                                        }else{
+                                          navigate(`/staff/${user._id}`)
+                                        }
+                                      }}>View</button>  
                                     </td>
                                 </tr>
                             )

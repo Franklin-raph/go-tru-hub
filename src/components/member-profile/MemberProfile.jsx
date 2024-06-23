@@ -54,10 +54,10 @@ const MemberProfile = ({currentUser, id}) => {
     <div className='flex items-start gap-10 px-[30px] py-[1rem]'>
         <div className='w-full'>
             <div className='shadow-md rounded-[6px] flex items-center gap-7 p-[20px] mb-10 w-full'>
-                <img src="./images/member1.svg" className='w-[45%] rounded-[6px]' alt="" />
-                <img src="./images/qr-code.svg" className='w-[45%] rounded-[6px]' alt="" />
+                <img src={currentUser?.user?.profileImage?.file ? currentUser?.user?.profileImage?.file : './images/user.svg'} className='w-[45%] rounded-[6px]' alt="" />
+                <img src={currentUser?.user?.passQrcode} className='w-[45%] rounded-[6px]' alt="" />
             </div>
-            <MemberCard />
+            <MemberCard currentUser={currentUser} id={id}/>
             <GuardianCard currentUser={currentUser} id={id}/>
             <div className='shadow-md rounded-[6px] p-[20px] mt-10'>
                 <div className='flex items-center justify-between mb-3'>

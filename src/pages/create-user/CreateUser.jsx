@@ -832,7 +832,7 @@ const CreateUser = ({baseUrl}) => {
                 </div>
             </div>
         }
-        {msg &&
+        {   msg &&
             <AlertModal msg={msg} alertType={alertType} setMsg={setMsg} alertTitle={alertTitle}/>
         }
     </div>

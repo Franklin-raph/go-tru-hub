@@ -52,6 +52,7 @@ import CreateAssignment from './pages/create-assignment/CreateAssignment'
 import OrgzProfile from './pages/orgz-profile/OrgzProfile'
 import Summary from './pages/summary/Summary'
 import Grading from './pages/grading/Grading'
+import StaffInfo from './pages/staff-info/StaffInfo'
 
 function App() {
 
@@ -110,6 +111,7 @@ function App() {
             <Route path='/orgz-profile' element={<OrgzProfile baseUrl={baseUrl}/>} />
             <Route path='/summary' element={<Summary baseUrl={baseUrl}/>} />
             <Route path='/grading' element={<Grading baseUrl={baseUrl}/>} />
+            <Route path='/staff/:id' element={<StaffInfo baseUrl={baseUrl}/>} />
 
             <Route path='*' element={<div>404</div>} />
         </Routes>
