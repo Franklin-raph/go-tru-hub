@@ -46,6 +46,8 @@ const SendToken = ({baseUrl}) => {
     useEffect(() => {
         getPlanInfo()
         getAllGuardians()
+        setMsg("You can only send a maximum of six(6) tokens to a single user at a time and collectively, you can only select 10 members at once to send tokens to")
+        setAlertTitle("Notice!")
     },[])
 
     const handleCheckboxChange = (guardianId) => {
@@ -178,7 +180,7 @@ const SendToken = ({baseUrl}) => {
                                           <td>
                                             <input 
                                               type="text" 
-                                              className='w-[50px] outline-none border' 
+                                              className='w-[50px] outline-none border p-1 rounded text-center' 
                                               value={quantity} 
                                               onChange={e => handleQuantityChange(sub._id, Number(e.target.value))}
                                               disabled={!selectedGuardian}

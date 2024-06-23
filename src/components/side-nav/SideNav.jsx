@@ -94,33 +94,33 @@ const SideNav = () => {
             <div className="flex items-center justify-between w-full cursor-pointer" onClick={() => setMonitorDropDown(!monitorDropDown)}>
               <div className="flex items-center">
                   <LuScanLine className="mr-[15.67px]"/>
-                  <p className="">Monitor</p>
+                  <p className={ location.pathname.includes("/units") || location.pathname.includes('/assignments') || location.pathname.includes('/grading') || location.pathname.includes('summary') ? `flex items-center justify-between text-[#25751E]` :`flex items-center justify-between`}>Monitor</p>
               </div>
               <IoChevronDownOutline color="d7d7d7"/>
             </div>
             {monitorDropDown &&
               <div className='mt-3 ml-4'>
-                <div className='flex items-center gap-2 my-4 cursor-pointer'>
+                <div className='flex items-center gap-2 my-4 cursor-pointer' onClick={() => navigate('/summary')}>
                   <RxDashboard />
-                  <p className="">Summary</p>
+                  <p className={ location.pathname.includes("/summary") ? `flex items-center justify-between text-[#25751E]` : `flex items-center justify-between`}>Summary</p>
                 </div>
                 <div className='flex items-center gap-2 my-4 cursor-pointer' onClick={() => navigate('/units')} >
                   <img src="./images/orders.svg"/>
-                  <p className="">Units</p>
+                  <p className={ location.pathname.includes("/unit") ? `flex items-center justify-between text-[#25751E]` : `flex items-center justify-between`}>Units</p>
                 </div>
                 <div className='flex items-center gap-2 my-4 cursor-pointer' onClick={() => navigate('/assignments')}>
                   <IoBookSharp />
-                  <p className="">Assignments</p>
+                  <p className={ location.pathname.includes("/assignment") ? `flex items-center justify-between text-[#25751E]` : `flex items-center justify-between`}>Assignments</p>
                 </div>
-                <div className='flex items-center gap-2 my-4 cursor-pointer'>
+                <div className='flex items-center gap-2 my-4 cursor-pointer' onClick={() => navigate('/grading')}>
                   <HiCodeBracketSquare />
-                  <p className="">Grading System</p>
+                  <p className={ location.pathname.includes("/grading") ? `flex items-center justify-between text-[#25751E]` : `flex items-center justify-between`}>Grading System</p>
                 </div>
               </div>
             }
           </div>
 
-          <Link to='/result' className={ location.pathname.includes("result") ? `flex items-center justify-between text-[#25751E]` : `flex items-center justify-between`}>
+          <Link to='/result' className={ location.pathname.includes("result") ? `flex items-center justify-between text-[#25751E] py-[10px]` : `flex items-center justify-between py-[10px]`}>
             <div className="flex items-center">
               <PiFileArrowUpThin color="d7d7d7" className="mr-[15.67px]"/>
               <p className="">Result</p>

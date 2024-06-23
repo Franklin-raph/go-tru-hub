@@ -50,6 +50,8 @@ import SingleUnit from './pages/single-unit/SingleUnit'
 import Assignments from './pages/assignments/Assignments'
 import CreateAssignment from './pages/create-assignment/CreateAssignment'
 import OrgzProfile from './pages/orgz-profile/OrgzProfile'
+import Summary from './pages/summary/Summary'
+import Grading from './pages/grading/Grading'
 
 function App() {
 
@@ -106,6 +108,8 @@ function App() {
             <Route path='/assignments' element={<Assignments baseUrl={baseUrl}/>} />
             <Route path='/create-assignment' element={<CreateAssignment baseUrl={baseUrl}/>} />
             <Route path='/orgz-profile' element={<OrgzProfile baseUrl={baseUrl}/>} />
+            <Route path='/summary' element={<Summary baseUrl={baseUrl}/>} />
+            <Route path='/grading' element={<Grading baseUrl={baseUrl}/>} />
 
             <Route path='*' element={<div>404</div>} />
         </Routes>
