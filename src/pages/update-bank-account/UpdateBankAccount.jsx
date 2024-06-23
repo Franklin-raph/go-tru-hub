@@ -5,10 +5,12 @@ import { useNavigate } from 'react-router-dom'
 import { IoChevronDownOutline } from "react-icons/io5";
 import { FiLoader } from "react-icons/fi";
 import Alert from '../../components/alert/Alert';
+import BtnLoader from '../../components/btn-loader/BtnLoader';
 
 
-const UpdateBankAccount = () => {
+const UpdateBankAccount = ({baseUrl}) => {
 
+    const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
     const user = JSON.parse(localStorage.getItem('user'))
     const [allBanks, setAllBanks] = useState([])
@@ -20,6 +22,12 @@ const UpdateBankAccount = () => {
     const [bankCode, setBankCode] = useState('')
     const [accInfoLoading, setAccInfoLoading] = useState(false)
     const [accountName, setAccountName] = useState('')
+
+    const [business_name, setBusinessName] = useState('')
+    const [description, setDescription] = useState('')
+    const [primary_contact_email, setPrimaryContactEmail] = useState('')
+    const [primary_contact_phone, setPrimaryContactPhone] = useState('')
+    const [primary_contact_name, setPrimaryContactName] = useState('')
 
     const [msg, setMsg] = useState('')
     const [alertType, setAlertType] = useState()
@@ -67,6 +75,48 @@ const UpdateBankAccount = () => {
         }
     }
 
+    async function updateMyAccountInfo(){
+        setLoading(true)
+        if(!selectedBank || !description || !primary_contact_email || !primary_contact_name || !primary_contact_phone || !business_name || !accNum){
+            setAlertType('error')
+            setMsg('All fields are required')
+            return
+        }else{
+            setIsLoading(true)
+            const body = {
+                business_name,
+                description,
+                primary_contact_email,
+                primary_contact_name,
+                primary_contact_phone,
+                account_number: accNum,
+                settlement_bank: selectedBank
+            }
+            console.log(body);
+            const res = await fetch(`${baseUrl}/bank`,{
+                method:"POST",
+                headers:{
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.data.access_token}`
+                },
+                body: JSON.stringify(body)
+            })
+            const data = await res.json()
+            if(res) setLoading(false)
+            console.log(data);
+            if(res) setIsLoading(false)
+            if(!res.ok){
+                setAlertType('error')
+                setMsg(data.message)
+                return
+            }
+            setAlertType('success')
+            setMsg(data.message)
+            setBusinessName('')
+            setDescription('')
+        }
+    }
+
   return (
     <div>
         <SideNav />
@@ -94,11 +144,11 @@ const UpdateBankAccount = () => {
                 <div className='flex flex-col sm:flex-row items-center gap-5 w-full'>
                     <div className='w-full'>
                         <label className='block text-left mb-2'>Business Name</label>
-                        <input type="text" onChange={e => setNameOfEstablishment(e.target.value)} className='px-4 py-3 outline-none border w-full rounded-[4px]'/>
+                        <input type="text" onChange={e => setBusinessName(e.target.value)} className='px-4 py-3 outline-none border w-full rounded-[4px]'/>
                     </div>
                     <div className='w-full'>
                         <label className='block text-left mb-2'>Primary Contact Email</label>
-                        <input type="text" onChange={e => setBizType(e.target.value)} className='px-4 py-3 outline-none border w-full rounded-[4px]'/>
+                        <input type="text" onChange={e => setPrimaryContactEmail(e.target.value)} className='px-4 py-3 outline-none border w-full rounded-[4px]'/>
                     </div>
                 </div>
                 <div className='flex flex-col sm:flex-row items-center gap-5 w-full my-[3rem]'>
@@ -143,17 +193,17 @@ const UpdateBankAccount = () => {
                         <div className="flex items-center justify-between">
                             <label className='block text-left mb-2'>Primary Contact Name</label>
                         </div>
-                        <input type="text" onChange={e => setReferalCode(e.target.value)} className='px-4 py-3 outline-none border w-full rounded-[4px]'/>
+                        <input type="text" onChange={e => setPrimaryContactName(e.target.value)} className='px-4 py-3 outline-none border w-full rounded-[4px]'/>
                     </div>
                     <div className='w-full'>
                         <label className='block text-left mb-2'>Primary Contact Phone</label>
-                        <input type="text" onChange={e => setBusinessAddress(e.target.value)} className='px-4 py-3 outline-none border w-full rounded-[4px]'/>
+                        <input type="text" onChange={e => setPrimaryContactPhone(e.target.value)} className='px-4 py-3 outline-none border w-full rounded-[4px]'/>
                     </div>
                 </div>
                 <div className='flex flex-col sm:flex-row items-center gap-5 w-full my-[3rem]'>
                     <div className='w-full'>
                         <label className='block text-left mb-2'>Description</label>
-                        <input type="text" onChange={e => setYearOfEstablishment(e.target.value)} className='px-4 py-3 outline-none border w-full rounded-[4px]'/>
+                        <input type="text" onChange={e => setDescription(e.target.value)} className='px-4 py-3 outline-none border w-full rounded-[4px]'/>
                     </div>
                 </div>
 
@@ -192,7 +242,12 @@ const UpdateBankAccount = () => {
                         </div>
                         <p className='mt-1'>Account Name: {accountName} </p>
                     </div> */}
-                    <button className='text-white bg-primary-color w-full rounded-[4px] mt-[.5rem] px-[35px] py-[16px] text-center mx-auto'>Proceed</button>
+                    {
+                        loading ? 
+                        <BtnLoader bgColor="#191f1c"/>
+                        :
+                        <button className='text-white bg-primary-color w-full rounded-[4px] px-[35px] py-[16px] text-center mx-auto mb-10' onClick={() => updateMyAccountInfo()}>Proceed</button>
+                    }
                 </div>
             </div>
         </div>
