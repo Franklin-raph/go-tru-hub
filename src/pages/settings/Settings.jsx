@@ -5,6 +5,7 @@ import { CiEdit } from "react-icons/ci";
 import { MdOutlineDeleteForever } from "react-icons/md";
 import { IoCloseOutline } from 'react-icons/io5';
 import BtnLoader from '../../components/btn-loader/BtnLoader';
+import Alert from '../../components/alert/Alert';
 
 const Settings = () => {
 
@@ -16,6 +17,17 @@ const Settings = () => {
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [encrypted, setEncrypted] = useState(true);
+    const [msg, setMsg] = useState('')
+    const [alertType, setAlertType] = useState()
+
+    async function updatePassword(e){
+        e.preventDefault()
+        if(!password || !newPassword || !confirmPassword){
+            setMsg("All fields are required!");
+            setAlertType('error')
+            return;
+        }
+    }
 
   return (
     <div>
@@ -41,7 +53,7 @@ const Settings = () => {
                             </div>
                             <p className='text-[#4F4F4F] mt-2'>Reset your password</p>
                         </div>
-                        <form>
+                        <form onSubmit={updatePassword}>
                             <div className='flex items-center gap-5'>
                                 <div className="w-full" style={{marginBottom:"30px"}}>
                                     <p style={{marginBottom:"5px"}}>Current Password</p>
@@ -185,6 +197,9 @@ const Settings = () => {
                     }
                 </div>
             </>
+        }
+        {
+            msg && <Alert msg={msg} setMsg={setMsg} alertType={alertType}/>
         }
     </div>
   )
