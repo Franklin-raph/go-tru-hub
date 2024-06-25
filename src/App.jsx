@@ -57,6 +57,8 @@ import UnitAssignmentCreate from './pages/unit-assignment-create/UnitAssignmentC
 import UnitAssignmentSummary from './pages/unit-assignment-summary/UnitAssignmentSummary'
 import AddSubUnitFromUnit from './pages/add-sub-unit-from-unit/AddSubUnitFromUnit'
 import ViewSubUnit from './pages/view-sub-unit/ViewSubUnit'
+import AddAssignmentFromSubUnit from './pages/add-assignment-from-sub-unit/AddAssignmentFromSubUnit'
+import CoOrdinator from './pages/co-ordinator/CoOrdinator'
 
 function App() {
 
@@ -111,11 +113,13 @@ function App() {
             <Route path='/create-sub-unit' element={<CreateSubUnit baseUrl={baseUrl}/>} />
             <Route path='/unit/:id' element={<SingleUnit baseUrl={baseUrl}/>} />
             <Route path='/unit-assignment-create/:id' element={<UnitAssignmentCreate baseUrl={baseUrl}/>} />
+            <Route path='/sub-unit-assignment-create/:id' element={<AddAssignmentFromSubUnit baseUrl={baseUrl}/>} />
             <Route path='/assignments' element={<Assignments baseUrl={baseUrl}/>} />
             <Route path='/create-assignment' element={<CreateAssignment baseUrl={baseUrl}/>} />
             <Route path='/orgz-profile' element={<OrgzProfile baseUrl={baseUrl}/>} />
             <Route path='/summary' element={<Summary baseUrl={baseUrl}/>} />
             <Route path='/grading' element={<Grading baseUrl={baseUrl}/>} />
+            <Route path='/co-ordinator/:id' element={<CoOrdinator baseUrl={baseUrl}/>} />
             <Route path='/view-assignment-summary' element={<UnitAssignmentSummary baseUrl={baseUrl}/>} />
             <Route path='/staff/:id' element={<StaffInfo baseUrl={baseUrl}/>} />
             <Route path='/add-sub-unit/:id' element={<AddSubUnitFromUnit baseUrl={baseUrl}/>} />

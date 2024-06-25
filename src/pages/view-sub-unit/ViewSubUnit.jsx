@@ -34,7 +34,7 @@ const ViewSubUnit = ({baseUrl}) => {
     
 
     async function getSubUnitInfo(){
-        const res = await fetch(`${baseUrl}/units/${id}`,{
+        const res = await fetch(`${baseUrl}/subunits/${id}`,{
             method:"GET",
             headers:{
                 'Authorization':`Bearer ${user.data.access_token}`
@@ -48,7 +48,7 @@ const ViewSubUnit = ({baseUrl}) => {
             return;
         }
         if(res.ok){
-            setUnitName(data?.data?.units[0]?.unit?.name)
+            setUnitName(data?.data?.unit?.name)
             setAllSubUnits(data.data.units);
             setAlertType('success');
             return;
@@ -167,11 +167,12 @@ const ViewSubUnit = ({baseUrl}) => {
                 <div className="flex justify-between items-start mb-[3rem] bg-[#F2FCF7] px-[30px] py-[1rem]">
                     <div className="flex items-center gap-2">
                         <img src="./images/arrow-left.svg" alt="" onClick={() => navigate('/units')} className='cursor-pointer' />
-                        <p className="text-[28px] text-primary-color font-[600]">About sub {unitName}</p>
+                        <p className="text-[28px] text-primary-color font-[600]">About {unitName}</p>
                     </div>
                     <div className='flex items-center gap-5'>
-                        <button className="border border-[#2D3934] text-[#19201D] font-[600] px-5 py-3 rounded-[8px] text-[14px]" onClick={() => navigate(`/unit-assignment-create/${id}`)} >Add assignment</button>
-                        <button className="bg-[#2D3934] text-white px-5 py-3 rounded-[8px] text-[14px]" onClick={() => navigate(`/add-sub-unit/${id}`)} >Add sub-unit</button>
+                        <button className='font-[600] text-[#25751E] text-[14px]' onClick={() => navigate(`/co-ordinator/${id}`)} >Coordinator</button>
+                        <button className="border border-[#2D3934] text-[#19201D] font-[600] px-5 py-3 rounded-[8px] text-[14px]" onClick={() => navigate(`/sub-unit-assignment-create/${id}`)} >Add assignment</button>
+                        <button className="bg-[#2D3934] text-white px-5 py-3 rounded-[8px] text-[14px]" onClick={() => navigate(`/add-sub-unit/${id}`)} >Timetable</button>
                     </div>
                     {/* <div className='flex items-center gap-5'>
                         <FaRegEdit className="text-gray-500 font-[600] text-[20px] cursor-pointer" onClick={() => setEditUnit(true)}/>
@@ -256,7 +257,7 @@ const ViewSubUnit = ({baseUrl}) => {
                         <div className='flex items-center justify-between mb-2'>
                             <div className='flex items-center gap-2 text-[18px]'>
                                 <LuListTodo />
-                                <p className='text-[#1D1D1D] font-[600]'>List of Sub-units</p>
+                                <p className='text-[#1D1D1D] font-[600]'>List of Assignees</p>
                             </div>
                             <p className='text-[#828282] font-[600]'>Total - {allSubUnits?.length}</p>
                         </div>

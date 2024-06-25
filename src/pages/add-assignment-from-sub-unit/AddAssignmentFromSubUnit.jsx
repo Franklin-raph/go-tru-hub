@@ -7,12 +7,13 @@ import BtnLoader from '../../components/btn-loader/BtnLoader'
 import { IoChevronDownOutline } from 'react-icons/io5'
 import { IoMdInformationCircleOutline } from 'react-icons/io'
 
-const UnitAssignmentCreate = ({baseUrl}) => {
+const AddAssignmentFromSubUnit = ({baseUrl}) => {
 
     const navigate = useNavigate()
     const { id } = useParams()
     const user = JSON.parse(localStorage.getItem('user'))
     const [unitInfo, setUnitInfo] = useState()
+    const [subUnitInfo, setSubUnitInfo] = useState()
     const [msg, setMsg] = useState('')
     const [alertType, setAlertType] = useState()
     const [loading, setLoading] = useState(false)
@@ -28,22 +29,22 @@ const UnitAssignmentCreate = ({baseUrl}) => {
     const [selectedSession, setSelectedSession] = useState({})
     const [selectedSemester, setSelectedSemester] = useState({})
 
-    async function getUnitInfo(){
-        const res = await fetch(`${baseUrl}/units/${id}`,{
+    async function getSubUnitInfo(){
+        const res = await fetch(`${baseUrl}/subunits/${id}`,{
             method:"GET",
             headers:{
                 'Authorization':`Bearer ${user.data.access_token}`
             }
         })
         const data = await res.json()
-        console.log(data.data);
+        console.log(data.data.unit.unit.name);
         if(!res.ok){
             setMsg(data.message);
             setAlertType('error');
             return;
         }
         if(res.ok){
-            setUnitInfo(data.data.unit);
+            setSubUnitInfo(data.data.unit);
             getAllSubUnits(data.data.unit._id)
             setAlertType('success');
             return;
@@ -115,7 +116,7 @@ const UnitAssignmentCreate = ({baseUrl}) => {
     }
 
     useEffect(() => {
-        getUnitInfo()
+        getSubUnitInfo()
         getAllAssignments()
         getAllSession()
     },[])
@@ -151,7 +152,7 @@ const UnitAssignmentCreate = ({baseUrl}) => {
               'Content-Type': 'application/json',
               'Authorization':`Bearer ${user.data.access_token}`
             },
-            body: JSON.stringify({term:selectedSemester._id, subUnit, course:assignment}),
+            body: JSON.stringify({term:selectedSemester._id, subUnit:subUnitInfo._id, course:assignment}),
           });
           const data = await response.json()
           if (response.ok) {
@@ -215,7 +216,7 @@ const UnitAssignmentCreate = ({baseUrl}) => {
             <div className="">
                 <div className="flex justify-between items-start mb-[3rem] bg-[#F2FCF7] px-[30px] py-[1rem]">
                     <div className="flex items-center gap-2">
-                        <img src="./images/arrow-left.svg" alt="" onClick={() => navigate('/units')} className='cursor-pointer' />
+                        <img src="./images/arrow-left.svg" alt="" onClick={() => navigate(`/view-sub-unit/${id}`)} className='cursor-pointer' />
                         <p className="text-[28px] text-primary-color font-[600]">Add Assignment</p>
                     </div>
                 </div>
@@ -223,31 +224,14 @@ const UnitAssignmentCreate = ({baseUrl}) => {
                     <div className='px-[30px] w-[500px] mx-auto'>
                         <div className='mb-5'>
                             <p className='text-[#19201D]'>Pivot unit</p>
-                            <input type="text" value={unitInfo?.name} className='border py-3 px-3 rounded mt-1 w-full outline-none' placeholder='Enter Sub-unit name' />
+                            <input type="text" value={subUnitInfo?.unit?.name} className='border py-3 px-3 rounded mt-1 w-full outline-none' placeholder='Enter unit name' />
                         </div>
 
                         <div className='relative w-full mb-5'>
                             <p className='text-[#19201D]'>Select sub-unit</p>
                             <div className='flex items-center justify-between px-4 py-3 border w-full rounded-[4px]'>
-                                <input type="text" value={subUnit} placeholder='Select user type' className='absolute opacity-0 outline-none rounded-[4px] bg-transparent'/>
-                                <p className='text-[14px]'>{subUnitText}</p>
-                                <IoChevronDownOutline color="d7d7d7" cursor='pointer' onClick={() => setDropDown(dropDown === 'sub-units' ? false : "sub-units")}/>
+                                <input type="text" value={subUnitInfo?.name} placeholder='Select user type' className='outline-none rounded-[4px] bg-transparent'/>
                             </div>
-                            {dropDown === 'sub-units' &&
-                                <div className='py-5 bg-white absolute overflow-y-scroll border h-[220px] px-3 rounded-[12px] mt-2 z-[10] w-full'>
-                                    {
-                                        allSubUnits?.map(unit => (
-                                            <div className='px-3 border-b pb-3 cursor-pointer mb-3' onClick={() => {
-                                                setDropDown(false)
-                                                setSubUnit(unit._id)
-                                                setSubUnitText(unit.name)
-                                            }}>
-                                                <p className='text-[#1D1D1D] capitalize text-[12px]'>{unit.name}</p>
-                                            </div>
-                                        ))
-                                    }
-                                </div>
-                            }
                         </div>
 
                         <div className='relative w-full mb-5'>
@@ -350,4 +334,4 @@ const UnitAssignmentCreate = ({baseUrl}) => {
   )
 }
 
-export default UnitAssignmentCreate
+export default AddAssignmentFromSubUnit
