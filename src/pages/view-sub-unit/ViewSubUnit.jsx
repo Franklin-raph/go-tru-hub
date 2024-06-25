@@ -12,8 +12,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { BiCloset } from 'react-icons/bi'
 import { MdOutlineClose } from 'react-icons/md'
 
-
-const SingleUnit = ({baseUrl}) => {
+const ViewSubUnit = ({baseUrl}) => {
 
     const navigate = useNavigate()
     const { id } = useParams()
@@ -34,8 +33,8 @@ const SingleUnit = ({baseUrl}) => {
     const [deleteSubUnit, setDeleteSubUnit] = useState(false)
     
 
-    async function getUnitInfo(){
-        const res = await fetch(`${baseUrl}/unit/${id}/subunits`,{
+    async function getSubUnitInfo(){
+        const res = await fetch(`${baseUrl}/units/${id}`,{
             method:"GET",
             headers:{
                 'Authorization':`Bearer ${user.data.access_token}`
@@ -155,8 +154,9 @@ const SingleUnit = ({baseUrl}) => {
     }
 
     useEffect(() => {
-        getUnitInfo()
+        getSubUnitInfo()
     },[])
+
 
   return (
     <div>
@@ -167,7 +167,7 @@ const SingleUnit = ({baseUrl}) => {
                 <div className="flex justify-between items-start mb-[3rem] bg-[#F2FCF7] px-[30px] py-[1rem]">
                     <div className="flex items-center gap-2">
                         <img src="./images/arrow-left.svg" alt="" onClick={() => navigate('/units')} className='cursor-pointer' />
-                        <p className="text-[28px] text-primary-color font-[600]">About {unitName}</p>
+                        <p className="text-[28px] text-primary-color font-[600]">About sub {unitName}</p>
                     </div>
                     <div className='flex items-center gap-5'>
                         <button className="border border-[#2D3934] text-[#19201D] font-[600] px-5 py-3 rounded-[8px] text-[14px]" onClick={() => navigate(`/unit-assignment-create/${id}`)} >Add assignment</button>
@@ -188,10 +188,6 @@ const SingleUnit = ({baseUrl}) => {
                         <div className="mb-2 flex items-center justify-between">
                             <div>Last updated</div>
                             <div className="font-bold">January 29, 2024</div>
-                        </div>
-                        <div className="mb-2 flex items-center justify-between">
-                            <div>Sub-units</div>
-                            <div className="font-bold">{allSubUnits?.length}</div>
                         </div>
                         <div className="mb-2 flex items-center justify-between">
                             <div>Assignments</div>
@@ -268,11 +264,11 @@ const SingleUnit = ({baseUrl}) => {
                             <thead class="text-[14px] border-b">
                                 <tr>
                                     <th scope="col" class="py-3 th1 font-[700]">S/N</th>
-                                    <th scope="col" class="py-3 font-[700]">Sub-unit</th>
-                                    <th scope="col" class="py-3 font-[700]">Assignments</th>
-                                    <th scope="col" class="py-3 font-[700]">Assignee</th>
+                                    <th scope="col" class="py-3 font-[700]">Assignment</th>
+                                    <th scope="col" class="py-3 font-[700]">Assignee 1</th>
+                                    <th scope="col" class="py-3 font-[700]">Assignee 2</th>
                                     <th scope="col" class="py-3 font-[700]">Members</th>
-                                    <th scope="col" class="py-3 font-[700]">Action</th>
+                                    <th scope="col" class="py-3 font-[700]">Avg. duration</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -445,4 +441,4 @@ const SingleUnit = ({baseUrl}) => {
   )
 }
 
-export default SingleUnit
+export default ViewSubUnit

@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import Alert from '../../components/alert/Alert'
 import BtnLoader from '../../components/btn-loader/BtnLoader'
 import { IoChevronDownOutline } from 'react-icons/io5'
+import { IoMdInformationCircleOutline } from 'react-icons/io'
 
 const CreateSubUnit = ({baseUrl}) => {
 
@@ -56,7 +57,7 @@ const CreateSubUnit = ({baseUrl}) => {
         const data = await res.json()
         console.log(data.data.users);
         setAllStaffs(data.data.users)
-      }
+    }
 
     useEffect(() => {
         getAllUnits()
@@ -159,7 +160,10 @@ const CreateSubUnit = ({baseUrl}) => {
                                 </div>
                             }
                         </div>
-                        <p>Coordinator is responsible for result upload.</p>
+                        <div className='text-[#865C1D] text-[14px] flex items-center gap-1 mt-[-20px] mb-4'>
+                            <IoMdInformationCircleOutline />
+                            <p>Coordinator is responsible for result upload.</p>
+                        </div>
 
                         {
                             loading ? 

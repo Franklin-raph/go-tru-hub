@@ -55,6 +55,8 @@ import Grading from './pages/grading/Grading'
 import StaffInfo from './pages/staff-info/StaffInfo'
 import UnitAssignmentCreate from './pages/unit-assignment-create/UnitAssignmentCreate'
 import UnitAssignmentSummary from './pages/unit-assignment-summary/UnitAssignmentSummary'
+import AddSubUnitFromUnit from './pages/add-sub-unit-from-unit/AddSubUnitFromUnit'
+import ViewSubUnit from './pages/view-sub-unit/ViewSubUnit'
 
 function App() {
 
@@ -116,6 +118,8 @@ function App() {
             <Route path='/grading' element={<Grading baseUrl={baseUrl}/>} />
             <Route path='/view-assignment-summary' element={<UnitAssignmentSummary baseUrl={baseUrl}/>} />
             <Route path='/staff/:id' element={<StaffInfo baseUrl={baseUrl}/>} />
+            <Route path='/add-sub-unit/:id' element={<AddSubUnitFromUnit baseUrl={baseUrl}/>} />
+            <Route path='/view-sub-unit/:id' element={<ViewSubUnit baseUrl={baseUrl}/>} />
 
             <Route path='*' element={<div>404</div>} />
         </Routes>
