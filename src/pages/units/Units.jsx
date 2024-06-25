@@ -66,7 +66,7 @@ const Units = ({baseUrl}) => {
                                 <p>{unit.name}</p>
                                 <button onClick={() => navigate(`/unit/${unit._id}`)} className='bg-[#19201D] py-2 px-4 rounded-[4px] text-white text-[14px]'>View</button>
                             </div>
-                        )).reverse()
+                        ))
                     }
                 </div>
             </div>

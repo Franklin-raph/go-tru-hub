@@ -90,7 +90,7 @@ const UpdateBankAccount = ({baseUrl}) => {
                 primary_contact_name,
                 primary_contact_phone,
                 account_number: accNum,
-                settlement_bank: selectedBank
+                settlement_bank: bankCode
             }
             console.log(body);
             const res = await fetch(`${baseUrl}/bank`,{

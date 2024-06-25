@@ -7,6 +7,10 @@ import BtnLoader from '../../components/btn-loader/BtnLoader'
 import Alert from '../../components/alert/Alert'
 import { GoTrash } from "react-icons/go";
 import { FaRegEdit } from "react-icons/fa";
+import { LuListTodo } from "react-icons/lu";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { BiCloset } from 'react-icons/bi'
+import { MdOutlineClose } from 'react-icons/md'
 
 
 const SingleUnit = ({baseUrl}) => {
@@ -19,6 +23,7 @@ const SingleUnit = ({baseUrl}) => {
     const [alertType, setAlertType] = useState()
     const [unitName, setUnitName] = useState('')
     const [loading, setLoading] = useState(false)
+    const [subUnitId, setSubUnitId] = useState()
 
     const [subUnitName, setSubUnitName] = useState()
 
@@ -165,11 +170,154 @@ const SingleUnit = ({baseUrl}) => {
                         <p className="text-[28px] text-primary-color font-[600]">About {unitName}</p>
                     </div>
                     <div className='flex items-center gap-5'>
+                        <button className="border border-[#2D3934] text-[#19201D] font-[600] px-5 py-3 rounded-[8px] text-[14px]" onClick={() => navigate(`/unit-assignment-create/${id}`)} >Add assignment</button>
+                        <button className="bg-[#2D3934] text-white px-5 py-3 rounded-[8px] text-[14px]">Add sub-unit</button>
+                    </div>
+                    {/* <div className='flex items-center gap-5'>
                         <FaRegEdit className="text-gray-500 font-[600] text-[20px] cursor-pointer" onClick={() => setEditUnit(true)}/>
                         <GoTrash className="text-red-500 font-[600] text-[20px] cursor-pointer" onClick={() => setDeleteUnit(true)}/>
-                    </div>
+                    </div> */}
                 </div>
-                <div className='px-[30px]'>
+
+                <div className="m-[30px] p-4 rounded-lg shadow-md flex flex-col sm:flex-row gap-[3rem]">
+                    <div className="p-4 rounded-lg flex-1 mr-4 w-1/2">
+                        <div className="mb-2 flex items-center justify-between">
+                            <div>Created</div>
+                            <div className="font-bold">January 29, 2024</div>
+                        </div>
+                        <div className="mb-2 flex items-center justify-between">
+                            <div>Last updated</div>
+                            <div className="font-bold">January 29, 2024</div>
+                        </div>
+                        <div className="mb-2 flex items-center justify-between">
+                            <div>Sub-units</div>
+                            <div className="font-bold">{allSubUnits?.length}</div>
+                        </div>
+                        <div className="mb-2 flex items-center justify-between">
+                            <div>Assignments</div>
+                            <div className="font-bold">2</div>
+                        </div>
+                        <div className="mb-2 flex items-center justify-between">
+                            <div>Assignees</div>
+                            <div className="font-bold">2</div>
+                        </div>
+                        <div className="mb-2 flex items-center justify-between">
+                            <div>Members</div>
+                            <div className="font-bold">2</div>
+                        </div>
+                    </div>
+                    <div className="flex flex-col sm:flex-row w-1/2">
+                        <div className="bg-blue-900 text-white p-4 rounded-lg shadow-md flex-1 mx-2">
+                        <div className="flex flex-col items-center">
+                            <div className="text-lg font-bold">Members</div>
+                            <div className="text-3xl font-bold my-2">32</div>
+                            <div className="w-full flex justify-between text-sm">
+                            <div className="flex flex-col items-center">
+                                <div className="bg-green-500 h-2 w-2 rounded-full mb-1"></div>
+                                <div>Early</div>
+                                <div>70%</div>
+                            </div>
+                            <div className="flex flex-col items-center">
+                                <div className="bg-yellow-500 h-2 w-2 rounded-full mb-1"></div>
+                                <div>Late</div>
+                                <div>20%</div>
+                            </div>
+                            <div className="flex flex-col items-center">
+                                <div className="bg-red-500 h-2 w-2 rounded-full mb-1"></div>
+                                <div>Absent</div>
+                                <div>10%</div>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div className="bg-blue-900 text-white p-4 rounded-lg shadow-md flex-1 mx-2">
+                        <div className="flex flex-col items-center">
+                            <div className="text-lg font-bold">Assignees</div>
+                            <div className="text-3xl font-bold my-2">32</div>
+                            <div className="w-full flex justify-between text-sm">
+                            <div className="flex flex-col items-center">
+                                <div className="bg-green-500 h-2 w-2 rounded-full mb-1"></div>
+                                <div>Early</div>
+                                <div>70%</div>
+                            </div>
+                            <div className="flex flex-col items-center">
+                                <div className="bg-yellow-500 h-2 w-2 rounded-full mb-1"></div>
+                                <div>Late</div>
+                                <div>20%</div>
+                            </div>
+                            <div className="flex flex-col items-center">
+                                <div className="bg-red-500 h-2 w-2 rounded-full mb-1"></div>
+                                <div>Absent</div>
+                                <div>10%</div>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+
+                    <div class="relative overflow-x-auto mx-5 mt-10">
+                        <div className='flex items-center justify-between mb-2'>
+                            <div className='flex items-center gap-2 text-[18px]'>
+                                <LuListTodo />
+                                <p className='text-[#1D1D1D] font-[600]'>List of Sub-units</p>
+                            </div>
+                            <p className='text-[#828282] font-[600]'>Total - {allSubUnits?.length}</p>
+                        </div>
+                        <table class="w-full text-sm text-left rtl:text-left text-[#1D1D1D]">
+                            <thead class="text-[14px] border-b">
+                                <tr>
+                                    <th scope="col" class="py-3 th1 font-[700]">S/N</th>
+                                    <th scope="col" class="py-3 font-[700]">Sub-unit</th>
+                                    <th scope="col" class="py-3 font-[700]">Assignments</th>
+                                    <th scope="col" class="py-3 font-[700]">Assignee</th>
+                                    <th scope="col" class="py-3 font-[700]">Members</th>
+                                    <th scope="col" class="py-3 font-[700]">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    allSubUnits && allSubUnits?.map((item, index) => {
+
+                                        return (
+                                            <tr className='relative'>
+                                                <td className='py-3'>{index + 1}</td>
+                                                <td>{item?.name}</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td> <BsThreeDotsVertical  className="cursor-pointer" onClick={() => setSubUnitId(item._id)}/> </td>
+
+                                                {subUnitId === item._id &&
+                                                    <div className='z-[1] absolute right-[110px] w-[200px] top-0 py-3 bg-white border rounded-[10px]'>
+                                                        <div className='my-2 mr-4 flex justify-end'>
+                                                            <MdOutlineClose className='text-lg cursor-pointer mt-[-5px]' onClick={() => setSubUnitId('')} />
+                                                        </div>
+                                                        <div className='flex flex-col'>
+                                                            <div className='flex items-center gap-2 cursor-pointer px-4 py-2 hover:bg-[#F2FCF7]'>
+                                                                <LuListTodo />
+                                                                <p>View sub-unit</p>
+                                                            </div>
+                                                            <div className='flex items-center gap-2 cursor-pointer px-4 py-2 hover:bg-[#F2FCF7]'>
+                                                                <LuListTodo />
+                                                                <p>Edit time-table</p>
+                                                            </div>
+                                                            <div onClick={() => setDeleteSubUnit(item._id)} className='flex items-center gap-2 cursor-pointer px-4 py-2 hover:bg-[#F2FCF7]'>
+                                                                <LuListTodo />
+                                                                <p>Delete sub-unit</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </tr>
+                                        )
+                                    })
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                {/* <div className='px-[30px]'>
                     <p className='text-[#19201D] text-[18px] font-[600] mb-3'>All Sub-units</p>
                     {
                         allSubUnits.length < 1 &&
@@ -188,11 +336,10 @@ const SingleUnit = ({baseUrl}) => {
                                     }} />
                                     <GoTrash className="text-red-500 font-[600] text-[20px] cursor-pointer" onClick={() => setDeleteSubUnit(subUnit._id)} />
                                 </div>
-                                {/* <button onClick={() => navigate(`/unit/${subUnit._id}`)} className='bg-[#19201D] py-2 px-4 rounded-[4px] text-white text-[14px]'>View</button> */}
                             </div>
                         )).reverse()
                     }
-                </div>
+                </div> */}
             </div>
         </div>
 
@@ -293,6 +440,7 @@ const SingleUnit = ({baseUrl}) => {
         {
             msg && <Alert msg={msg} setMsg={setMsg} alertType={alertType}/>
         }
+        
     </div>
   )
 }
