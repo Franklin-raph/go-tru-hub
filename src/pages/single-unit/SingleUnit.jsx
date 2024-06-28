@@ -32,6 +32,9 @@ const SingleUnit = ({baseUrl}) => {
 
     const [editSubUnit, setEditSubUnit] = useState(false)
     const [deleteSubUnit, setDeleteSubUnit] = useState(false)
+
+    const [attendanceSummary, setAttendanceSummary] = useState()
+    const [unitSummary, setUnitSummary] = useState()
     
 
     async function getUnitInfo(){
@@ -50,7 +53,71 @@ const SingleUnit = ({baseUrl}) => {
         }
         if(res.ok){
             setUnitName(data?.data?.units[0]?.unit?.name)
-            setAllSubUnits(data.data.units);
+            
+            setAlertType('success');
+            return;
+        }
+    }
+
+    async function getUnitSummary(){
+        const res = await fetch(`${baseUrl}/my-orgnz-summary/unit/${id}`,{
+            method:"GET",
+            headers:{
+                'Authorization':`Bearer ${user.data.access_token}`
+            }
+        })
+        const data = await res.json()
+        console.log(data);
+        if(!res.ok){
+            setMsg(data.message);
+            setAlertType('error');
+            return;
+        }
+        if(res.ok){
+            // setUnitName(data?.data?.units[0]?.unit?.name)
+            setUnitSummary(data.data)
+            setAlertType('success');
+            return;
+        }
+    }
+
+    async function getSubUnitInfo(){
+        const res = await fetch(`${baseUrl}/my-orgnz-summary/unit/${id}/subunit-summary`,{
+            method:"GET",
+            headers:{
+                'Authorization':`Bearer ${user.data.access_token}`
+            }
+        })
+        const data = await res.json()
+        console.log(data);
+        if(!res.ok){
+            setMsg(data.message);
+            setAlertType('error');
+            return;
+        }
+        if(res.ok){
+            setAllSubUnits(data.data);
+            setAlertType('success');
+            return;
+        }
+    }
+
+    async function getAttendanceSummary(){
+        const res = await fetch(`${baseUrl}/my-orgnz-summary/unit/${id}/attendance-summary`,{
+            method:"GET",
+            headers:{
+                'Authorization':`Bearer ${user.data.access_token}`
+            }
+        })
+        const data = await res.json()
+        console.log(data);
+        if(!res.ok){
+            setMsg(data.message);
+            setAlertType('error');
+            return;
+        }
+        if(res.ok){
+            setAttendanceSummary(data.data);
             setAlertType('success');
             return;
         }
@@ -156,6 +223,9 @@ const SingleUnit = ({baseUrl}) => {
 
     useEffect(() => {
         getUnitInfo()
+        getSubUnitInfo()
+        getAttendanceSummary()
+        getUnitSummary()
     },[])
 
   return (
@@ -191,41 +261,41 @@ const SingleUnit = ({baseUrl}) => {
                         </div>
                         <div className="mb-2 flex items-center justify-between">
                             <div>Sub-units</div>
-                            <div className="font-bold">{allSubUnits?.length}</div>
+                            <div className="font-bold">{unitSummary?.totalSubUnits}</div>
                         </div>
                         <div className="mb-2 flex items-center justify-between">
                             <div>Assignments</div>
-                            <div className="font-bold">2</div>
+                            <div className="font-bold">{unitSummary?.totalAssignments}</div>
                         </div>
-                        <div className="mb-2 flex items-center justify-between">
+                        {/* <div className="mb-2 flex items-center justify-between">
                             <div>Assignees</div>
                             <div className="font-bold">2</div>
-                        </div>
+                        </div> */}
                         <div className="mb-2 flex items-center justify-between">
                             <div>Members</div>
-                            <div className="font-bold">2</div>
+                            <div className="font-bold">{unitSummary?.totalStudents}</div>
                         </div>
                     </div>
                     <div className="flex flex-col sm:flex-row w-1/2">
                         <div className="bg-blue-900 text-white p-4 rounded-lg shadow-md flex-1 mx-2">
                         <div className="flex flex-col items-center">
                             <div className="text-lg font-bold">Members</div>
-                            <div className="text-3xl font-bold my-2">32</div>
+                            <div className="text-3xl font-bold my-2">{attendanceSummary?.totalStudents}</div>
                             <div className="w-full flex justify-between text-sm">
                             <div className="flex flex-col items-center">
                                 <div className="bg-green-500 h-2 w-2 rounded-full mb-1"></div>
                                 <div>Early</div>
-                                <div>70%</div>
+                                <div>{attendanceSummary?.earlyPercentage?.toFixed(0,4)}%</div>
                             </div>
                             <div className="flex flex-col items-center">
                                 <div className="bg-yellow-500 h-2 w-2 rounded-full mb-1"></div>
                                 <div>Late</div>
-                                <div>20%</div>
+                                <div>{attendanceSummary?.latePercentage?.toFixed(0,4)}%</div>
                             </div>
                             <div className="flex flex-col items-center">
                                 <div className="bg-red-500 h-2 w-2 rounded-full mb-1"></div>
                                 <div>Absent</div>
-                                <div>10%</div>
+                                <div>{attendanceSummary?.absentPercentage?.toFixed(0,4)}%</div>
                             </div>
                             </div>
                         </div>
@@ -270,7 +340,7 @@ const SingleUnit = ({baseUrl}) => {
                                     <th scope="col" class="py-3 th1 font-[700]">S/N</th>
                                     <th scope="col" class="py-3 font-[700]">Sub-unit</th>
                                     <th scope="col" class="py-3 font-[700]">Assignments</th>
-                                    <th scope="col" class="py-3 font-[700]">Assignee</th>
+                                    {/* <th scope="col" class="py-3 font-[700]">Assignee</th> */}
                                     <th scope="col" class="py-3 font-[700]">Members</th>
                                     <th scope="col" class="py-3 font-[700]">Action</th>
                                 </tr>
@@ -283,12 +353,12 @@ const SingleUnit = ({baseUrl}) => {
                                             <tr className='relative'>
                                                 <td className='py-3'>{index + 1}</td>
                                                 <td>{item?.name}</td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
+                                                <td>{item?.totalAssignments}</td>
+                                                {/* <td></td> */}
+                                                <td>{item?.totalStudents}</td>
                                                 <td> <BsThreeDotsVertical  className="cursor-pointer" onClick={() => setSubUnitId(item._id)}/> </td>
 
-                                                {subUnitId === item._id &&
+                                                {subUnitId === item.id &&
                                                     <div className='z-[1] absolute right-[110px] w-[200px] top-0 py-3 bg-white border rounded-[10px]'>
                                                         <div className='my-2 mr-4 flex justify-end'>
                                                             <MdOutlineClose className='text-lg cursor-pointer mt-[-5px]' onClick={() => setSubUnitId('')} />
