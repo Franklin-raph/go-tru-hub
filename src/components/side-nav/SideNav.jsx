@@ -86,6 +86,10 @@ const SideNav = () => {
                   <img src="./images/clock-1.svg"/>
                   <p className={ location.pathname.includes("/transaction-history") ? `flex items-center justify-between text-[#25751E]` : `flex items-center justify-between`}>Transaction History</p>
                 </div>
+                <div className='flex items-center gap-2 my-4 cursor-pointer' onClick={() => navigate('/inventory')}>
+                  <img src="./images/clock-1.svg"/>
+                  <p className={ location.pathname.includes("/inventory") ? `flex items-center justify-between text-[#25751E]` : `flex items-center justify-between`}>Inventory</p>
+                </div>
               </div>
             }
           </div>

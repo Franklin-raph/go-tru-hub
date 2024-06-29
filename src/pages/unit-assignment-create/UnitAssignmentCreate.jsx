@@ -223,7 +223,7 @@ const UnitAssignmentCreate = ({baseUrl}) => {
                     <div className='px-[30px] w-[500px] mx-auto'>
                         <div className='mb-5'>
                             <p className='text-[#19201D]'>Pivot unit</p>
-                            <input type="text" value={unitInfo?.name} className='border py-3 px-3 rounded mt-1 w-full outline-none' placeholder='' />
+                            <input type="text" value={unitInfo?.name} className='border py-3 px-3 rounded mt-1 w-full outline-none' />
                         </div>
 
                         <div className='relative w-full mb-5'>

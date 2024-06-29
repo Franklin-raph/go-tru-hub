@@ -59,6 +59,7 @@ import AddSubUnitFromUnit from './pages/add-sub-unit-from-unit/AddSubUnitFromUni
 import ViewSubUnit from './pages/view-sub-unit/ViewSubUnit'
 import AddAssignmentFromSubUnit from './pages/add-assignment-from-sub-unit/AddAssignmentFromSubUnit'
 import CoOrdinator from './pages/co-ordinator/CoOrdinator'
+import Inventory from './pages/inventory/Inventory'
 
 function App() {
 
@@ -124,6 +125,7 @@ function App() {
             <Route path='/staff/:id' element={<StaffInfo baseUrl={baseUrl}/>} />
             <Route path='/add-sub-unit/:id' element={<AddSubUnitFromUnit baseUrl={baseUrl}/>} />
             <Route path='/view-sub-unit/:id' element={<ViewSubUnit baseUrl={baseUrl}/>} />
+            <Route path='/inventory' element={<Inventory baseUrl={baseUrl}/>} />
 
             <Route path='*' element={<div>404</div>} />
         </Routes>
